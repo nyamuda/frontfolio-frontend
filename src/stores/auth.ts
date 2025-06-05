@@ -79,7 +79,7 @@ export const useCounterStore = defineStore("auth", () => {
     });
   };
 
-  //Send an email to let the user verify their email
+  //Send an email to let the user verify their email using a one-time password(OTP)
   const requestEmailVerification = async (email: string) => {
     await axios.post(`${apiUrl}/email-verification/request`, { email });
   };
@@ -95,6 +95,11 @@ export const useCounterStore = defineStore("auth", () => {
           reject(message);
         });
     });
+  };
+
+  //Send a request to reset password using a one-time password(OTP)
+  const passwordResetRequest = async (email: string) => {
+    await axios.post(`${apiUrl}/password-reset/request`, { email });
   };
 
   //Set authorization header for all request to access protected routes from the API
