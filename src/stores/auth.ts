@@ -6,6 +6,7 @@ import type { CustomJwtPayload } from "@/interfaces/jwtPayload";
 import { User } from "@/models/User";
 import { apiUrl } from "@/helpers/urlHelper";
 import { unexpectedErrorMessage } from "@/helpers/errorMessageHelper";
+import type { UserVerificationStatus } from "@/interfaces/userVerificationStatus";
 
 export const useCounterStore = defineStore("counter", () => {
   const isAuthenticated = ref(false);
@@ -30,7 +31,7 @@ export const useCounterStore = defineStore("counter", () => {
   };
 
   //Login user and get the access token
-  const login = (): Promise<object> => {
+  const login = (): Promise<UserVerificationStatus> => {
     return new Promise((resolve, reject) => {
       axios
         .post(`${apiUrl}/login`)
