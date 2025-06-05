@@ -2,11 +2,13 @@ import { ref, computed, type Ref } from "vue";
 import { defineStore } from "pinia";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import type { CustomJwtPayload } from "@/interfaces/jwtPayload";
+import type { CustomJwtPayload } from "@/interfaces/auth/jwtPayload";
 import { User } from "@/models/User";
 import { apiUrl } from "@/helpers/urlHelper";
 import { unexpectedErrorMessage } from "@/helpers/errorMessageHelper";
-import type { UserVerificationStatus } from "@/interfaces/userVerificationStatus";
+import type { UserVerificationStatus } from "@/interfaces/auth/userVerificationStatus";
+import type { LoginDetails } from "@/interfaces/auth/loginDetails";
+import type { RegistrationDetails } from "@/interfaces/auth/registerDetails";
 
 export const useCounterStore = defineStore("counter", () => {
   const isAuthenticated = ref(false);
@@ -31,10 +33,10 @@ export const useCounterStore = defineStore("counter", () => {
   };
 
   //Login user and get the access token
-  const login = (): Promise<UserVerificationStatus> => {
+  const login = (loginDetails: LoginDetails): Promise<UserVerificationStatus> => {
     return new Promise((resolve, reject) => {
       axios
-        .post(`${apiUrl}/login`)
+        .post(`${apiUrl}/login`, loginDetails)
         .then((response) => {
           //get the access token
           const token = response.data?.token;
@@ -64,14 +66,10 @@ export const useCounterStore = defineStore("counter", () => {
     });
   };
 
-//Register a new user
-const register = () => {
-return new Promise((resolve,reject)=>{
-
-
-})
-
-}
+  //Register a new user
+  const register = () => {
+    return new Promise((resolve, reject) => {});
+  };
 
   //Set authorization header for all request to access protected routes from the API
   const setAuthToken = () => {
