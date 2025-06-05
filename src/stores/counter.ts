@@ -22,30 +22,35 @@ export const useCounterStore = defineStore("counter", () => {
   };
 
 //check to see if user is authenticated by using the Jwt token
-    authenticateUser({ commit }) {
-      //check if there is a token in session storage
-      let sessionToken = sessionStorage.getItem("jwt_token");
+    authenticateUser = ()=> {
+
       //check if there is a token in local storage
-      let localToken = localStorage.getItem("jwt_token");
+      const localToken = localStorage.getItem("jwt_token");
 
       //the current token
-      let token = sessionToken ? sessionToken : localToken ? localToken : "";
+      const token = localToken ? localToken : "";
 
       try {
         if (token) {
+//decode the token
+ const decodedToken = jwtDecode(token);
           //check if access token has expired or not
-          const hasExpired = isJwtExpired(token);
+ const exp = decodedToken["exp"]; // in seconds
+    const now = Math.floor(Date.now() / 1000); // current time in seconds
+
+let hasExpired:boolean=exp? now>exp:true;
           //if token has expired, then the user is not authenticated
           const isUserAuthenticated = hasExpired ? false : true;
 
           //if token hasn't expired
-          //decode the token and
           //store the user details
           if (!hasExpired) {
-            const decodedToken = jwtDecode(token);
+const userId=decodedToken.sub;
+const  email=decodedToken.
+
             let userData = {
               id: decodedToken[
-                "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+                ""
               ],
               email:
                 decodedToken[
@@ -73,3 +78,5 @@ export const useCounterStore = defineStore("counter", () => {
 
   return { count, doubleCount, increment };
 });
+
+

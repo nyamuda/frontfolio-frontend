@@ -17,7 +17,6 @@
     "axios": "^1.9.0",
     "bootstrap": "^5.3.6",
     "frontfolio-frontend": "file:",
-    "jwt-check-expiry": "^1.0.3",
     "jwt-decode": "^4.0.0",
     "pinia": "^3.0.1",
     "primeicons": "^7.0.0",
