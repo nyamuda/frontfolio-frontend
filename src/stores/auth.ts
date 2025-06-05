@@ -10,7 +10,7 @@ import type { UserVerificationStatus } from "@/interfaces/auth/userVerificationS
 import type { LoginDetails } from "@/interfaces/auth/loginDetails";
 import type { RegistrationDetails } from "@/interfaces/auth/registerDetails";
 
-export const useCounterStore = defineStore("counter", () => {
+export const useCounterStore = defineStore("auth", () => {
   const isAuthenticated = ref(false);
   const user: Ref<User | null> = ref(null);
 
@@ -78,6 +78,13 @@ export const useCounterStore = defineStore("counter", () => {
         });
     });
   };
+
+  //Send an email to let the user verify their email
+  const requestEmailVerification = async (email: string) => {
+    await axios.post(`${apiUrl}/email-verification/request`, { email });
+  };
+
+
 
   //Set authorization header for all request to access protected routes from the API
   const setAuthToken = () => {
