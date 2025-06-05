@@ -47,44 +47,44 @@
 </template>
 
 <script setup lang="ts">
-import Menubar from 'primevue/menubar'
-import { ref } from 'vue'
+import Menubar from "primevue/menubar";
+import { ref } from "vue";
 
 const items = ref([
   {
-    label: 'Home',
-    icon: 'pi pi-home',
-    route: '/',
+    label: "Home",
+    icon: "pi pi-home",
+    route: "/",
   },
   {
-    label: 'Projects',
-    icon: 'pi pi-folder',
-    route: 'projects',
+    label: "Projects",
+    icon: "pi pi-folder",
+    route: "projects",
     items: [
       {
-        label: 'Add Project',
-        icon: 'pi pi-folder-plus',
+        label: "Add Project",
+        icon: "pi pi-folder-plus",
       },
       {
-        label: 'View Projects',
-        icon: 'pi pi-eye',
+        label: "View Projects",
+        icon: "pi pi-eye",
       },
     ],
   },
   {
-    label: 'Blogs',
-    icon: 'pi pi-file',
-    route: 'projects',
+    label: "Blogs",
+    icon: "pi pi-file",
+    route: "projects",
     items: [
       {
-        label: 'Add Blog',
-        icon: 'pi pi-file-plus',
+        label: "Add Blog",
+        icon: "pi pi-file-plus",
       },
       {
-        label: 'View Blogs',
-        icon: 'pi pi-eye',
+        label: "View Blogs",
+        icon: "pi pi-eye",
       },
     ],
   },
-])
+]);
 </script>
