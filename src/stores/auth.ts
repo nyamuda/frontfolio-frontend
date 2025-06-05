@@ -1,10 +1,34 @@
-import { ref, computed } from "vue";
+import { ref, computed, type Ref } from "vue";
 import { defineStore } from "pinia";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import type { CustomJwtPayload } from "@/interfaces/jwt-payload";
+import { User } from "@/models/User";
+import { apiUrl } from "@/helpers/urlHelper";
+import { unexpectedErrorMessage } from "@/helpers/errorMessageHelper";
 
 export const useCounterStore = defineStore("counter", () => {
   const isAuthenticated = ref(false);
+  const user: Ref<User | null> = ref(null);
+
+  const getUserDetails: Promise<User> = () => {
+    return new Promise((resolve, reject) => {
+      //add access token to the request
+      //to access the protected route
+      setAuthToken();
+      axios
+        .get<User>(`${apiUrl}/me`)
+        .then((response) => {
+          user.value = response.data;
+          resolve(response.data);
+        })
+        .catch((error) => {
+          const message = error.response.data.message || unexpectedErrorMessage;
+
+          reject(message);
+        });
+    });
+  };
 
   //Set authorization header for all request to access protected routes from the API
   const setAuthToken = () => {
@@ -26,7 +50,7 @@ export const useCounterStore = defineStore("counter", () => {
       if (!token) throw new Error("Token not found in localStorage");
 
       //decode the token
-      const decodedToken = jwtDecode(token);
+      const decodedToken = jwtDecode<CustomJwtPayload>(token);
       //check if access token has expired or not
       const exp = decodedToken.exp; // in seconds
       const now = Math.floor(Date.now() / 1000); // current time in seconds
