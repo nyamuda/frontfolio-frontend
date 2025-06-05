@@ -64,6 +64,15 @@ export const useCounterStore = defineStore("counter", () => {
     });
   };
 
+//Register a new user
+const register = () => {
+return new Promise((resolve,reject)=>{
+
+
+})
+
+}
+
   //Set authorization header for all request to access protected routes from the API
   const setAuthToken = () => {
     //check if there is a token in local storage
