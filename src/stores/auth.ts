@@ -80,11 +80,12 @@ export const useCounterStore = defineStore("auth", () => {
   };
 
   //Send an email to let the user verify their email using a one-time password(OTP)
+  //The OTP is emailed to the user email
   const requestEmailVerification = async (email: string) => {
     await axios.post(`${apiUrl}/email-verification/request`, { email });
   };
 
-  //Verify email using a one-time password(OTP)
+  //Verify email using a one-time password (OTP)
   const verifyEmail = (verifyDetails: { email: string; otpCode: string }) => {
     return new Promise((resolve, reject) => {
       axios
@@ -98,8 +99,26 @@ export const useCounterStore = defineStore("auth", () => {
   };
 
   //Send a request to reset password using a one-time password(OTP)
+  //The OTP is emailed to the user email
   const passwordResetRequest = async (email: string) => {
     await axios.post(`${apiUrl}/password-reset/request`, { email });
+  };
+
+  //Verifies password reset one-time password(OTP)
+  //Returns a reset token if the OTP code is valid
+  const verifyPasswordResetOtp = (resetOtpDetails: {
+    email: string;
+    otpCode: string;
+  }): Promise<{ resetToken: string }> => {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(`${apiUrl}/password-reset/verify-otp`, resetOtpDetails)
+        .then((response) => resolve({ resetToken: response.data.resetToken }))
+        .catch((error) => {
+          const message = error.response.data.message || unexpectedErrorMessage;
+          reject(message);
+        });
+    });
   };
 
   //Set authorization header for all request to access protected routes from the API
