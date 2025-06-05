@@ -67,8 +67,16 @@ export const useCounterStore = defineStore("counter", () => {
   };
 
   //Register a new user
-  const register = () => {
-    return new Promise((resolve, reject) => {});
+  const register = (registrationDetails: RegistrationDetails) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(`${apiUrl}/register`, registrationDetails)
+        .then(() => resolve({}))
+        .catch((error) => {
+          const message = error.response.data.message || unexpectedErrorMessage;
+          reject(message);
+        });
+    });
   };
 
   //Set authorization header for all request to access protected routes from the API
