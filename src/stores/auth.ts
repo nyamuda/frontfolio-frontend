@@ -2,7 +2,7 @@ import { ref, computed, type Ref } from "vue";
 import { defineStore } from "pinia";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import type { CustomJwtPayload } from "@/interfaces/jwt-payload";
+import type { CustomJwtPayload } from "@/interfaces/jwtPayload";
 import { User } from "@/models/User";
 import { apiUrl } from "@/helpers/urlHelper";
 import { unexpectedErrorMessage } from "@/helpers/errorMessageHelper";
@@ -11,7 +11,7 @@ export const useCounterStore = defineStore("counter", () => {
   const isAuthenticated = ref(false);
   const user: Ref<User | null> = ref(null);
 
-  const getUserDetails: Promise<User> = () => {
+  const getUserDetails = (): Promise<User> => {
     return new Promise((resolve, reject) => {
       //add access token to the request
       //to access the protected route
@@ -24,7 +24,40 @@ export const useCounterStore = defineStore("counter", () => {
         })
         .catch((error) => {
           const message = error.response.data.message || unexpectedErrorMessage;
+          reject(message);
+        });
+    });
+  };
 
+  //Login user and get the access token
+  const login = (): Promise<object> => {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(`${apiUrl}/login`)
+        .then((response) => {
+          //get the access token
+          const token = response.data?.token;
+          if (!token) throw new Error("Login failed.");
+          //decode the access token
+          const decodedToken = jwtDecode<CustomJwtPayload>(token);
+          if (decodedToken.isVerified?.toLocaleLowerCase() == "true") {
+            //save the token to local storage
+            localStorage.setItem("jwt_token", token);
+
+            //mark the user as authenticated
+            authenticateUser();
+
+            resolve({ isVerified: true });
+          }
+          //if the user is not verified
+          else {
+            const emailToVerify =
+              decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"];
+            resolve({ isVerified: false, emailToVerify });
+          }
+        })
+        .catch((error) => {
+          const message = error.response.data.message || unexpectedErrorMessage;
           reject(message);
         });
     });
@@ -58,6 +91,10 @@ export const useCounterStore = defineStore("counter", () => {
       const hasExpired: boolean = exp ? exp > now : true;
       //if token has expired, then the user is not authenticated
       isAuthenticated.value = hasExpired ? false : true;
+
+      if (isAuthenticated.value) {
+        getUserDetails();
+      }
     } catch {
       isAuthenticated.value = false;
     }
