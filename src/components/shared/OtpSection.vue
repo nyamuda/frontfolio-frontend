@@ -40,8 +40,7 @@ import TitleSection from "./TitleSection.vue";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 
-
-const emit=defineEmits(["otpCode"])
+const emit = defineEmits(["otpCode"]);
 
 const props = defineProps({
   //title for the otp section
@@ -57,7 +56,7 @@ const props = defineProps({
   //callback method to call to verify OTP
   callbackToVerify: {
     type: Function,
-    required: false,
+    required: true,
   },
 });
 
@@ -65,9 +64,9 @@ const authStore = useAuthStore();
 const otpCode = ref("");
 
 const onOtpChange = () => {
-emit("otpCode",otpCode.value)
+  emit("otpCode", otpCode.value);
   if (otpCode.value.length == 6) {
-    props.callbackToVerify();
+    props.callbackToVerify(otpCode);
   }
 };
 

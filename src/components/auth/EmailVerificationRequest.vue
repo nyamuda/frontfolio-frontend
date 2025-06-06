@@ -68,11 +68,11 @@ const requestEmailVerificationCode = async () => {
 };
 
 //Verify email using OTP code
-const requestEmailVerificationCode = async () => {
+const verifyEmail = async (otpCode: string) => {
   try {
     const email = authStore.emailToVerify;
     if (email) {
-      await authStore.requestEmailVerification(email);
+      await authStore.verifyEmail({ otpCode, email });
       toast.add({
         severity: "success",
         summary: "Code sent",
@@ -89,5 +89,4 @@ const requestEmailVerificationCode = async () => {
     });
   }
 };
-
 </script>
