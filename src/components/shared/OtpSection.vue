@@ -21,7 +21,10 @@
     </div>
     <!-- OTP input section -->
     <div class="d-flex justify-content-center mt-2">
-      <InputOtp @change="onOtpChange" v-model="otpCode" :length="6" />
+      <InputOtp @change="onOtpChange" v-model="otpCode" :length="6" integerOnly />
+    </div>
+    <div class="d-flex justify-content-center">
+      <ProgressSpinner />
     </div>
   </div>
 </template>
@@ -33,8 +36,7 @@ import { useAuthStore } from "@/stores/auth";
 import Inplace from "primevue/inplace";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
-
-//const emit = defineEmits(["otpCode"]);
+import ProgressSpinner from "primevue/progressspinner";
 
 const props = defineProps({
   //title for the otp section
@@ -57,11 +59,10 @@ const props = defineProps({
 const authStore = useAuthStore();
 const otpCode = ref("");
 
+//Verify the OTP code once 6 digits are entered
 const onOtpChange = async () => {
-  //emit("otpCode", otpCode.value);
   if (otpCode.value.length == 6) {
     await props.callbackToVerify(otpCode);
-
     otpCode.value = "";
   }
 };

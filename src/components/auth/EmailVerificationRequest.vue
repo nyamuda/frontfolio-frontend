@@ -7,7 +7,7 @@
         </div>
 
         <TitleSection
-          title="Confirm your email"
+          title="Verify Your Account"
           title-size="small"
           align-items="center"
           style="margin-bottom: -1rem"
