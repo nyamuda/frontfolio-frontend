@@ -89,7 +89,7 @@ const verifyEmail = async (otpCode: string) => {
       await authStore.verifyEmail({ otpCode, email });
       toast.add({
         severity: "success",
-        summary: "Code sent",
+        summary: "Account Verified",
         detail: "The security code was sent to your email address.",
         life: 5000,
       });
@@ -97,7 +97,7 @@ const verifyEmail = async (otpCode: string) => {
   } catch (error) {
     toast.add({
       severity: "error",
-      summary: "Sending Failed",
+      summary: "Verification Failed",
       detail: error,
       life: 10000,
     });

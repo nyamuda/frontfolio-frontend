@@ -108,12 +108,13 @@ export const useAuthStore = defineStore("auth", () => {
   //Verify email using a one-time password (OTP)
   const verifyEmail = (verifyDetails: { email: string; otpCode: string }) => {
     return new Promise((resolve, reject) => {
+      console.log("dude");
       isVerifyingEmailOtp.value = true;
       axios
         .post(`${apiUrl}/email-verification/verify`, verifyDetails)
         .then(() => resolve({}))
         .catch((error) => {
-          const message = error.response.data?.message || unexpectedErrorMessage();
+          const message = error.response?.data?.message || unexpectedErrorMessage();
           reject(message);
         })
         .finally(() => (isVerifyingEmailOtp.value = false));

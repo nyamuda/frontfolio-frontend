@@ -69,9 +69,7 @@ const otpCode = ref("");
 const onOtpChange = async () => {
   if (otpCode.value.length == 6) {
     //verify OTP
-    await props.callbackToVerify(otpCode);
-
-    otpCode.value = "";
+    await props.callbackToVerify(otpCode.value);
   }
 };
 
