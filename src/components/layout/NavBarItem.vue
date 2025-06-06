@@ -70,35 +70,26 @@ import { useAuthStore } from "@/stores/auth";
 import Button from "primevue/button";
 import Menu from "primevue/menu";
 import { useRouter } from "vue-router";
+import { useToast } from "primevue";
 
 const authStore = useAuthStore();
 const router = useRouter();
 const toast = useToast();
 
-
-//Log out user
+//Logout user by removing the access token from local storage
 const logout = () => {
-  store
-    .dispatch("account/logoutUser")
-    .then(() => {
-      // toast.add({
-      //   severity: "success",
-      //   summary: "Logout Success",
-      //   detail: message,
-      //   life: 3000,
-      // });
-      router.push("/");
-    })
-    .catch((message) => {
-      toast.add({
-        severity: "error",
-        summary: "Logout Failed",
-        detail: message,
-        life: 10000,
-      });
+  try {
+    localStorage.removeItem("jwt_token");
+    router.push("/");
+  } catch (error) {
+    toast.add({
+      severity: "error",
+      summary: "Logout Failed",
+      detail: error,
+      life: 10000,
     });
+  }
 };
-
 
 // Controls the account dropdown menu for regular users.
 // This button appears on the right side of the navigation bar.
