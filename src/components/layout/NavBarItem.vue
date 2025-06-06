@@ -50,10 +50,10 @@
             </div>
           </div>
           <template v-else>
-            <router-link to="/account/login"
+            <router-link to="/auth/login"
               ><Button label="Log in" severity="contrast" variant="text"
             /></router-link>
-            <router-link class="me-0 me-md-2" to="/account/register"
+            <router-link class="me-0 me-md-2" to="/auth/register"
               ><Button label="Sign up" class="ms-2" severity="primary"
             /></router-link>
           </template>
@@ -65,7 +65,7 @@
 
 <script setup lang="ts">
 import Menubar from "primevue/menubar";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import Button from "primevue/button";
 import Menu from "primevue/menu";
@@ -95,7 +95,7 @@ const logout = () => {
 // This button appears on the right side of the navigation bar.
 // It allows users to view their profile or log out.
 const accountMenu = ref();
-const toggleAccountButton = (event: Event) => {
+const toggleAccountButton = (event: MouseEvent) => {
   accountMenu.value.toggle(event);
 };
 const userAccountItems = ref([
@@ -115,7 +115,7 @@ const userAccountItems = ref([
   },
 ]);
 
-const items = ref(() => {
+const items = computed(() => {
   //Nav links for logged in users
   if (authStore.isAuthenticated) {
     return [
