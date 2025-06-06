@@ -66,4 +66,28 @@ const requestEmailVerificationCode = async () => {
     });
   }
 };
+
+//Verify email using OTP code
+const requestEmailVerificationCode = async () => {
+  try {
+    const email = authStore.emailToVerify;
+    if (email) {
+      await authStore.requestEmailVerification(email);
+      toast.add({
+        severity: "success",
+        summary: "Code sent",
+        detail: "The security code was sent to your email address.",
+        life: 5000,
+      });
+    }
+  } catch (error) {
+    toast.add({
+      severity: "error",
+      summary: "Sending Failed",
+      detail: error,
+      life: 10000,
+    });
+  }
+};
+
 </script>
