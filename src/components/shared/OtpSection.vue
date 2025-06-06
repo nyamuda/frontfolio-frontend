@@ -1,14 +1,19 @@
 <template>
   <div class="text-center">
-    <TitleSection :title="title" title-size="small" align-items="center" />
-
+    <TitleSection
+      :title="title"
+      title-size="small"
+      align-items="center"
+      style="margin-bottom: -1rem"
+    />
     <!-- Inline editor for the email the OTP is sent to -->
-    <div>
-      <p>{{ message }}</p>
+    <div class="mb-2">
+      <span>{{ message }}</span>
       <Inplace>
         <template #display>
           <span class="text-center">
             {{ authStore.emailToVerify || "Change our email address" }}
+            <i class="ms-1 text-primary pi pi-pencil"></i>
           </span>
         </template>
         <template #content="{ closeCallback }">
@@ -39,8 +44,8 @@ defineProps({
     type: String,
     default: "We just sent an email",
   },
-//message for the otp section
-message: {
+  //message for the otp section
+  message: {
     type: String,
     default: "Enter the security code we sent to",
   },
@@ -49,18 +54,15 @@ message: {
     type: Function,
     required: false,
   },
-//callback method to call once OTP verification is a success
-callbackAfterSuccessfulVerification:{
- type: Function,
+  //callback method to call once OTP verification is a success
+  callbackAfterSuccessfulVerification: {
+    type: Function,
     required: false,
-}
+  },
 });
 
 const authStore = useAuthStore();
 const value = ref("");
 
-
-//const sendOtp() => {
-
-}
+//const sendOtp() => {}
 </script>
