@@ -34,12 +34,29 @@
         </a>
       </template>
       <template #end>
-        <div class="flex items-center gap-2">
-          <InputText placeholder="Search" type="text" class="w-32 sm:w-auto" />
-          <Avatar
-            image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
-            shape="circle"
-          />
+        <div class="d-flex align-items-center">
+          <div v-if="authStore.isAuthenticated">
+            <!--For normal users-->
+            <div class="d-flex align-items-center">
+              <Button
+                icon="fas fa-user-circle"
+                label="Account"
+                severity="secondary"
+                rounded
+                aria-label="User"
+                @click="toggleAccountButton"
+              />
+              <Menu ref="accountMenu" id="overlay_menu" :model="userAccountItems" :popup="true" />
+            </div>
+          </div>
+          <template v-else>
+            <router-link to="/account/login"
+              ><Button label="Log in" severity="contrast" variant="text"
+            /></router-link>
+            <router-link class="me-0 me-md-2" to="/account/register"
+              ><Button label="Sign up" class="ms-2" severity="primary"
+            /></router-link>
+          </template>
         </div>
       </template>
     </Menubar>
@@ -49,42 +66,114 @@
 <script setup lang="ts">
 import Menubar from "primevue/menubar";
 import { ref } from "vue";
+import { useAuthStore } from "@/stores/auth";
+import Button from "primevue/button";
+import Menu from "primevue/menu";
+import { useRouter } from "vue-router";
 
-const items = ref([
+const authStore = useAuthStore();
+const router = useRouter();
+const toast = useToast();
+
+
+//Log out user
+const logout = () => {
+  store
+    .dispatch("account/logoutUser")
+    .then(() => {
+      // toast.add({
+      //   severity: "success",
+      //   summary: "Logout Success",
+      //   detail: message,
+      //   life: 3000,
+      // });
+      router.push("/");
+    })
+    .catch((message) => {
+      toast.add({
+        severity: "error",
+        summary: "Logout Failed",
+        detail: message,
+        life: 10000,
+      });
+    });
+};
+
+
+// Controls the account dropdown menu for regular users.
+// This button appears on the right side of the navigation bar.
+// It allows users to view their profile or log out.
+const accountMenu = ref();
+const toggleAccountButton = (event: Event) => {
+  accountMenu.value.toggle(event);
+};
+const userAccountItems = ref([
   {
-    label: "Home",
-    icon: "pi pi-home",
-    route: "/",
+    label: "Profile",
+    icon: "fas fa-id-badge",
+    command: () => {
+      router.push("/auth");
+    },
   },
   {
-    label: "Projects",
-    icon: "pi pi-folder",
-    route: "projects",
-    items: [
-      {
-        label: "Add Project",
-        icon: "pi pi-folder-plus",
-      },
-      {
-        label: "View Projects",
-        icon: "pi pi-eye",
-      },
-    ],
-  },
-  {
-    label: "Blogs",
-    icon: "pi pi-file",
-    route: "projects",
-    items: [
-      {
-        label: "Add Blog",
-        icon: "pi pi-file-plus",
-      },
-      {
-        label: "View Blogs",
-        icon: "pi pi-eye",
-      },
-    ],
+    label: "Logout",
+    icon: "fas fa-sign-out-alt",
+    command: () => {
+      logout();
+    },
   },
 ]);
+
+const items = ref(() => {
+  //Nav links for logged in users
+  if (authStore.isAuthenticated) {
+    return [
+      {
+        label: "Home",
+        icon: "pi pi-home",
+        route: "/",
+      },
+      {
+        label: "Projects",
+        icon: "pi pi-folder",
+        route: "projects",
+        items: [
+          {
+            label: "Add Project",
+            icon: "pi pi-folder-plus",
+          },
+          {
+            label: "View Projects",
+            icon: "pi pi-eye",
+          },
+        ],
+      },
+      {
+        label: "Blogs",
+        icon: "pi pi-file",
+        route: "projects",
+        items: [
+          {
+            label: "Add Blog",
+            icon: "pi pi-file-plus",
+          },
+          {
+            label: "View Blogs",
+            icon: "pi pi-eye",
+          },
+        ],
+      },
+    ];
+  }
+  //Nav links for non-logged in users
+  else {
+    return [
+      {
+        label: "Home",
+        icon: "pi pi-home",
+        route: "/",
+      },
+    ];
+  }
+});
 </script>
