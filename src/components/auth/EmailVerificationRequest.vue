@@ -6,6 +6,7 @@
           <i class="fas fa-envelope-open-text fa-5x text-secondary"></i>
         </div>
         <h2 class="card-title mb-2">Confirm your email</h2>
+        <!-- Section to show if the OTP is being sent -->
         <div v-if="isSendingEmailVerificationCode" class="card-text mb-3">
           <div class="d-flex flex-column align-items-center">
             <ProgressSpinner />
@@ -13,9 +14,24 @@
             <span>This should only take a few seconds.</span>
           </div>
         </div>
+        <!-- Section to show if the OTP was sent -->
         <div v-else class="card-text mb-3 row d-flex flex-column align-items-center">
-          <span>We’ve sent you a confirmation link.</span>
-          <span> Haven’t received the email? Be sure to check your spam or junk folder. </span>
+          <!-- Otp input section -->
+          <OtpSection />
+          <!-- Inline editor for the email the OTP is sent to -->
+          <Inplace>
+            <template #display>
+              <span class="text-center">
+                {{ emailToVerify || "Change our email address" }}
+              </span>
+            </template>
+            <template #content="{ closeCallback }">
+              <span class="d-flex align-items-center gap-2">
+                <InputText v-model="emailToVerify" autofocus />
+                <Button icon="pi pi-times" text severity="danger" @click="closeCallback" />
+              </span>
+            </template>
+          </Inplace>
         </div>
         <RequestCodeButton
           v-if="emailToVerify"
@@ -30,17 +46,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import RequestCodeButton from "../shared/RequestCodeButton.vue";
 import ProgressSpinner from "primevue/progressspinner";
 import { useToast } from "primevue";
+import Inplace from "primevue/inplace";
+import OtpSection from "../shared/OtpSection.vue";
 
 const authStore = useAuthStore();
 const toast = useToast();
 
 const isSendingEmailVerificationCode = ref(false);
-const emailToVerify = computed(() => authStore.emailToVerify);
+const emailToVerify = ref(authStore.emailToVerify);
 //Make a request for email verification
 const requestEmailVerificationCode = async () => {
   try {
