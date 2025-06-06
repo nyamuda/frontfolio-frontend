@@ -24,9 +24,16 @@
         <div v-else class="card-text d-flex flex-column align-items-center">
           <!-- Otp input section -->
           <OtpSection
+            v-if="wasResendCodeAttemptSuccessful"
             :callback-to-verify="verifyEmail"
             :is-verifying-otp="authStore.isVerifyingEmailOtp"
           />
+          <!-- If an attempt to resend OTP was a failure -->
+          <div class="d-flex flex-column align-items-center text-danger">
+            <i class="pi pi-times-circle mb-2" style="font-size: 2rem"></i>
+            <span>We couldn't resend the verification code.</span>
+            <span>Please check your internet connection or try again later.</span>
+          </div>
         </div>
         <!-- Button to request a new OTP -->
         <RequestCodeButton
@@ -54,6 +61,7 @@ import TitleSection from "../shared/TitleSection.vue";
 const authStore = useAuthStore();
 const toast = useToast();
 const isSendingEmailVerificationCode = ref(false);
+const wasResendCodeAttemptSuccessful = ref(true);
 
 //Make a request for email verification
 const requestEmailVerificationCode = async () => {
@@ -69,7 +77,9 @@ const requestEmailVerificationCode = async () => {
         life: 5000,
       });
     }
+    wasResendCodeAttemptSuccessful.value = true;
   } catch (error) {
+    wasResendCodeAttemptSuccessful.value = false;
     toast.add({
       severity: "error",
       summary: "Sending Failed",
@@ -90,8 +100,8 @@ const verifyEmail = async (otpCode: string) => {
       toast.add({
         severity: "success",
         summary: "Account Verified",
-        detail: "The security code was sent to your email address.",
-        life: 5000,
+        detail: "Your account has been successfully verified. You can now log in.",
+        life: 10000,
       });
     }
   } catch (error) {
