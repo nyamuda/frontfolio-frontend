@@ -64,9 +64,11 @@ import { useToast } from "primevue/usetoast";
 import OtpSection from "../shared/OtpSection.vue";
 import TitleSection from "../shared/TitleSection.vue";
 import type { sendingOtpResult } from "@/types/sendingOtpResult";
+import { useRouter } from "vue-router";
 
 const authStore = useAuthStore();
 const toast = useToast();
+const router = useRouter();
 const isSendingEmailVerificationCode = ref(false);
 const otpSendingResult: Ref<sendingOtpResult> = ref("nothingSent");
 
@@ -75,11 +77,13 @@ const otpSendingResult: Ref<sendingOtpResult> = ref("nothingSent");
 const otpSectionTitleAndMessage: Ref<{ title: string; message: string }> = computed(() => {
   return {
     title:
-      otpSendingResult.value == "success" ? "We just sent an email" : "Request verification code",
+      otpSendingResult.value === "success"
+        ? "Verification Code Sent"
+        : "Request a Verification Code",
     message:
-      otpSendingResult.value == "success"
-        ? "Enter the security code we sent to"
-        : "Enter your email",
+      otpSendingResult.value === "success"
+        ? "Please enter the security code sent to your email."
+        : "Please enter your email address to receive a verification code.",
   };
 });
 
@@ -123,6 +127,8 @@ const verifyEmail = async (otpCode: string) => {
         detail: "Your account has been successfully verified. You can now log in.",
         life: 10000,
       });
+      //direct the user to the login page
+      router.push("/auth/login");
     }
   } catch (error) {
     toast.add({
