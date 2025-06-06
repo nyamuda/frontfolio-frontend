@@ -1,11 +1,6 @@
 <template>
   <div class="text-center">
-    <TitleSection
-      :title="title"
-      title-size="small"
-      align-items="center"
-      style="margin-bottom: -1rem"
-    />
+    <h5>{{ title }}</h5>
     <!-- Inline editor for the email the OTP is sent to -->
     <div>
       <span>{{ message }}</span>
@@ -36,7 +31,6 @@ import { ref } from "vue";
 import InputOtp from "primevue/inputotp";
 import { useAuthStore } from "@/stores/auth";
 import Inplace from "primevue/inplace";
-import TitleSection from "./TitleSection.vue";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 

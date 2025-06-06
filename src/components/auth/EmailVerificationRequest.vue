@@ -5,7 +5,13 @@
         <div>
           <i class="fas fa-envelope-open-text fa-5x text-secondary"></i>
         </div>
-        <h2 class="card-title mb-2">Confirm your email</h2>
+
+        <TitleSection
+          title="Confirm your email"
+          title-size="small"
+          align-items="center"
+          style="margin-bottom: -1rem"
+        />
         <!-- Section to show if the OTP is being sent -->
         <div v-if="isSendingEmailVerificationCode" class="card-text mb-3">
           <div class="d-flex flex-column align-items-center">
@@ -15,7 +21,7 @@
           </div>
         </div>
         <!-- Section to show if the OTP was sent -->
-        <div v-else class="card-text mb-3 row d-flex flex-column align-items-center">
+        <div v-else class="card-text mb-2 row d-flex flex-column align-items-center">
           <!-- Otp input section -->
           <OtpSection :callback-to-verify="verifyEmail" />
         </div>
@@ -38,6 +44,7 @@ import RequestCodeButton from "../shared/RequestCodeButton.vue";
 import ProgressSpinner from "primevue/progressspinner";
 import { useToast } from "primevue";
 import OtpSection from "../shared/OtpSection.vue";
+import TitleSection from "../shared/TitleSection.vue";
 
 const authStore = useAuthStore();
 const toast = useToast();
