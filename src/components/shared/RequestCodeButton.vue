@@ -50,7 +50,6 @@ const counter = ref(0);
 // disable the button while countdown is active
 const isButtonDisabled = ref(false);
 
-
 // starts a 5-second countdown and disables the button during that time
 const startCounter = () => {
   counter.value = 5;
@@ -64,14 +63,14 @@ const startCounter = () => {
   }, 1000);
 };
 
-
-
 // sends a code (either verification or password reset) to the email
 const sendCode = async () => {
   isSendingCode.value = true;
-  emit("isSendingCode", true);
+  emit("isSendingCode", isSendingCode.value);
 
   await props.actionCallback();
+  isSendingCode.value = false;
+  emit("isSendingCode", isSendingCode.value);
 
   //disable the send code button for some seconds
   startCounter();
