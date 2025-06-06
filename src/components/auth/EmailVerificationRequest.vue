@@ -23,21 +23,25 @@
         <!-- Section to show if the OTP was sent -->
         <div v-else class="card-text d-flex flex-column align-items-center">
           <!-- Otp input section -->
+          <!-- Displayed if OTP was successfully sent -->
           <OtpSection
-            v-if="wasResendCodeAttemptSuccessful"
+            v-if="requestVerificationCodeStatus == 'success'"
             :callback-to-verify="verifyEmail"
             :is-verifying-otp="authStore.isVerifyingEmailOtp"
           />
-          <!-- If an attempt to resend OTP was a failure -->
-          <div class="d-flex flex-column align-items-center text-danger">
+          <!-- Displayed gf an attempt to resend OTP was a failure -->
+          <div
+            v-else-if="requestVerificationCodeStatus == 'failure'"
+            class="d-flex flex-column align-items-center text-danger"
+          >
             <i class="pi pi-times-circle mb-2" style="font-size: 2rem"></i>
             <span>We couldn't resend the verification code.</span>
-            <span>Please check your internet connection or try again later.</span>
+            <span>Please try again soon.</span>
           </div>
         </div>
         <!-- Button to request a new OTP -->
         <RequestCodeButton
-          v-if="authStore.emailToVerify"
+          v-if="authStore.userEmail"
           button-label="Resend Code"
           :auto-send="false"
           :is-sending-code="isSendingEmailVerificationCode"
@@ -50,23 +54,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, type Ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import RequestCodeButton from "../shared/RequestCodeButton.vue";
 import ProgressSpinner from "primevue/progressspinner";
 import { useToast } from "primevue/usetoast";
 import OtpSection from "../shared/OtpSection.vue";
 import TitleSection from "../shared/TitleSection.vue";
+import type { sendingOtpStatus } from "@/types/sendingOtpStatus";
 
 const authStore = useAuthStore();
 const toast = useToast();
 const isSendingEmailVerificationCode = ref(false);
 const wasResendCodeAttemptSuccessful = ref(true);
+const requestVerificationCodeStatus: Ref<sendingOtpStatus> = ref("he");
 
 //Make a request for email verification
 const requestEmailVerificationCode = async () => {
   try {
-    const email = authStore.emailToVerify;
+    const email = authStore.userEmail;
     if (email) {
       isSendingEmailVerificationCode.value = true;
       await authStore.requestEmailVerification(email);
@@ -94,7 +100,7 @@ const requestEmailVerificationCode = async () => {
 //Verify email using OTP code
 const verifyEmail = async (otpCode: string) => {
   try {
-    const email = authStore.emailToVerify;
+    const email = authStore.userEmail;
     if (email) {
       await authStore.verifyEmail({ otpCode, email });
       toast.add({

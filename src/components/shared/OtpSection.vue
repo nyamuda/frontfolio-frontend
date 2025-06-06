@@ -7,13 +7,13 @@
       <Inplace>
         <template #display>
           <span class="text-center">
-            {{ authStore.emailToVerify || "Enter your email address" }}
+            {{ authStore.userEmail || "Enter your email address" }}
             <i class="ms-1 text-primary pi pi-pencil"></i>
           </span>
         </template>
         <template #content="{ closeCallback }">
           <span class="d-flex justify-content-center align-items-center gap-1 my-2">
-            <InputText v-model="authStore.emailToVerify" autofocus size="small" type="email" />
+            <InputText v-model="authStore.userEmail" autofocus size="small" type="email" />
             <Button icon="pi pi-times" text severity="danger" @click="closeCallback" />
           </span>
         </template>

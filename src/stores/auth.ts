@@ -12,8 +12,9 @@ import type { RegistrationDetails } from "@/interfaces/auth/registerDetails";
 export const useAuthStore = defineStore("auth", () => {
   const isAuthenticated = ref(false);
   const user: Ref<User | null> = ref(null);
-  //the email of a user if they're not verified
-  const emailToVerify: Ref<string | null> = ref(null);
+  //the email of a user
+  //used for things like email verification, password reset etc
+  const userEmail: Ref<string | null> = ref(null);
   const isVerifyingEmailOtp: Ref<boolean> = ref(false);
   //email verification OTP code
   const emailVerificationOtp: Ref<string | null> = ref(null);
@@ -63,7 +64,7 @@ export const useAuthStore = defineStore("auth", () => {
           //if the user is not verified
           //store the email that needs to be verified
           else {
-            emailToVerify.value =
+            userEmail.value =
               decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"] ||
               null;
 
@@ -194,7 +195,7 @@ export const useAuthStore = defineStore("auth", () => {
     verifyPasswordResetOtp,
     attemptedUrl,
     isAuthenticated,
-    emailToVerify,
+    userEmail,
     emailVerificationOtp,
     isVerifyingEmailOtp,
   };
