@@ -2,11 +2,7 @@
   <div class="">
     <form class="login-form m-auto" @submit.prevent="submitForm">
       <div class="text-center">
-        <TitleSection
-          title="Welcome back"
-          title-size="small"
-          align-items="center"
-        />
+        <TitleSection title="Welcome back" title-size="small" align-items="center" />
       </div>
       <!-- <OauthBooking />
 			<div class="d-flex align-bookings-center my-1">
@@ -30,12 +26,7 @@
           </IconField>
           <label for="loginEmail">Email</label>
         </FloatLabel>
-        <Message
-          size="small"
-          severity="error"
-          v-if="v$.email.$error"
-          variant="simple"
-        >
+        <Message size="small" severity="error" v-if="v$.email.$error" variant="simple">
           <div v-for="error of v$.email.$errors" :key="error.$uid">
             <div>{{ error.$message }}</div>
           </div>
@@ -56,12 +47,7 @@
           </IconField>
           <label for="loginPassword">Password</label>
         </FloatLabel>
-        <Message
-          size="small"
-          severity="error"
-          v-if="v$.password.$error"
-          variant="simple"
-        >
+        <Message size="small" severity="error" v-if="v$.password.$error" variant="simple">
           <div v-for="error of v$.password.$errors" :key="error.$uid">
             <div>{{ error.$message }}</div>
           </div>
@@ -80,17 +66,13 @@
               id="loginCheck"
               v-model="loginForm.rememberMe"
             />
-            <label class="form-check-label" for="loginCheck">
-              Remember me
-            </label>
+            <label class="form-check-label" for="loginCheck"> Remember me </label>
           </div>
         </div>
 
         <div class="col d-flex justify-content-center">
           <!-- Simple link -->
-          <router-link to="/email/password-reset-request"
-            >Forgot password?</router-link
-          >
+          <router-link to="/email/password-reset-request">Forgot password?</router-link>
         </div>
       </div>
 
@@ -119,21 +101,21 @@
 
 <script setup lang="ts">
 import { onMounted, ref, computed } from "vue";
-import { useStore } from "vuex";
+import { useAuthStore } from "@/stores/auth";
 //import OauthBooking from "./OauthBooking.vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, helpers } from "@vuelidate/validators";
 import { Message } from "primevue";
 import InputText from "primevue/inputtext";
 import FloatLabel from "primevue/floatlabel";
-import TitleSection from "../Common/Elements/TitleSection.vue";
+import TitleSection from "../shared/TitleSection.vue";
 import Button from "primevue/button";
 import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import { useRouter } from "vue-router";
 import { useToast } from "primevue/usetoast";
 
-const store = useStore();
+const authStore = useAuthStore();
 const router = useRouter();
 const toast = useToast();
 
@@ -145,11 +127,8 @@ onMounted(() => {
 const loginForm = ref({
   email: "",
   password: "",
-  rememberMe: false,
 });
-const passwordRule = helpers.regex(
-  /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/
-);
+const passwordRule = helpers.regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/);
 const passwordErrorMessage =
   "Password must be at least 8 characters long and contain a mix of letters, numbers, and special characters";
 const rules = {
@@ -163,21 +142,19 @@ const rules = {
 const v$ = useVuelidate(rules, loginForm.value);
 //form validation with Vuelidate end
 
-let submitForm = async () => {
-  const isFormCorrect = await v$._value.$validate();
+const submitForm = async () => {
+  const isFormCorrect = await v$.value.$validate();
   if (isFormCorrect) {
-    store
-      .dispatch("account/loginUser", loginForm.value)
-      .then(({ isVerified }) => {
+    authStore
+      .login(loginForm.value)
+      .then(({ isVerified, emailToVerify }) => {
         //if user has been verified
-        if (isVerified == "true") {
-          //mark the user as authenticated
-          store.dispatch("account/authenticateUser");
-          router.push(store.state.account.attemptedUrl);
+        if (isVerified) {
+          router.push(authStore.attemptedUrl);
         }
         //else send them an email to verify their email
         else {
-          router.push("/email/verification-request");
+          router.push("/auth/email-verification/request");
         }
       })
       .catch((message) => {
@@ -190,10 +167,6 @@ let submitForm = async () => {
       });
   }
 };
-let isLoggingIn = computed(() => store.state.account.isLoggingIn);
-
-// If user tries to log in and is not verified
-// Send them an email verification link
 </script>
 
 <style scoped>
