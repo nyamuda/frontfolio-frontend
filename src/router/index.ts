@@ -5,6 +5,7 @@ import AuthView from "@/views/AuthView.vue";
 import UserAccount from "@/components/auth/UserAccount.vue";
 import LoginUser from "@/components/auth/LoginUser.vue";
 import RegisterUser from "@/components/auth/RegisterUser.vue";
+import EmailVerificationRequest from "@/components/auth/EmailVerificationRequest.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,6 +43,16 @@ const router = createRouter({
         },
         {
           path: "register",
+          name: "Register",
+          component: RegisterUser,
+        },
+        {
+          path: "email-verification/request",
+          name: "Email Verification Request",
+          component: EmailVerificationRequest,
+        },
+        {
+          path: "email-verification/verify",
           name: "Register",
           component: RegisterUser,
         },
