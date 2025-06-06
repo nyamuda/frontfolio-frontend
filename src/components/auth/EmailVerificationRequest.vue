@@ -22,7 +22,7 @@
         <RequestCodeButton
           v-if="authStore.emailToVerify"
           button-label="Resend Code"
-          :auto-send="authStore.emailToVerify ? true : false"
+          :auto-send="false"
           :is-sending-code="isSendingEmailVerificationCode"
           :action-callback="requestEmailVerificationCode"
         />
