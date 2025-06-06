@@ -1,4 +1,4 @@
-import { ref, computed, type Ref } from "vue";
+import { ref, type Ref } from "vue";
 import { defineStore } from "pinia";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
@@ -10,9 +10,12 @@ import type { UserVerificationStatus } from "@/interfaces/auth/userVerificationS
 import type { LoginDetails } from "@/interfaces/auth/loginDetails";
 import type { RegistrationDetails } from "@/interfaces/auth/registerDetails";
 
-export const useCounterStore = defineStore("auth", () => {
+export const useAuthStore = defineStore("auth", () => {
   const isAuthenticated = ref(false);
   const user: Ref<User | null> = ref(null);
+  //attempted url if the user is not logged in
+  //and they're redirected to the log in page
+  const attemptedUrl = ref("");
 
   const getUserDetails = (): Promise<User> => {
     return new Promise((resolve, reject) => {
@@ -26,7 +29,7 @@ export const useCounterStore = defineStore("auth", () => {
           resolve(response.data);
         })
         .catch((error) => {
-          const message = error.response.data.message || unexpectedErrorMessage;
+          const message = error.response.data?.message || unexpectedErrorMessage;
           reject(message);
         });
     });
@@ -60,7 +63,7 @@ export const useCounterStore = defineStore("auth", () => {
           }
         })
         .catch((error) => {
-          const message = error.response.data.message || unexpectedErrorMessage;
+          const message = error.response.data?.message || unexpectedErrorMessage;
           reject(message);
         });
     });
@@ -73,7 +76,7 @@ export const useCounterStore = defineStore("auth", () => {
         .post(`${apiUrl}/register`, registrationDetails)
         .then(() => resolve({}))
         .catch((error) => {
-          const message = error.response.data.message || unexpectedErrorMessage;
+          const message = error.response.data?.message || unexpectedErrorMessage;
           reject(message);
         });
     });
@@ -92,7 +95,7 @@ export const useCounterStore = defineStore("auth", () => {
         .post(`${apiUrl}/email-verification/verify`, verifyDetails)
         .then(() => resolve({}))
         .catch((error) => {
-          const message = error.response.data.message || unexpectedErrorMessage;
+          const message = error.response.data?.message || unexpectedErrorMessage;
           reject(message);
         });
     });
@@ -106,16 +109,16 @@ export const useCounterStore = defineStore("auth", () => {
 
   //Verifies password reset one-time password(OTP)
   //Returns a reset token if the OTP code is valid
-  const verifyPasswordResetOtp = (resetOtpDetails: {
+  const verifyPasswordResetOtp = (verifyOtpDetails: {
     email: string;
     otpCode: string;
   }): Promise<{ resetToken: string }> => {
     return new Promise((resolve, reject) => {
       axios
-        .post(`${apiUrl}/password-reset/verify-otp`, resetOtpDetails)
+        .post(`${apiUrl}/password-reset/verify-otp`, verifyOtpDetails)
         .then((response) => resolve({ resetToken: response.data.resetToken }))
         .catch((error) => {
-          const message = error.response.data.message || unexpectedErrorMessage;
+          const message = error.response.data?.message || unexpectedErrorMessage;
           reject(message);
         });
     });
@@ -158,5 +161,14 @@ export const useCounterStore = defineStore("auth", () => {
     }
   };
 
-  return {};
+  return {
+    login,
+    register,
+    passwordResetRequest,
+    requestEmailVerification,
+    verifyEmail,
+    verifyPasswordResetOtp,
+    attemptedUrl,
+    isAuthenticated,
+  };
 });
