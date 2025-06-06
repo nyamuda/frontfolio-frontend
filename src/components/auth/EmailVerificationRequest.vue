@@ -23,15 +23,17 @@
         <!-- Section to show if the OTP was sent -->
         <div v-else class="card-text d-flex flex-column align-items-center">
           <!-- Otp input section -->
-          <!-- Displayed if OTP was successfully sent -->
+          <!-- Displayed if OTP was successfully sent or hasn't been sent yet -->
           <OtpSection
-            v-if="requestVerificationCodeStatus == 'success'"
+            v-if="otpSendingResult == 'success' || otpSendingResult == 'nothingSent'"
             :callback-to-verify="verifyEmail"
             :is-verifying-otp="authStore.isVerifyingEmailOtp"
+            :title="otpSectionTitleAndMessage.title"
+            :message="otpSectionTitleAndMessage.message"
           />
           <!-- Displayed gf an attempt to resend OTP was a failure -->
           <div
-            v-else-if="requestVerificationCodeStatus == 'failure'"
+            v-else-if="otpSendingResult == 'failure'"
             class="d-flex flex-column align-items-center text-danger"
           >
             <i class="pi pi-times-circle mb-2" style="font-size: 2rem"></i>
@@ -54,20 +56,32 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref } from "vue";
+import { computed, ref, type Ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import RequestCodeButton from "../shared/RequestCodeButton.vue";
 import ProgressSpinner from "primevue/progressspinner";
 import { useToast } from "primevue/usetoast";
 import OtpSection from "../shared/OtpSection.vue";
 import TitleSection from "../shared/TitleSection.vue";
-import type { sendingOtpStatus } from "@/types/sendingOtpStatus";
+import type { sendingOtpResult } from "@/types/sendingOtpResult";
 
 const authStore = useAuthStore();
 const toast = useToast();
 const isSendingEmailVerificationCode = ref(false);
-const wasResendCodeAttemptSuccessful = ref(true);
-const requestVerificationCodeStatus: Ref<sendingOtpStatus> = ref("he");
+const otpSendingResult: Ref<sendingOtpResult> = ref("nothingSent");
+
+//title and message for the OTP section
+//based on whether an OTP was sent or not
+const otpSectionTitleAndMessage: Ref<{ title: string; message: string }> = computed(() => {
+  return {
+    title:
+      otpSendingResult.value == "success" ? "We just sent an email" : "Request verification code",
+    message:
+      otpSendingResult.value == "success"
+        ? "Enter the security code we sent to"
+        : "Enter your email",
+  };
+});
 
 //Make a request for email verification
 const requestEmailVerificationCode = async () => {
@@ -83,9 +97,9 @@ const requestEmailVerificationCode = async () => {
         life: 5000,
       });
     }
-    wasResendCodeAttemptSuccessful.value = true;
+    otpSendingResult.value = "success";
   } catch (error) {
-    wasResendCodeAttemptSuccessful.value = false;
+    otpSendingResult.value = "failure";
     toast.add({
       severity: "error",
       summary: "Sending Failed",
