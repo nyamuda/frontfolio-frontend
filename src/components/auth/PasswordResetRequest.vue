@@ -44,7 +44,7 @@
         <!-- Button to request a new OTP -->
         <RequestCodeButton
           v-if="authStore.userEmail"
-          button-label="Resend Code"
+          :button-label="otpSendingResult == 'success' ? 'Resend Code' : 'Send Code'"
           :auto-send="false"
           :is-sending-code="isSendingResetCode"
           :action-callback="requestResetCode"
