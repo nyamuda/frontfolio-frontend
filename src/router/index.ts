@@ -4,13 +4,14 @@ import { useAuthStore } from "@/stores/auth";
 import AuthView from "@/views/AuthView.vue";
 import UserAccount from "@/components/auth/UserAccount.vue";
 import LoginUser from "@/components/auth/LoginUser.vue";
+import RegisterUser from "@/components/auth/RegisterUser.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: "/",
-      name: "home",
+      name: "Home",
       component: HomeView,
     },
     {
@@ -38,6 +39,11 @@ const router = createRouter({
           path: "login",
           name: "Login",
           component: LoginUser,
+        },
+        {
+          path: "register",
+          name: "Register",
+          component: RegisterUser,
         },
       ],
     },
