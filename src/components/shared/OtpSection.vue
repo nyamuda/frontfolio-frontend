@@ -62,7 +62,12 @@ const otpCode = ref("");
 //Verify the OTP code once 6 digits are entered
 const onOtpChange = async () => {
   if (otpCode.value.length == 6) {
+    //show loader
+    authStore.isVerifyingEmailOtp = true;
+    //verify OTP
     await props.callbackToVerify(otpCode);
+    //hide loader
+    authStore.isVerifyingEmailOtp = false;
     otpCode.value = "";
   }
 };

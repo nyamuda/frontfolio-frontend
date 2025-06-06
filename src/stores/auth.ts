@@ -14,6 +14,7 @@ export const useAuthStore = defineStore("auth", () => {
   const user: Ref<User | null> = ref(null);
   //the email of a user if they're not verified
   const emailToVerify: Ref<string | null> = ref(null);
+  const isVerifyingEmailOtp: Ref<boolean> = ref(false);
   //email verification OTP code
   const emailVerificationOtp: Ref<string | null> = ref(null);
   //attempted url if the user is not logged in
@@ -178,5 +179,6 @@ export const useAuthStore = defineStore("auth", () => {
     isAuthenticated,
     emailToVerify,
     emailVerificationOtp,
+    isVerifyingEmailOtp,
   };
 });
