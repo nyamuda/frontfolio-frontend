@@ -17,29 +17,29 @@
           <span>We’ve sent you a confirmation link.</span>
           <span> Haven’t received the email? Be sure to check your spam or junk folder. </span>
         </div>
-        <EmailVerificationButton
+        <RequestCodeButton
           v-if="pendingEmailVerification.useId && pendingEmailVerification.emailToVerify"
           :email="pendingEmailVerification.emailToVerify"
           button-label="Resend Link"
           :auto-send="
             pendingEmailVerification.useId && pendingEmailVerification.emailToVerify ? true : false
           "
-          @is-sending-link="(val) => (isSendingEmailVerificationLink = val)"
+          @is-sending-code="(val) => (isSendingEmailVerificationCode = val)"
         />
       </div>
     </div>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
-import EmailVerificationButton from "../Common/Elements/EmailVerificationButton.vue";
+import RequestCodeButton from "../shared/RequestCodeButton.vue";
 
 import ProgressSpinner from "primevue/progressspinner";
 
 const store = useStore();
 
-const isSendingEmailVerificationLink = ref(false);
+const isSendingEmailVerificationCode = ref(false);
 const pendingEmailVerification = computed(() => store.state.account.pendingEmailVerification);
 </script>

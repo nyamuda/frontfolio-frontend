@@ -6,13 +6,13 @@ import type { CustomJwtPayload } from "@/interfaces/auth/jwtPayload";
 import { User } from "@/models/User";
 import { apiUrl } from "@/helpers/urlHelper";
 import { unexpectedErrorMessage } from "@/helpers/errorMessageHelper";
-import type { UserVerificationStatus } from "@/interfaces/auth/userVerificationStatus";
 import type { LoginDetails } from "@/interfaces/auth/loginDetails";
 import type { RegistrationDetails } from "@/interfaces/auth/registerDetails";
 
 export const useAuthStore = defineStore("auth", () => {
   const isAuthenticated = ref(false);
   const user: Ref<User | null> = ref(null);
+  const emailToVerify: Ref<string | null> = ref(null);
   //attempted url if the user is not logged in
   //and they're redirected to the log in page
   const attemptedUrl = ref("");
@@ -36,7 +36,7 @@ export const useAuthStore = defineStore("auth", () => {
   };
 
   //Login user and get the access token
-  const login = (loginDetails: LoginDetails): Promise<UserVerificationStatus> => {
+  const login = (loginDetails: LoginDetails): Promise<{ isVerified: boolean }> => {
     return new Promise((resolve, reject) => {
       axios
         .post(`${apiUrl}/login`, loginDetails)
@@ -56,10 +56,13 @@ export const useAuthStore = defineStore("auth", () => {
             resolve({ isVerified: true });
           }
           //if the user is not verified
+          //store the email that needs to be verified
           else {
-            const emailToVerify =
-              decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"];
-            resolve({ isVerified: false, emailToVerify });
+            emailToVerify.value =
+              decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"] ||
+              null;
+
+            resolve({ isVerified: false });
           }
         })
         .catch((error) => {
