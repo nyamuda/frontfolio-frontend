@@ -1,24 +1,23 @@
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-import App from './App.vue'
-import router from './router'
+import { createApp } from "vue";
+import { createPinia } from "pinia";
+import App from "./App.vue";
+import router from "./router";
 
 //Styles
-import './assets/scss/styles.scss'
+import "./assets/scss/styles.scss";
 
 //Bootstrap
-import 'bootstrap'
+import "bootstrap";
 
 //PrimeVue
-import PrimeVue from 'primevue/config'
-import Aura from '@primeuix/themes/aura'
-import ConfirmationService from 'primevue/confirmationservice'
-import ToastService from 'primevue/toastservice'
+import PrimeVue from "primevue/config";
+import Aura from "@primeuix/themes/aura";
+import ConfirmationService from "primevue/confirmationservice";
+import ToastService from "primevue/toastservice";
 
-const app = createApp(App)
+const app = createApp(App);
 app
   .use(createPinia())
-  .use(router)
   .use(PrimeVue, {
     theme: {
       preset: Aura,
@@ -26,5 +25,5 @@ app
   })
   .use(ConfirmationService)
   .use(ToastService)
-
-app.mount('#app')
+  .use(router)
+  .mount("#app");

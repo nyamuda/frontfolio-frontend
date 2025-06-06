@@ -92,8 +92,17 @@ export const useAuthStore = defineStore("auth", () => {
 
   //Send an email to let the user verify their email using a one-time password(OTP)
   //The OTP is emailed to the user email
-  const requestEmailVerification = async (email: string) => {
-    await axios.post(`${apiUrl}/email-verification/request`, { email });
+  const requestEmailVerification = (email: string) => {
+    return new Promise((resolve, reject) => {
+      const url = `${apiUrl}/email-verification/request`;
+      axios
+        .post(url, { email })
+        .then(() => resolve({}))
+        .catch((error) => {
+          const message = error.response?.data?.message || unexpectedErrorMessage;
+          reject(message);
+        });
+    });
   };
 
   //Verify email using a one-time password (OTP)

@@ -79,7 +79,6 @@ const startCounter = () => {
 // sends a code (either verification or password reset) to the email
 const sendCode = async () => {
   await props.actionCallback();
-
   //disable the send code button for some seconds
   startCounter();
 };

@@ -23,7 +23,7 @@
     <div class="d-flex justify-content-center my-2">
       <InputOtp @change="onOtpChange" v-model="otpCode" :length="6" integerOnly />
     </div>
-    <div v-if="authStore.isVerifyingEmailOtp" class="d-flex justify-content-center">
+    <div v-if="isVerifyingOtp" class="d-flex justify-content-center">
       <ProgressSpinner style="width: 70px; height: 70px" aria-label="Loading" />
     </div>
   </div>
@@ -55,7 +55,7 @@ const props = defineProps({
     required: true,
   },
   //whether or not an OTP is being verified
-  //this is used to show the load
+  //this is used to show the loader
   isVerifyingOtp: {
     type: Boolean,
     required: true,

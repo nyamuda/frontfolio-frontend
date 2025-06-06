@@ -23,8 +23,12 @@
         <!-- Section to show if the OTP was sent -->
         <div v-else class="card-text d-flex flex-column align-items-center">
           <!-- Otp input section -->
-          <OtpSection :callback-to-verify="verifyEmail" />
+          <OtpSection
+            :callback-to-verify="verifyEmail"
+            :is-verifying-otp="authStore.isVerifyingEmailOtp"
+          />
         </div>
+        <!-- Button to request a new OTP -->
         <RequestCodeButton
           v-if="authStore.emailToVerify"
           button-label="Resend Code"
@@ -43,13 +47,12 @@ import { ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import RequestCodeButton from "../shared/RequestCodeButton.vue";
 import ProgressSpinner from "primevue/progressspinner";
-import { useToast } from "primevue";
+import { useToast } from "primevue/usetoast";
 import OtpSection from "../shared/OtpSection.vue";
 import TitleSection from "../shared/TitleSection.vue";
 
 const authStore = useAuthStore();
 const toast = useToast();
-
 const isSendingEmailVerificationCode = ref(false);
 
 //Make a request for email verification
@@ -57,6 +60,7 @@ const requestEmailVerificationCode = async () => {
   try {
     const email = authStore.emailToVerify;
     if (email) {
+      isSendingEmailVerificationCode.value = true;
       await authStore.requestEmailVerification(email);
       toast.add({
         severity: "success",
@@ -72,6 +76,8 @@ const requestEmailVerificationCode = async () => {
       detail: error,
       life: 10000,
     });
+  } finally {
+    isSendingEmailVerificationCode.value = false;
   }
 };
 
