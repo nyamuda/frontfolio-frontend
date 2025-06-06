@@ -34,7 +34,7 @@ export const useAuthStore = defineStore("auth", () => {
           resolve(response.data);
         })
         .catch((error) => {
-          const message = error.response.data?.message || unexpectedErrorMessage;
+          const message = error.response.data?.message || unexpectedErrorMessage();
           reject(message);
         });
     });
@@ -71,7 +71,7 @@ export const useAuthStore = defineStore("auth", () => {
           }
         })
         .catch((error) => {
-          const message = error.response.data?.message || unexpectedErrorMessage;
+          const message = error.response.data?.message || unexpectedErrorMessage();
           reject(message);
         });
     });
@@ -84,7 +84,7 @@ export const useAuthStore = defineStore("auth", () => {
         .post(`${apiUrl}/register`, registrationDetails)
         .then(() => resolve({}))
         .catch((error) => {
-          const message = error.response.data?.message || unexpectedErrorMessage;
+          const message = error.response.data?.message || unexpectedErrorMessage();
           reject(message);
         });
     });
@@ -99,7 +99,7 @@ export const useAuthStore = defineStore("auth", () => {
         .post(url, { email })
         .then(() => resolve({}))
         .catch((error) => {
-          const message = error.response?.data?.message || unexpectedErrorMessage;
+          const message = error.response?.data?.message || unexpectedErrorMessage();
           reject(message);
         });
     });
@@ -113,7 +113,7 @@ export const useAuthStore = defineStore("auth", () => {
         .post(`${apiUrl}/email-verification/verify`, verifyDetails)
         .then(() => resolve({}))
         .catch((error) => {
-          const message = error.response.data?.message || unexpectedErrorMessage;
+          const message = error.response.data?.message || unexpectedErrorMessage();
           reject(message);
         })
         .finally(() => (isVerifyingEmailOtp.value = false));
@@ -138,7 +138,7 @@ export const useAuthStore = defineStore("auth", () => {
         .post(`${apiUrl}/password-reset/verify-otp`, verifyOtpDetails)
         .then((response) => resolve({ resetToken: response.data.resetToken }))
         .catch((error) => {
-          const message = error.response.data?.message || unexpectedErrorMessage;
+          const message = error.response.data?.message || unexpectedErrorMessage();
           reject(message);
         })
         .finally(() => (isVerifyingPasswordResetOtp.value = false));
