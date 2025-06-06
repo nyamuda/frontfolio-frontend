@@ -20,6 +20,7 @@ export const useAuthStore = defineStore("auth", () => {
   //attempted url if the user is not logged in
   //and they're redirected to the log in page
   const attemptedUrl = ref("");
+  const isVerifyingPasswordResetOtp: Ref<boolean> = ref(false);
 
   const getUserDetails = (): Promise<User> => {
     return new Promise((resolve, reject) => {
@@ -98,13 +99,15 @@ export const useAuthStore = defineStore("auth", () => {
   //Verify email using a one-time password (OTP)
   const verifyEmail = (verifyDetails: { email: string; otpCode: string }) => {
     return new Promise((resolve, reject) => {
+      isVerifyingEmailOtp.value = true;
       axios
         .post(`${apiUrl}/email-verification/verify`, verifyDetails)
         .then(() => resolve({}))
         .catch((error) => {
           const message = error.response.data?.message || unexpectedErrorMessage;
           reject(message);
-        });
+        })
+        .finally(() => (isVerifyingEmailOtp.value = false));
     });
   };
 
@@ -121,13 +124,15 @@ export const useAuthStore = defineStore("auth", () => {
     otpCode: string;
   }): Promise<{ resetToken: string }> => {
     return new Promise((resolve, reject) => {
+      isVerifyingPasswordResetOtp.value = true;
       axios
         .post(`${apiUrl}/password-reset/verify-otp`, verifyOtpDetails)
         .then((response) => resolve({ resetToken: response.data.resetToken }))
         .catch((error) => {
           const message = error.response.data?.message || unexpectedErrorMessage;
           reject(message);
-        });
+        })
+        .finally(() => (isVerifyingPasswordResetOtp.value = false));
     });
   };
 

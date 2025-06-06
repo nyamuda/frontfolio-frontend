@@ -20,11 +20,11 @@
       </Inplace>
     </div>
     <!-- OTP input section -->
-    <div class="d-flex justify-content-center mt-2">
+    <div class="d-flex justify-content-center my-2">
       <InputOtp @change="onOtpChange" v-model="otpCode" :length="6" integerOnly />
     </div>
-    <div class="d-flex justify-content-center">
-      <ProgressSpinner />
+    <div v-if="authStore.isVerifyingEmailOtp" class="d-flex justify-content-center">
+      <ProgressSpinner style="width: 70px; height: 70px" aria-label="Loading" />
     </div>
   </div>
 </template>
@@ -54,6 +54,12 @@ const props = defineProps({
     type: Function,
     required: true,
   },
+  //whether or not an OTP is being verified
+  //this is used to show the load
+  isVerifyingOtp: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 const authStore = useAuthStore();
@@ -62,12 +68,9 @@ const otpCode = ref("");
 //Verify the OTP code once 6 digits are entered
 const onOtpChange = async () => {
   if (otpCode.value.length == 6) {
-    //show loader
-    authStore.isVerifyingEmailOtp = true;
     //verify OTP
     await props.callbackToVerify(otpCode);
-    //hide loader
-    authStore.isVerifyingEmailOtp = false;
+
     otpCode.value = "";
   }
 };
