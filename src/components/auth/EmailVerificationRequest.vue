@@ -6,7 +6,7 @@
           <i class="fas fa-envelope-open-text fa-5x text-secondary"></i>
         </div>
         <h2 class="card-title mb-2">Confirm your email</h2>
-        <div v-if="isSendingEmailVerificationLink" class="card-text mb-3">
+        <div v-if="isSendingEmailVerificationCode" class="card-text mb-3">
           <div class="d-flex flex-column align-items-center">
             <ProgressSpinner />
             <span> We're sending a verification code to your email address.</span>
@@ -18,13 +18,11 @@
           <span> Haven’t received the email? Be sure to check your spam or junk folder. </span>
         </div>
         <RequestCodeButton
-          v-if="pendingEmailVerification.useId && pendingEmailVerification.emailToVerify"
-          :email="pendingEmailVerification.emailToVerify"
-          button-label="Resend Link"
-          :auto-send="
-            pendingEmailVerification.useId && pendingEmailVerification.emailToVerify ? true : false
-          "
-          @is-sending-code="(val) => (isSendingEmailVerificationCode = val)"
+          v-if="emailToVerify"
+          button-label="Resend Code"
+          :auto-send="emailToVerify ? true : false"
+          :is-sending-code="isSendingEmailVerificationCode"
+          :action-callback="requestEmailVericationCode"
         />
       </div>
     </div>
@@ -42,15 +40,27 @@ const authStore = useAuthStore();
 const toast = useToast();
 
 const isSendingEmailVerificationCode = ref(false);
-
+const emailToVerify = computed(() => authStore.emailToVerify);
 //Make a request for email verification
 const requestEmailVericationCode = async () => {
   try {
     const email = authStore.emailToVerify;
     if (email) {
+      await authStore.requestEmailVerification(email);
+      toast.add({
+        severity: "success",
+        summary: "Code sent",
+        detail: "The security code was sent to your email address.",
+        life: 5000,
+      });
     }
   } catch (error) {
-
-}
+    toast.add({
+      severity: "error",
+      summary: "Sending Failed",
+      detail: error,
+      life: 10000,
+    });
+  }
 };
 </script>

@@ -35,6 +35,11 @@ const props = defineProps({
     type: Function,
     required: true,
   },
+  //whether the code is being sent or not
+  isSendingCode: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 onMounted(() => {
@@ -42,9 +47,6 @@ onMounted(() => {
   if (props.autoSend) sendCode();
 });
 
-const isSendingCode = ref(false);
-// emits event to tell parent whether a code is being sent or not
-const emit = defineEmits(["isSendingCode"]);
 // track countdown value in seconds
 const counter = ref(0);
 // disable the button while countdown is active
@@ -65,12 +67,7 @@ const startCounter = () => {
 
 // sends a code (either verification or password reset) to the email
 const sendCode = async () => {
-  isSendingCode.value = true;
-  emit("isSendingCode", isSendingCode.value);
-
   await props.actionCallback();
-  isSendingCode.value = false;
-  emit("isSendingCode", isSendingCode.value);
 
   //disable the send code button for some seconds
   startCounter();
