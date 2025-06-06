@@ -7,6 +7,7 @@ import LoginUser from "@/components/auth/LoginUser.vue";
 import RegisterUser from "@/components/auth/RegisterUser.vue";
 import EmailVerificationRequest from "@/components/auth/EmailVerificationRequest.vue";
 import VerifyEmailOtp from "@/components/auth/VerifyEmailOtp.vue";
+import PasswordResetRequest from "@/components/auth/PasswordResetRequest.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -56,6 +57,11 @@ const router = createRouter({
           path: "email-verification/verify",
           name: "Verify Email",
           component: VerifyEmailOtp,
+        },
+        {
+          path: "password-reset/request",
+          name: "Password Reset Request",
+          component: PasswordResetRequest,
         },
       ],
     },
