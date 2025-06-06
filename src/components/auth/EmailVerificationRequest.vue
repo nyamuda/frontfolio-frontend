@@ -17,7 +17,7 @@
         <!-- Section to show if the OTP was sent -->
         <div v-else class="card-text mb-3 row d-flex flex-column align-items-center">
           <!-- Otp input section -->
-          <OtpSection />
+          <OtpSection :callback-to-verify="verifyEmail" />
         </div>
         <RequestCodeButton
           v-if="authStore.emailToVerify"

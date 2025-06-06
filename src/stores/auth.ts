@@ -12,7 +12,10 @@ import type { RegistrationDetails } from "@/interfaces/auth/registerDetails";
 export const useAuthStore = defineStore("auth", () => {
   const isAuthenticated = ref(false);
   const user: Ref<User | null> = ref(null);
+  //the email of a user if they're not verified
   const emailToVerify: Ref<string | null> = ref(null);
+  //email verification OTP code
+  const emailVerificationOtp: Ref<string | null> = ref(null);
   //attempted url if the user is not logged in
   //and they're redirected to the log in page
   const attemptedUrl = ref("");
@@ -174,5 +177,6 @@ export const useAuthStore = defineStore("auth", () => {
     attemptedUrl,
     isAuthenticated,
     emailToVerify,
+    emailVerificationOtp,
   };
 });

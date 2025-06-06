@@ -72,7 +72,6 @@
         </p>
       </div>
     </form>
-    <OtpSection />
   </div>
 </template>
 
@@ -91,7 +90,6 @@ import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import { useRouter } from "vue-router";
 import { useToast } from "primevue/usetoast";
-import OtpSection from "../shared/OtpSection.vue";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -128,13 +126,14 @@ const submitForm = async () => {
     isLoggingIn.value = true;
     authStore
       .login(loginForm.value)
-      .then(({ isVerified }) => {
+      .then(async ({ isVerified }) => {
         //if user has been verified
         if (isVerified) {
           router.push(authStore.attemptedUrl);
         }
         //else send them an email to verify their email
         else {
+          await authStore.requestEmailVerification(loginForm.value.email);
           router.push("/auth/email-verification/request");
         }
       })
