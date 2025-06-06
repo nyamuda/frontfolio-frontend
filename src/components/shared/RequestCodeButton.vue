@@ -5,7 +5,11 @@
       severity="primary"
       @click="sendCode"
       :label="
-        isSendingCode ? 'Sending code...' : counter > 0 ? `Please wait (${counter})` : buttonLabel
+        isSendingCode
+          ? 'Sending code...'
+          : counter > 0
+            ? `Resend OTP in (${counter}) seconds`
+            : buttonLabel
       "
       icon="fas fa-sync-alt"
       :disabled="isSendingCode || isButtonDisabled || isCountingDown"
@@ -63,9 +67,9 @@ const counter = ref(0);
 // disable the button while countdown is active
 const isCountingDown = ref(false);
 
-// starts a 5-second countdown and disables the button during that time
+// starts a 20-second countdown and disables the button during that time
 const startCounter = () => {
-  counter.value = 5;
+  counter.value = 20;
   isCountingDown.value = true;
   const interval = setInterval(() => {
     counter.value -= 1;
