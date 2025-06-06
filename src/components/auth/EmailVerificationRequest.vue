@@ -22,7 +22,7 @@
           button-label="Resend Code"
           :auto-send="emailToVerify ? true : false"
           :is-sending-code="isSendingEmailVerificationCode"
-          :action-callback="requestEmailVericationCode"
+          :action-callback="requestEmailVerificationCode"
         />
       </div>
     </div>
@@ -42,7 +42,7 @@ const toast = useToast();
 const isSendingEmailVerificationCode = ref(false);
 const emailToVerify = computed(() => authStore.emailToVerify);
 //Make a request for email verification
-const requestEmailVericationCode = async () => {
+const requestEmailVerificationCode = async () => {
   try {
     const email = authStore.emailToVerify;
     if (email) {

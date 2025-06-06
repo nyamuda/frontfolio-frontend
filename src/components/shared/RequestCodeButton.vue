@@ -10,6 +10,7 @@
       icon="fas fa-sync-alt"
       :disabled="isSendingCode || isButtonDisabled"
       :loading="isSendingCode"
+      :variant="buttonVariant"
     />
     <!-- Send code button end -->
   </div>
@@ -20,6 +21,11 @@ import Button from "primevue/button";
 import { onMounted, ref } from "vue";
 
 const props = defineProps({
+  //variant of the button (e.g., link, text)
+  buttonVariant: {
+    type: String,
+    default: "link",
+  },
   // text to show on the button (e.g., "Send Code" or "Resend Code")
   buttonLabel: {
     type: String,
