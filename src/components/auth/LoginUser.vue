@@ -100,7 +100,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, computed } from "vue";
+import { onMounted, ref, } from "vue";
 import { useAuthStore } from "@/stores/auth";
 //import OauthBooking from "./OauthBooking.vue";
 import { useVuelidate } from "@vuelidate/core";
@@ -147,7 +147,7 @@ const submitForm = async () => {
   if (isFormCorrect) {
     authStore
       .login(loginForm.value)
-      .then(({ isVerified, emailToVerify }) => {
+      .then(({ isVerified }) => {
         //if user has been verified
         if (isVerified) {
           router.push(authStore.attemptedUrl);

@@ -33,13 +33,24 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { useStore } from "vuex";
+import { useAuthStore } from "@/stores/auth";
 import RequestCodeButton from "../shared/RequestCodeButton.vue";
-
 import ProgressSpinner from "primevue/progressspinner";
+import { useToast } from "primevue";
 
-const store = useStore();
+const authStore = useAuthStore();
+const toast = useToast();
 
 const isSendingEmailVerificationCode = ref(false);
-const pendingEmailVerification = computed(() => store.state.account.pendingEmailVerification);
+
+//Make a request for email verification
+const requestEmailVericationCode = async () => {
+  try {
+    const email = authStore.emailToVerify;
+    if (email) {
+    }
+  } catch (error) {
+
+}
+};
 </script>

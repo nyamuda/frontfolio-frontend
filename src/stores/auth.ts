@@ -173,5 +173,6 @@ export const useAuthStore = defineStore("auth", () => {
     verifyPasswordResetOtp,
     attemptedUrl,
     isAuthenticated,
+    emailToVerify,
   };
 });
