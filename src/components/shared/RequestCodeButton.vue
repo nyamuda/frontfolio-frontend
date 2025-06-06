@@ -8,7 +8,7 @@
         isSendingCode ? 'Sending code...' : counter > 0 ? `Please wait (${counter})` : buttonLabel
       "
       icon="fas fa-sync-alt"
-      :disabled="isSendingCode || isButtonDisabled"
+      :disabled="isSendingCode || isButtonDisabled || isCountingDown"
       :loading="isSendingCode"
       :variant="buttonVariant"
     />
@@ -46,6 +46,11 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
+  //whether or not to disable the button
+  isButtonDisabled: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 onMounted(() => {
@@ -56,17 +61,17 @@ onMounted(() => {
 // track countdown value in seconds
 const counter = ref(0);
 // disable the button while countdown is active
-const isButtonDisabled = ref(false);
+const isCountingDown = ref(false);
 
 // starts a 5-second countdown and disables the button during that time
 const startCounter = () => {
   counter.value = 5;
-  isButtonDisabled.value = true;
+  isCountingDown.value = true;
   const interval = setInterval(() => {
     counter.value -= 1;
     if (counter.value <= 0) {
       clearInterval(interval);
-      isButtonDisabled.value = false;
+      isCountingDown.value = false;
     }
   }, 1000);
 };
