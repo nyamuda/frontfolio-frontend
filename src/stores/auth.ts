@@ -126,7 +126,7 @@ export const useAuthStore = defineStore("auth", () => {
 
   //Send a request to reset password using a one-time password(OTP)
   //The OTP is emailed to the user email
-  const passwordResetRequest = async (email: string) => {
+  const requestPasswordReset = async (email: string) => {
     await axios.post(`${apiUrl}/password-reset/request`, { email });
   };
 
@@ -189,7 +189,7 @@ export const useAuthStore = defineStore("auth", () => {
   return {
     login,
     register,
-    passwordResetRequest,
+    requestPasswordReset,
     requestEmailVerification,
     verifyEmail,
     verifyPasswordResetOtp,
@@ -198,5 +198,6 @@ export const useAuthStore = defineStore("auth", () => {
     userEmail,
     emailVerificationOtp,
     isVerifyingEmailOtp,
+    isVerifyingPasswordResetOtp,
   };
 });
