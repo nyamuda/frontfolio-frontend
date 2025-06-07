@@ -1,9 +1,9 @@
 <template>
   <div class="text-center">
     <h5>{{ title }}</h5>
-    <!-- Inline editor for the email the OTP is sent to -->
     <div>
       <span>{{ message }}</span>
+      <!-- Inline editor for the email the OTP is sent to -->
       <Inplace>
         <template #display>
           <span class="text-center">
@@ -12,17 +12,8 @@
           </span>
         </template>
         <template #content="{ closeCallback }">
+          <!-- Email input start -->
           <span class="d-flex justify-content-center align-items-center gap-1 my-2">
-            <InputText
-              v-model="authStore.userEmail"
-              autofocus
-              size="small"
-              type="email"
-              placeholder="Email"
-            />
-            <Button icon="pi pi-times" text severity="danger" @click="closeCallback" />
-            <!-- Email input -->
-
             <FloatLabel variant="on">
               <IconField>
                 <InputIcon class="pi pi-envelope" />
@@ -41,14 +32,17 @@
                 <div>{{ error.$message }}</div>
               </div>
             </Message>
+            <Button icon="pi pi-times" text severity="danger" @click="closeCallback" />
           </span>
+          <!-- Email input end -->
         </template>
       </Inplace>
     </div>
-    <!-- OTP input section -->
+    <!-- OTP input start -->
     <div class="d-flex justify-content-center my-2">
       <InputOtp @change="onOtpChange" v-model="otpCode" :length="6" integerOnly />
     </div>
+    <!-- OTP input end -->
     <div v-if="isVerifyingOtp" class="d-flex justify-content-center">
       <ProgressSpinner style="width: 70px; height: 70px" aria-label="Loading" />
     </div>
@@ -96,6 +90,8 @@ const props = defineProps({
 const authStore = useAuthStore();
 const otpCode = ref("");
 
+const emailTextfield = ref({ email: String });
+
 //Verify the OTP code once 6 digits are entered
 const onOtpChange = async () => {
   if (otpCode.value.length == 6) {
@@ -104,9 +100,16 @@ const onOtpChange = async () => {
   }
 };
 
+//email input validation start
 const rules = {
   email: { required, email },
 };
-const v$ = useVuelidate(rules, { email: authStore.userEmail });
-//email input valid end
+const v$ = useVuelidate(rules, emailTextfield);
+
+const onEmailChange = async () => {
+  const isEmailValid = await v$.value.$validate();
+  if (isEmailValid) {
+  }
+};
+//email input validation end
 </script>
