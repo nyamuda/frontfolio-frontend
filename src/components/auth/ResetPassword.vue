@@ -132,7 +132,6 @@ onMounted(() => {
   try {
     //validate the password reset form
     v$.value.$touch();
-
     //get the token provided in the URL from
     //when the user clicks the reset button in their confirmation email
     providedToken.value = router.currentRoute.value.query.token?.toString() ?? "";
@@ -153,14 +152,10 @@ onMounted(() => {
 const isResettingPassword = ref(false);
 
 const submitForm = async () => {
-  const isFormCorrect = await v$._value.$validate();
+  const isFormCorrect = await v$.value.$validate();
   if (isFormCorrect && providedToken.value) {
     isResettingPassword.value = true;
-    store
-      .dispatch("account/resetPassword", {
-        token: providedToken.value,
-        password: resetPasswordForm.value.password,
-      })
+    authStore.rese
       .then((message) => {
         toast.add({
           severity: "success",

@@ -149,6 +149,20 @@ export const useAuthStore = defineStore("auth", () => {
     });
   };
 
+  //Reset user password
+  const resetPassword = (resetDetails: { token: string; password: string }) => {
+    return new Promise((resolve, reject) => {
+      const url = `${apiUrl}/password-reset/reset`;
+      axios
+        .post(url, resetDetails)
+        .then(() => resolve({}))
+        .catch((error) => {
+          const message = error.response?.data?.message || unexpectedErrorMessage();
+          reject(message);
+        });
+    });
+  };
+
   //Set authorization header for all request to access protected routes from the API
   const setAuthToken = () => {
     //check if there is a token in local storage
@@ -199,5 +213,6 @@ export const useAuthStore = defineStore("auth", () => {
     emailVerificationOtp,
     isVerifyingEmailOtp,
     isVerifyingPasswordResetOtp,
+    resetPassword,
   };
 });
