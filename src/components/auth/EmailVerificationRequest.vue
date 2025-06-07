@@ -82,8 +82,10 @@ const otpSectionTitleAndMessage: Ref<{ title: string; message: string }> = compu
         : "Request a Verification Code",
     message:
       otpSendingResult.value === "success"
-        ? "Please enter the security code sent to your email."
-        : "Please enter your email address to receive a verification code.",
+        ? "Please enter the verification code sent to"
+        : authStore.userEmail
+          ? "We'll send an email verification code to"
+          : "Please enter your email address to receive a verification code.",
   };
 });
 
