@@ -155,7 +155,7 @@ export const useAuthStore = defineStore("auth", () => {
       const url = `${apiUrl}/password-reset/reset`;
       axios
         .post(url, resetDetails)
-        .then(() => resolve({}))
+        .then(() => resolve("Your password has been successfully reset."))
         .catch((error) => {
           const message = error.response?.data?.message || unexpectedErrorMessage();
           reject(message);

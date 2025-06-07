@@ -154,13 +154,16 @@ const isResettingPassword = ref(false);
 const submitForm = async () => {
   const isFormCorrect = await v$.value.$validate();
   if (isFormCorrect && providedToken.value) {
+    const resetDetails = { password: resetPasswordForm.value.password, token: providedToken.value };
     isResettingPassword.value = true;
-    authStore.rese
+    authStore
+      .resetPassword(resetDetails)
       .then((message) => {
         toast.add({
           severity: "success",
           summary: "Password Reset",
           detail: message,
+          life: 10000,
         });
         router.push("/account/login");
       })
