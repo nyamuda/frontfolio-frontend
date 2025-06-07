@@ -21,6 +21,26 @@
               placeholder="Email"
             />
             <Button icon="pi pi-times" text severity="danger" @click="closeCallback" />
+            <!-- Email input -->
+
+            <FloatLabel variant="on">
+              <IconField>
+                <InputIcon class="pi pi-envelope" />
+                <InputText
+                  id="otpEmail"
+                  class="w-100"
+                  v-model="v$.email.$model"
+                  :invalid="v$.email.$error"
+                  type="email"
+                />
+              </IconField>
+              <label for="otpEmail">Email</label>
+            </FloatLabel>
+            <Message size="small" severity="error" v-if="v$.email.$error" variant="simple">
+              <div v-for="error of v$.email.$errors" :key="error.$uid">
+                <div>{{ error.$message }}</div>
+              </div>
+            </Message>
           </span>
         </template>
       </Inplace>
@@ -43,6 +63,11 @@ import Inplace from "primevue/inplace";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import ProgressSpinner from "primevue/progressspinner";
+import { email, required } from "@vuelidate/validators";
+import useVuelidate from "@vuelidate/core";
+import InputIcon from "primevue/inputicon";
+import { Message } from "primevue";
+import FloatLabel from "primevue/floatlabel";
 
 const props = defineProps({
   //title for the otp section
@@ -79,5 +104,9 @@ const onOtpChange = async () => {
   }
 };
 
-//const sendOtp() => {}
+const rules = {
+  email: { required, email },
+};
+const v$ = useVuelidate(rules, { email: authStore.userEmail });
+//email input valid end
 </script>

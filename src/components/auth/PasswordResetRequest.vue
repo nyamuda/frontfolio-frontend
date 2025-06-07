@@ -27,7 +27,7 @@
           <OtpSection
             v-if="otpSendingResult == 'success' || otpSendingResult == 'nothingSent'"
             :callback-to-verify="verifyPasswordResetCode"
-            :is-verifying-otp="authStore.isVerifyingEmailOtp"
+            :is-verifying-otp="authStore.isVerifyingPasswordResetOtp"
             :title="otpSectionTitleAndMessage.title"
             :message="otpSectionTitleAndMessage.message"
           />
@@ -37,7 +37,7 @@
             class="d-flex flex-column align-items-center text-danger"
           >
             <i class="pi pi-times-circle mb-2" style="font-size: 2rem"></i>
-            <span>We couldn't resend the password reset code.</span>
+            <span>We couldn't send the password reset code.</span>
             <span>Please try again soon.</span>
           </div>
         </div>
@@ -76,8 +76,7 @@ const otpSendingResult: Ref<sendingOtpResult> = ref("nothingSent");
 //based on whether an OTP was sent or not
 const otpSectionTitleAndMessage: Ref<{ title: string; message: string }> = computed(() => {
   return {
-    title:
-      otpSendingResult.value === "success" ? "Reset Code Sent" : "Request a Password Reset Code",
+    title: otpSendingResult.value === "success" ? "Reset Code Sent" : "Request Reset Code",
     message:
       otpSendingResult.value === "success"
         ? "Please enter the password reset security code sent to your email."
@@ -85,7 +84,7 @@ const otpSectionTitleAndMessage: Ref<{ title: string; message: string }> = compu
   };
 });
 
-//Make a request for email verification
+//Make a request for password reset
 const requestResetCode = async () => {
   try {
     const email = authStore.userEmail;
@@ -122,8 +121,7 @@ const verifyPasswordResetCode = async (otpCode: string) => {
       toast.add({
         severity: "success",
         summary: "Reset Code Verified",
-        detail:
-          "Your password reset code has been successfully verified. You can now reset your password.",
+        detail: "Your reset code has been successfully verified. You can now reset your password.",
         life: 10000,
       });
       //direct the user to the login page
