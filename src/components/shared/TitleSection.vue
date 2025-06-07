@@ -1,5 +1,5 @@
 <template>
-  <div :class="alignItemsClass + ' d-flex flex-column'">
+  <div :class="alignItemsClass + ' d-flex flex-column'" style="margin-bottom: -1rem">
     <p class="heading-line rounded"></p>
     <p class="fs-4 text-capitalize mb-0 text-secondary">{{ subtitle }}</p>
     <h2 :class="classObject">{{ title }}</h2>

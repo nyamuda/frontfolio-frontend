@@ -1,20 +1,20 @@
 <template>
-  <div class="">
+  <div class="mt-5 py-4">
     <!--If the reset link has expired-->
     <div v-if="hasTokenExpiredOrIsInvalid" class="d-flex justify-content-center align-items-center">
       <div class="d-flex align-items-center gap-3">
         <i class="pi pi-exclamation-triangle text-danger" style="font-size: 6rem"></i>
         <div class="d-flex flex-column align-items=start">
           <h4 class="text-danger">Your Reset Link Has Expired</h4>
-          <p class="text-muted">The password reset link has expired or is invalid.</p>
+          <p class="text-muted">The password reset link has expired or is no longer valid.</p>
           <p class="text-muted">
-            To continue, please verify your security code again to get a new link.
+            Please request a new security code to start the reset process again.
           </p>
           <router-link to="/auth/password-reset/request">
             <Button
               size="small"
               severity="contrast"
-              label=" Request new link"
+              label=" Request new code"
               icon="fas fa-sync-alt"
               variant="outlined"
             />
@@ -30,7 +30,7 @@
       <div class="form-group mb-3">
         <FloatLabel variant="on">
           <IconField>
-            <InputIcon class="fas fa-lock" />
+            <InputIcon class="pi pi-lock" />
             <InputText
               fluid
               id="resetPassword"
@@ -52,7 +52,7 @@
       <div class="form-group mb-3">
         <FloatLabel variant="on">
           <IconField>
-            <InputIcon class="fas fa-lock" />
+            <InputIcon class="pi pi-lock" />
             <InputText
               fluid
               id="resetPasswordConfirm"

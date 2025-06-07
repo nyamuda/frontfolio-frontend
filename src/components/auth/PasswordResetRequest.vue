@@ -36,7 +36,7 @@
             v-else-if="otpSendingResult == 'failure'"
             class="d-flex flex-column align-items-center text-danger"
           >
-            <i class="pi pi-times-circle mb-2" style="font-size: 2rem"></i>
+            <i class="pi pi-times-circle mb-2" style="font-size: 3rem"></i>
             <span>We couldn't send the password reset code.</span>
             <span>Please try again soon.</span>
           </div>
