@@ -2,16 +2,24 @@
   <div class="">
     <!--If the reset link has expired-->
     <div v-if="hasTokenExpiredOrIsInvalid" class="d-flex justify-content-center align-items-center">
-      <div class="text-center">
-        <i class="fas fa-exclamation-triangle text-danger fa-4x"></i>
-        <h4 class="mt-2 text-danger">Your Reset Link Has Expired</h4>
-        <p class="text-muted">The password reset token has expired or is invalid.</p>
-        <p class="text-muted">
-          To continue, please verify your security code again to get a new link.
-        </p>
-        <router-link to="/auth/password-reset/request">
-          <Button severity="primary" label=" Request new link" icon="fas fa-sync-alt" />
-        </router-link>
+      <div class="d-flex align-items-center gap-3">
+        <i class="pi pi-exclamation-triangle text-danger" style="font-size: 6rem"></i>
+        <div class="d-flex flex-column align-items=start">
+          <h4 class="text-danger">Your Reset Link Has Expired</h4>
+          <p class="text-muted">The password reset link has expired or is invalid.</p>
+          <p class="text-muted">
+            To continue, please verify your security code again to get a new link.
+          </p>
+          <router-link to="/auth/password-reset/request">
+            <Button
+              size="small"
+              severity="contrast"
+              label=" Request new link"
+              icon="fas fa-sync-alt"
+              variant="outlined"
+            />
+          </router-link>
+        </div>
       </div>
     </div>
     <!--Password reset form-->
