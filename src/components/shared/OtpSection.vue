@@ -13,26 +13,28 @@
         </template>
         <template #content="{ closeCallback }">
           <!-- Email input start -->
-          <span class="d-flex justify-content-center align-items-center gap-1 my-2">
-            <FloatLabel variant="on">
-              <IconField>
-                <InputIcon class="pi pi-envelope" />
-                <InputText
-                  id="otpEmail"
-                  class="w-100"
-                  v-model="v$.email.$model"
-                  :invalid="v$.email.$error"
-                  type="email"
-                  @change="onEmailChange"
-                />
-              </IconField>
-              <label for="otpEmail">Email</label>
-            </FloatLabel>
-            <Message size="small" severity="error" v-if="v$.email.$error" variant="simple">
-              <div v-for="error of v$.email.$errors" :key="error.$uid">
-                <div>{{ error.$message }}</div>
-              </div>
-            </Message>
+          <span class="d-flex justify-content-center align-items-start gap-1 my-2">
+            <span class="d-flex flex-column">
+              <FloatLabel variant="on">
+                <IconField>
+                  <InputIcon class="pi pi-envelope" />
+                  <InputText
+                    id="otpEmail"
+                    class="w-100"
+                    v-model="v$.email.$model"
+                    :invalid="v$.email.$error"
+                    type="email"
+                    @change="onEmailChange"
+                  />
+                </IconField>
+                <label for="otpEmail">Email</label>
+              </FloatLabel>
+              <Message size="small" severity="error" v-if="v$.email.$error" variant="simple">
+                <div v-for="error of v$.email.$errors" :key="error.$uid">
+                  <div>{{ error.$message }}</div>
+                </div>
+              </Message>
+            </span>
             <Button icon="pi pi-times" text severity="danger" @click="closeCallback" />
           </span>
           <!-- Email input end -->
@@ -63,6 +65,7 @@ import useVuelidate from "@vuelidate/core";
 import InputIcon from "primevue/inputicon";
 import { Message } from "primevue";
 import FloatLabel from "primevue/floatlabel";
+import IconField from "primevue/iconfield";
 
 const props = defineProps({
   //title for the otp section
