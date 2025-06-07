@@ -23,6 +23,7 @@
                   v-model="v$.email.$model"
                   :invalid="v$.email.$error"
                   type="email"
+                  @change="onEmailChange"
                 />
               </IconField>
               <label for="otpEmail">Email</label>
@@ -90,7 +91,7 @@ const props = defineProps({
 const authStore = useAuthStore();
 const otpCode = ref("");
 
-const emailTextfield = ref({ email: String });
+const emailTextfield = ref({ email: "" });
 
 //Verify the OTP code once 6 digits are entered
 const onOtpChange = async () => {
@@ -106,9 +107,11 @@ const rules = {
 };
 const v$ = useVuelidate(rules, emailTextfield);
 
+//if the entered email is valid, save it to the store
 const onEmailChange = async () => {
   const isEmailValid = await v$.value.$validate();
   if (isEmailValid) {
+    authStore.userEmail = emailTextfield.value.email;
   }
 };
 //email input validation end
