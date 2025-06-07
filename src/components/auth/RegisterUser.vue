@@ -69,7 +69,7 @@
       size="small"
       type="submit"
       severity="primary"
-      :label="isRegistering ? 'Please wait...' : 'Sign up'"
+      :label="isRegistering ? 'Creating account...' : 'Sign up'"
       :loading="isRegistering"
       :disabled="v$.$errors.length > 0 || isRegistering"
     />
