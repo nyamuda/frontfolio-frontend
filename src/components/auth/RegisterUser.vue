@@ -1,13 +1,6 @@
 <template>
   <form @submit.prevent="submitForm" class="register-form m-auto">
     <TitleSection title="Create an account" title-size="small" align-items="center" />
-    <!-- <OauthBooking />
-
-		<div class="d-flex align-bookings-center my-1">
-			<hr class="flex-grow-1" />
-			<p class="text-center fw-bold mx-3 mb-0">Or</p>
-			<hr class="flex-grow-1" />
-		</div> -->
 
     <!-- Name input -->
     <div class="form-group mb-3">
@@ -105,9 +98,9 @@
   </form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
-import { useStore } from "vuex";
+import { useAuthStore } from "@/stores/auth";
 //import OauthBooking from "./OauthBooking.vue";
 //Vuelidate for login form validation
 import { useVuelidate } from "@vuelidate/core";
@@ -118,12 +111,12 @@ import FloatLabel from "primevue/floatlabel";
 import Button from "primevue/button";
 import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
-import TitleSection from "../Common/Elements/TitleSection.vue";
+import TitleSection from "../shared/TitleSection.vue";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
 
 // Access the store
-const store = useStore();
+const authStore = useAuthStore();
 const toast = useToast();
 const router = useRouter();
 
@@ -166,7 +159,7 @@ const submitForm = async () => {
     store
       .dispatch("account/registerUser", registrationForm.value)
       .then(() => {
-        router.push("/email/verification-request");
+        router.push("/email-verification/request");
       })
       .catch((message) => {
         toast.add({
