@@ -4,18 +4,20 @@
     <div v-if="hasTokenExpiredOrIsInvalid" class="d-flex justify-content-center align-items-center">
       <div class="text-center">
         <i class="fas fa-exclamation-triangle text-danger fa-4x"></i>
-        <h4 class="mt-2 text-danger">Reset Link Expired</h4>
-        <p class="text-muted">The password reset link has expired or is invalid.</p>
-        <p class="text-muted">Please request a new password reset link.</p>
-        <router-link to="/email/password-reset-request">
+        <h4 class="mt-2 text-danger">Your Reset Link Has Expired</h4>
+        <p class="text-muted">The password reset token has expired or is invalid.</p>
+        <p class="text-muted">
+          To continue, please verify your security code again to get a new link.
+        </p>
+        <router-link to="/auth/password-reset/request">
           <Button severity="primary" label=" Request new link" icon="fas fa-sync-alt" />
         </router-link>
       </div>
     </div>
     <!--Password reset form-->
     <form v-else class="reset-password-form m-auto" @submit.prevent="submitForm">
-      <TitleSection title="Set Your New Password" title-size="small" align-items="start" />
-      <p class="mb-3">Please enter your new password and confirm it to proceed.</p>
+      <TitleSection title="New Password" title-size="small" align-items="start" />
+      <p class="mb-3">Enter and confirm your new password to continue.</p>
       <!-- Password input -->
       <div class="form-group mb-3">
         <FloatLabel variant="on">
@@ -165,7 +167,7 @@ const submitForm = async () => {
           detail: message,
           life: 10000,
         });
-        router.push("/account/login");
+        router.push("/auth/login");
       })
       .catch((message) => {
         toast.add({

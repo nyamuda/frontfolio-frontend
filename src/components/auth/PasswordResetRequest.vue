@@ -119,15 +119,15 @@ const verifyPasswordResetCode = async (otpCode: string) => {
   try {
     const email = authStore.userEmail;
     if (email) {
-      await authStore.verifyPasswordResetOtp({ otpCode, email });
+      const { resetToken } = await authStore.verifyPasswordResetOtp({ otpCode, email });
       toast.add({
         severity: "success",
         summary: "Reset Code Verified",
         detail: "Your reset code has been successfully verified. You can now reset your password.",
         life: 10000,
       });
-      //direct the user to the login page
-      router.push("/auth/password-reset/reset");
+      //direct the user to the password reset page
+      router.push(`/auth/password-reset/reset?token=${resetToken}`);
     }
   } catch (error) {
     toast.add({
