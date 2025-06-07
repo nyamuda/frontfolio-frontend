@@ -62,28 +62,6 @@
       </Message>
     </div>
 
-    <!-- Phone input -->
-    <div class="form-group mb-3">
-      <FloatLabel variant="on">
-        <IconField>
-          <InputIcon class="fas fa-phone" />
-          <InputText
-            fluid
-            id="registerPhone"
-            v-model="v$.phone.$model"
-            :invalid="v$.phone.$error"
-            type="tel"
-          />
-        </IconField>
-        <label for="registerPhone">Phone number</label>
-      </FloatLabel>
-      <Message size="small" severity="error" v-if="v$.phone.$error" variant="simple">
-        <div v-for="error of v$.phone.$errors" :key="error.$uid">
-          <div>{{ error.$message }}</div>
-        </div>
-      </Message>
-    </div>
-
     <!-- Submit button -->
     <Button
       fluid
@@ -99,10 +77,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
-//import OauthBooking from "./OauthBooking.vue";
-//Vuelidate for login form validation
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, helpers, minLength } from "@vuelidate/validators";
 import { Message } from "primevue";
@@ -121,18 +97,17 @@ const toast = useToast();
 const router = useRouter();
 
 onMounted(() => {
-  v$._value.$touch();
+  v$.value.$touch();
 });
 
-//form validation with Vuelidate start
+const isRegistering = ref(false);
+
+//form validation start
 const registrationForm = ref({
   name: "",
   email: "",
-  phone: "",
   password: "",
 });
-const phoneRule = helpers.regex(/^(\+27|0)[6-8][0-9]{8}$/);
-const phoneErrorMessage = "The phone number you entered is invalid";
 const passwordRule = helpers.regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/);
 const passwordErrorMessage =
   "Password must be at least 8 characters long and contain a mix of letters, numbers, and special characters";
@@ -140,24 +115,20 @@ const passwordErrorMessage =
 const rules = {
   name: { required, minLengthValue: minLength(3) },
   email: { required, email },
-  phone: {
-    required,
-    phoneRule: helpers.withMessage(phoneErrorMessage, phoneRule),
-  },
   password: {
     required,
     passwordRule: helpers.withMessage(passwordErrorMessage, passwordRule),
   },
 };
-
 const v$ = useVuelidate(rules, registrationForm);
-//form validation with Vuelidate end
+//form validation end
 
 const submitForm = async () => {
-  const isFormCorrect = v$._value.$validate;
+  const isFormCorrect = await v$.value.$validate();
   if (isFormCorrect) {
-    store
-      .dispatch("account/registerUser", registrationForm.value)
+    isRegistering.value = true;
+    authStore
+      .register(registrationForm.value)
       .then(() => {
         router.push("/email-verification/request");
       })
@@ -168,10 +139,10 @@ const submitForm = async () => {
           detail: message,
           life: 20000,
         });
-      });
+      })
+      .finally(() => (isRegistering.value = false));
   }
 };
-const isRegistering = computed(() => store.state.account.isRegistering);
 </script>
 
 <style scoped>
