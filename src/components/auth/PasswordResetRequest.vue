@@ -80,7 +80,9 @@ const otpSectionTitleAndMessage: Ref<{ title: string; message: string }> = compu
     message:
       otpSendingResult.value === "success"
         ? "Please enter the password reset security code sent to your email."
-        : "Enter your email address and we'll send you a password reset security code.",
+        : authStore.userEmail
+          ? "We'll send a password reset code to"
+          : "Enter your email address and we'll send you a password reset security code.",
   };
 });
 
