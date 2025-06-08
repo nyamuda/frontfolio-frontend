@@ -1,77 +1,89 @@
 <template>
-  <div class="">
-    <form class="login-form m-auto" @submit.prevent="submitForm">
-      <div class="text-center">
-        <TitleSection title="Sign into your account" title-size="small" align-items="center" />
-      </div>
-
-      <!-- Email input -->
-      <div class="form-group mb-3">
-        <FloatLabel variant="on">
-          <IconField>
-            <InputIcon class="pi pi-envelope" />
-            <InputText
-              id="loginEmail"
-              class="w-100"
-              v-model="v$.email.$model"
-              :invalid="v$.email.$error"
-              type="email"
-            />
-          </IconField>
-          <label for="loginEmail">Email</label>
-        </FloatLabel>
-        <Message size="small" severity="error" v-if="v$.email.$error" variant="simple">
-          <div v-for="error of v$.email.$errors" :key="error.$uid">
-            <div>{{ error.$message }}</div>
-          </div>
-        </Message>
-      </div>
-      <!-- Password input -->
-      <div class="form-group mb-3">
-        <FloatLabel variant="on">
-          <IconField>
-            <InputIcon class="pi pi-lock" />
-            <InputText
-              fluid
-              id="loginPassword"
-              v-model="v$.password.$model"
-              :invalid="v$.password.$error"
-              type="password"
-            />
-          </IconField>
-          <label for="loginPassword">Password</label>
-        </FloatLabel>
-        <Message size="small" severity="error" v-if="v$.password.$error" variant="simple">
-          <div v-for="error of v$.password.$errors" :key="error.$uid">
-            <div>{{ error.$message }}</div>
-          </div>
-        </Message>
-      </div>
-
-      <!-- Submit button -->
-      <Button
-        fluid
-        class="mb-2"
-        size="small"
-        type="submit"
-        severity="primary"
-        :label="isLoggingIn ? 'Please wait...' : 'Sign in'"
-        :loading="isLoggingIn"
-        :disabled="v$.$errors.length > 0 || isLoggingIn"
-      />
-
-      <!-- Register button -->
-      <div class="text-center">
-        <div class="d-flex justify-content-center mb-2">
-          <!-- Simple link -->
-          <router-link to="/auth/password-reset/request">Forgot password?</router-link>
+  <div style="margin-top: 5rem">
+    <div class="container h-100">
+      <div class="row d-flex align-items-center justify-content-center h-100">
+        <div class="col-md-8 col-lg-7 col-xl-6">
+          <img
+            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
+            class="img-fluid"
+            alt="Phone image"
+          />
         </div>
-        <p>
-          Don't have an account?
-          <router-link to="/auth/register">Register here</router-link>
-        </p>
+        <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+          <form class="" @submit.prevent="submitForm">
+            <div class="text-start">
+              <TitleSection title="Sign into your account" title-size="small" align-items="start" />
+            </div>
+            <!-- Email input -->
+            <div class="form-group mb-3">
+              <FloatLabel variant="on">
+                <IconField>
+                  <InputIcon class="pi pi-envelope" />
+                  <InputText
+                    id="loginEmail"
+                    class="w-100"
+                    v-model="v$.email.$model"
+                    :invalid="v$.email.$error"
+                    type="email"
+                  />
+                </IconField>
+                <label for="loginEmail">Email</label>
+              </FloatLabel>
+              <Message size="small" severity="error" v-if="v$.email.$error" variant="simple">
+                <div v-for="error of v$.email.$errors" :key="error.$uid">
+                  <div>{{ error.$message }}</div>
+                </div>
+              </Message>
+            </div>
+            <!-- Password input -->
+            <div class="form-group mb-3">
+              <FloatLabel variant="on">
+                <IconField>
+                  <InputIcon class="pi pi-lock" />
+                  <InputText
+                    fluid
+                    id="loginPassword"
+                    v-model="v$.password.$model"
+                    :invalid="v$.password.$error"
+                    type="password"
+                  />
+                </IconField>
+                <label for="loginPassword">Password</label>
+              </FloatLabel>
+              <Message size="small" severity="error" v-if="v$.password.$error" variant="simple">
+                <div v-for="error of v$.password.$errors" :key="error.$uid">
+                  <div>{{ error.$message }}</div>
+                </div>
+              </Message>
+            </div>
+
+            <!-- Submit button -->
+            <Button
+              fluid
+              class="mb-2"
+              size="small"
+              type="submit"
+              severity="primary"
+              :label="isLoggingIn ? 'Please wait...' : 'Sign in'"
+              :loading="isLoggingIn"
+              :disabled="v$.$errors.length > 0 || isLoggingIn"
+            />
+
+            <!-- Register button -->
+            <div class="text-start">
+              <div class="d-flex justify-content-start mb-2">
+                <!-- Simple link -->
+                <router-link to="/auth/password-reset/request">Forgot password?</router-link>
+              </div>
+              <p>
+                Don't have an account?
+                <router-link to="/auth/register">Register here</router-link>
+              </p>
+            </div>
+          </form>
+        </div>
       </div>
-    </form>
+    </div>
   </div>
 </template>
 

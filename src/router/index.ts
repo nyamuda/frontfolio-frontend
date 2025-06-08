@@ -6,9 +6,9 @@ import UserAccount from "@/components/auth/UserAccount.vue";
 import LoginUser from "@/components/auth/LoginUser.vue";
 import RegisterUser from "@/components/auth/RegisterUser.vue";
 import EmailVerificationRequest from "@/components/auth/EmailVerificationRequest.vue";
-import VerifyEmailOtp from "@/components/auth/VerifyEmailOtp.vue";
+
 import PasswordResetRequest from "@/components/auth/PasswordResetRequest.vue";
-import VerifyPasswordResetOtp from "@/components/auth/VerifyPasswordResetOtp.vue";
+
 import ResetPassword from "@/components/auth/ResetPassword.vue";
 
 const router = createRouter({
@@ -54,18 +54,12 @@ const router = createRouter({
           path: "email-verification/request",
           component: EmailVerificationRequest,
         },
-        {
-          path: "email-verification/verify",
-          component: VerifyEmailOtp,
-        },
+
         {
           path: "password-reset/request",
           component: PasswordResetRequest,
         },
-        {
-          path: "password-reset/verify-otp",
-          component: VerifyPasswordResetOtp,
-        },
+
         {
           path: "password-reset/reset",
           component: ResetPassword,

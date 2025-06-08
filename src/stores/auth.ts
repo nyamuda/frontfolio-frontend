@@ -16,8 +16,7 @@ export const useAuthStore = defineStore("auth", () => {
   //used for things like email verification, password reset etc
   const userEmail: Ref<string | null> = ref(null);
   const isVerifyingEmailOtp: Ref<boolean> = ref(false);
-  //email verification OTP code
-  const emailVerificationOtp: Ref<string | null> = ref(null);
+
   //attempted url if the user is not logged in
   //and they're redirected to the log in page
   const attemptedUrl = ref("");
@@ -225,7 +224,6 @@ export const useAuthStore = defineStore("auth", () => {
     attemptedUrl,
     isAuthenticated,
     userEmail,
-    emailVerificationOtp,
     isVerifyingEmailOtp,
     isVerifyingPasswordResetOtp,
     resetPassword,

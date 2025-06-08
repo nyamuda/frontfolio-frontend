@@ -8,9 +8,9 @@
           style="border-top-left-radius: 0.3rem; border-top-right-radius: 0.3rem"
           alt="Sample photo"
         />
-        <div class="card-body p-4 p-md-5">
+        <div class="card-body">
           <TitleSection title="Create an account" title-size="small" align-items="center" />
-          <form @submit.prevent="submitForm" class="register-form m-auto">
+          <form @submit.prevent="submitForm" class="">
             <!-- Name input -->
             <div class="form-group mb-3">
               <FloatLabel variant="on">
