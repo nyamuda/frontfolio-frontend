@@ -1,79 +1,97 @@
 <template>
-  <form @submit.prevent="submitForm" class="register-form m-auto">
-    <TitleSection title="Create an account" title-size="small" align-items="center" />
+  <div class="row d-flex justify-content-center align-items-center h-100">
+    <div class="col-lg-8 col-xl-6">
+      <div class="card rounded-3">
+        <img
+          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/img3.webp"
+          class="w-100"
+          style="border-top-left-radius: 0.3rem; border-top-right-radius: 0.3rem"
+          alt="Sample photo"
+        />
+        <div class="card-body p-4 p-md-5">
+          <TitleSection title="Create an account" title-size="small" align-items="center" />
+          <form @submit.prevent="submitForm" class="register-form m-auto">
+            <!-- Name input -->
+            <div class="form-group mb-3">
+              <FloatLabel variant="on">
+                <IconField>
+                  <InputIcon class="pi pi-user" />
+                  <InputText
+                    fluid
+                    id="registerName"
+                    v-model="v$.name.$model"
+                    :invalid="v$.name.$error"
+                  />
+                </IconField>
+                <label for="registerName">Name</label>
+              </FloatLabel>
+              <Message size="small" severity="error" v-if="v$.name.$error" variant="simple">
+                <div v-for="error of v$.name.$errors" :key="error.$uid">
+                  <div>{{ error.$message }}</div>
+                </div>
+              </Message>
+            </div>
 
-    <!-- Name input -->
-    <div class="form-group mb-3">
-      <FloatLabel variant="on">
-        <IconField>
-          <InputIcon class="fas fa-user" />
-          <InputText fluid id="registerName" v-model="v$.name.$model" :invalid="v$.name.$error" />
-        </IconField>
-        <label for="registerName">Name</label>
-      </FloatLabel>
-      <Message size="small" severity="error" v-if="v$.name.$error" variant="simple">
-        <div v-for="error of v$.name.$errors" :key="error.$uid">
-          <div>{{ error.$message }}</div>
+            <!-- Email input -->
+            <div class="form-group mb-3">
+              <FloatLabel variant="on">
+                <IconField>
+                  <InputIcon class="pi pi-envelope" />
+                  <InputText
+                    id="registerEmail"
+                    class="w-100"
+                    v-model="v$.email.$model"
+                    :invalid="v$.email.$error"
+                    type="email"
+                  />
+                </IconField>
+                <label for="registerEmail">Email</label>
+              </FloatLabel>
+              <Message size="small" severity="error" v-if="v$.email.$error" variant="simple">
+                <div v-for="error of v$.email.$errors" :key="error.$uid">
+                  <div>{{ error.$message }}</div>
+                </div>
+              </Message>
+            </div>
+
+            <!-- Password input -->
+            <div class="form-group mb-3">
+              <FloatLabel variant="on">
+                <IconField>
+                  <InputIcon class="pi pi-lock" />
+                  <InputText
+                    fluid
+                    id="registerPassword"
+                    v-model="v$.password.$model"
+                    :invalid="v$.password.$error"
+                    type="password"
+                  />
+                </IconField>
+                <label for="registerPassword">Password</label>
+              </FloatLabel>
+              <Message size="small" severity="error" v-if="v$.password.$error" variant="simple">
+                <div v-for="error of v$.password.$errors" :key="error.$uid">
+                  <div>{{ error.$message }}</div>
+                </div>
+              </Message>
+            </div>
+
+            <!-- Submit button -->
+            <Button
+              fluid
+              class="mb-2"
+              size="small"
+              type="submit"
+              severity="primary"
+              :label="isRegistering ? 'Creating account...' : 'Sign up'"
+              :loading="isRegistering"
+              :disabled="v$.$errors.length > 0 || isRegistering"
+            />
+          </form>
         </div>
-      </Message>
+      </div>
     </div>
-
-    <!-- Email input -->
-    <div class="form-group mb-3">
-      <FloatLabel variant="on">
-        <IconField>
-          <InputIcon class="fas fa-envelope" />
-          <InputText
-            id="registerEmail"
-            class="w-100"
-            v-model="v$.email.$model"
-            :invalid="v$.email.$error"
-            type="email"
-          />
-        </IconField>
-        <label for="registerEmail">Email</label>
-      </FloatLabel>
-      <Message size="small" severity="error" v-if="v$.email.$error" variant="simple">
-        <div v-for="error of v$.email.$errors" :key="error.$uid">
-          <div>{{ error.$message }}</div>
-        </div>
-      </Message>
-    </div>
-
-    <!-- Password input -->
-    <div class="form-group mb-3">
-      <FloatLabel variant="on">
-        <IconField>
-          <InputIcon class="fas fa-lock" />
-          <InputText
-            fluid
-            id="registerPassword"
-            v-model="v$.password.$model"
-            :invalid="v$.password.$error"
-            type="password"
-          />
-        </IconField>
-        <label for="registerPassword">Password</label>
-      </FloatLabel>
-      <Message size="small" severity="error" v-if="v$.password.$error" variant="simple">
-        <div v-for="error of v$.password.$errors" :key="error.$uid">
-          <div>{{ error.$message }}</div>
-        </div>
-      </Message>
-    </div>
-
-    <!-- Submit button -->
-    <Button
-      fluid
-      class="mb-2"
-      size="small"
-      type="submit"
-      severity="primary"
-      :label="isRegistering ? 'Creating account...' : 'Sign up'"
-      :loading="isRegistering"
-      :disabled="v$.$errors.length > 0 || isRegistering"
-    />
-  </form>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -145,7 +163,7 @@ const submitForm = async () => {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 @media (min-width: 768px) {
   .register-form {
     max-width: 30rem;
