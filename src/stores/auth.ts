@@ -19,7 +19,7 @@ export const useAuthStore = defineStore("auth", () => {
 
   //attempted url if the user is not logged in
   //and they're redirected to the log in page
-  const attemptedUrl = ref("");
+  const attemptedUrl = ref("/");
   const isVerifyingPasswordResetOtp: Ref<boolean> = ref(false);
 
   const getUserDetails = (): Promise<User> => {
@@ -203,7 +203,8 @@ export const useAuthStore = defineStore("auth", () => {
       const exp = decodedToken.exp; // in seconds
       const now = Math.floor(Date.now() / 1000); // current time in seconds
 
-      const hasExpired: boolean = exp ? exp > now : true;
+      const hasExpired: boolean = exp ? !(exp > now) : true;
+
       //if token has expired, then the user is not authenticated
       isAuthenticated.value = hasExpired ? false : true;
 

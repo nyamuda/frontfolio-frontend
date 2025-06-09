@@ -60,6 +60,7 @@
         </div>
       </template>
     </Menubar>
+    {{ authStore.isAuthenticated }}
   </div>
 </template>
 
