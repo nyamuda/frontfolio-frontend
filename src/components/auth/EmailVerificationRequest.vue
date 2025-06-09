@@ -70,7 +70,7 @@ const authStore = useAuthStore();
 const toast = useToast();
 const router = useRouter();
 const isSendingEmailVerificationCode = ref(false);
-const otpSendingResult: Ref<sendingOtpResult> = ref("nothingSent");
+
 
 //title and message for the OTP section
 //based on whether an OTP was sent or not

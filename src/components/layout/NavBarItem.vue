@@ -60,7 +60,6 @@
         </div>
       </template>
     </Menubar>
-    {{ authStore.isAuthenticated }}
   </div>
 </template>
 
@@ -82,6 +81,7 @@ const logout = () => {
   try {
     localStorage.removeItem("jwt_token");
     router.push("/");
+    authStore.authenticateUser();
   } catch (error) {
     toast.add({
       severity: "error",
