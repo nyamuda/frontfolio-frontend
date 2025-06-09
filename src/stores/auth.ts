@@ -28,7 +28,7 @@ export const useAuthStore = defineStore("auth", () => {
       //to access the protected route
       setAuthToken();
       axios
-        .get<User>(`${apiUrl}/me`)
+        .get<User>(`${apiUrl}/users/me`)
         .then((response) => {
           user.value = response.data;
           resolve(response.data);
@@ -44,7 +44,7 @@ export const useAuthStore = defineStore("auth", () => {
   const login = (loginDetails: LoginDetails): Promise<{ isVerified: boolean }> => {
     return new Promise((resolve, reject) => {
       axios
-        .post(`${apiUrl}/login`, loginDetails)
+        .post(`${apiUrl}/auth/login`, loginDetails)
         .then((response) => {
           //get the access token
           const token = response.data?.token;
@@ -82,7 +82,7 @@ export const useAuthStore = defineStore("auth", () => {
     return new Promise((resolve, reject) => {
       // Step 1: Send registration request to the backend
       axios
-        .post(`${apiUrl}/register`, registrationDetails)
+        .post(`${apiUrl}/auth/register`, registrationDetails)
         .then(() => {
           // Step 2: If registration succeeds, trigger email verification
           requestEmailVerification(registrationDetails.email)
@@ -97,6 +97,7 @@ export const useAuthStore = defineStore("auth", () => {
             });
         })
         .catch((error) => {
+          console.log(error);
           const message = error.response?.data?.message || unexpectedErrorMessage();
           reject(message);
         });
@@ -107,7 +108,7 @@ export const useAuthStore = defineStore("auth", () => {
   //The OTP is emailed to the user email
   const requestEmailVerification = (email: string) => {
     return new Promise((resolve, reject) => {
-      const url = `${apiUrl}/email-verification/request`;
+      const url = `${apiUrl}/auth/email-verification/request`;
       axios
         .post(url, { email })
         .then(() => resolve({}))
@@ -124,7 +125,7 @@ export const useAuthStore = defineStore("auth", () => {
       console.log("dude");
       isVerifyingEmailOtp.value = true;
       axios
-        .post(`${apiUrl}/email-verification/verify`, verifyDetails)
+        .post(`${apiUrl}/auth/email-verification/verify`, verifyDetails)
         .then(() => resolve({}))
         .catch((error) => {
           const message =
@@ -139,7 +140,7 @@ export const useAuthStore = defineStore("auth", () => {
   //Send a request to reset password using a one-time password(OTP)
   //The OTP is emailed to the user email
   const requestPasswordReset = async (email: string) => {
-    await axios.post(`${apiUrl}/password-reset/request`, { email });
+    await axios.post(`${apiUrl}/auth/password-reset/request`, { email });
   };
 
   //Verifies password reset one-time password(OTP)
@@ -151,7 +152,7 @@ export const useAuthStore = defineStore("auth", () => {
     return new Promise((resolve, reject) => {
       isVerifyingPasswordResetOtp.value = true;
       axios
-        .post(`${apiUrl}/password-reset/verify-otp`, verifyOtpDetails)
+        .post(`${apiUrl}/auth/password-reset/verify-otp`, verifyOtpDetails)
         .then((response) => resolve({ resetToken: response.data.resetToken }))
         .catch((error) => {
           const message = error.response?.data?.message || unexpectedErrorMessage();
@@ -164,7 +165,7 @@ export const useAuthStore = defineStore("auth", () => {
   //Reset user password
   const resetPassword = (resetDetails: { token: string; password: string }) => {
     return new Promise((resolve, reject) => {
-      const url = `${apiUrl}/password-reset/reset`;
+      const url = `${apiUrl}/auth/password-reset/reset`;
       axios
         .post(url, resetDetails)
         .then(() =>
@@ -227,5 +228,6 @@ export const useAuthStore = defineStore("auth", () => {
     isVerifyingEmailOtp,
     isVerifyingPasswordResetOtp,
     resetPassword,
+    authenticateUser,
   };
 });

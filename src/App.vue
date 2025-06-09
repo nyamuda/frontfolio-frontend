@@ -12,6 +12,13 @@
 import { RouterView } from "vue-router";
 import NavBarItem from "./components/layout/NavBarItem.vue";
 import Toast from "primevue/toast";
-</script>
+import { useAuthStore } from "./stores/auth";
+import { onMounted } from "vue";
 
-<style scoped></style>
+const authStore = useAuthStore();
+
+//authenticate the user when the app starts
+onMounted(() => {
+  authStore.authenticateUser();
+});
+</script>
