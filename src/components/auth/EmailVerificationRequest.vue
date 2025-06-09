@@ -25,7 +25,10 @@
           <!-- Otp input section -->
           <!-- Displayed if OTP was successfully sent or hasn't been sent yet -->
           <OtpSection
-            v-if="otpSendingResult == 'success' || otpSendingResult == 'nothingSent'"
+            v-if="
+              authStore.emailConfirmationOtpSendingResult == 'success' ||
+              authStore.emailConfirmationOtpSendingResult == 'nothingSent'
+            "
             :callback-to-verify="verifyEmail"
             :is-verifying-otp="authStore.isVerifyingEmailOtp"
             :title="otpSectionTitleAndMessage.title"
@@ -33,7 +36,7 @@
           />
           <!-- Displayed gf an attempt to resend OTP was a failure -->
           <div
-            v-else-if="otpSendingResult == 'failure'"
+            v-else-if="authStore.emailConfirmationOtpSendingResult == 'failure'"
             class="d-flex flex-column align-items-center text-danger"
           >
             <i class="pi pi-times-circle mb-2" style="font-size: 2rem"></i>
@@ -63,7 +66,6 @@ import ProgressSpinner from "primevue/progressspinner";
 import { useToast } from "primevue/usetoast";
 import OtpSection from "../shared/OtpSection.vue";
 import TitleSection from "../shared/TitleSection.vue";
-import type { sendingOtpResult } from "@/types/sendingOtpResult";
 import { useRouter } from "vue-router";
 
 const authStore = useAuthStore();
@@ -71,17 +73,16 @@ const toast = useToast();
 const router = useRouter();
 const isSendingEmailVerificationCode = ref(false);
 
-
 //title and message for the OTP section
 //based on whether an OTP was sent or not
 const otpSectionTitleAndMessage: Ref<{ title: string; message: string }> = computed(() => {
   return {
     title:
-      otpSendingResult.value === "success"
+      authStore.emailConfirmationOtpSendingResult === "success"
         ? "Verification Code Sent"
         : "Request a Verification Code",
     message:
-      otpSendingResult.value === "success"
+      authStore.emailConfirmationOtpSendingResult === "success"
         ? "Please enter the verification code sent to"
         : authStore.userEmail
           ? "We'll send an email verification code to"
@@ -103,9 +104,9 @@ const requestEmailVerificationCode = async () => {
         life: 5000,
       });
     }
-    otpSendingResult.value = "success";
+    authStore.emailConfirmationOtpSendingResult = "success";
   } catch (error) {
-    otpSendingResult.value = "failure";
+    authStore.emailConfirmationOtpSendingResult = "failure";
     toast.add({
       severity: "error",
       summary: "Sending Failed",
