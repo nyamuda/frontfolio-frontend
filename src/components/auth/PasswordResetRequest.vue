@@ -39,12 +39,27 @@
             <i class="pi pi-times-circle mb-2" style="font-size: 3rem"></i>
             <span>We couldn't send the password reset code.</span>
             <span>Please try again soon.</span>
+            <Button
+              class="my-2"
+              @click="makeOtpSendingResultDefault"
+              icon="pi pi-pencil"
+              label="Edit Email"
+              severity="info"
+              variant="outlined"
+              size="small"
+            />
           </div>
         </div>
         <!-- Button to request a new OTP -->
         <RequestCodeButton
           v-if="authStore.userEmail"
-          :button-label="otpSendingResult == 'success' ? 'Resend Code' : 'Send Code'"
+          :button-label="
+            otpSendingResult == 'success'
+              ? 'Resend Code'
+              : otpSendingResult == 'failure'
+                ? 'Retry Sending Code'
+                : 'Send Code'
+          "
           :auto-send="false"
           :is-sending-code="isSendingResetCode"
           :action-callback="requestResetCode"
@@ -65,6 +80,7 @@ import OtpSection from "../shared/OtpSection.vue";
 import TitleSection from "../shared/TitleSection.vue";
 import type { sendingOtpResult } from "@/types/sendingOtpResult";
 import { useRouter } from "vue-router";
+import Button from "primevue/button";
 
 const authStore = useAuthStore();
 const toast = useToast();
@@ -139,4 +155,9 @@ const verifyPasswordResetCode = async (otpCode: string) => {
     });
   }
 };
+
+//Change the value of otpSendingResult to "nothingSent" (the default value)
+//This will allow the OTPSection component to be displayed
+//and thus allow the user to edit their email in call a password reset request was a "failure"
+const makeOtpSendingResultDefault = () => (otpSendingResult.value = "nothingSent");
 </script>
