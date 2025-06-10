@@ -65,7 +65,6 @@ import OtpSection from "../shared/OtpSection.vue";
 import TitleSection from "../shared/TitleSection.vue";
 import type { sendingOtpResult } from "@/types/sendingOtpResult";
 import { useRouter } from "vue-router";
-import type { AxiosError, AxiosResponse } from "axios";
 
 const authStore = useAuthStore();
 const toast = useToast();
@@ -89,30 +88,30 @@ const otpSectionTitleAndMessage: Ref<{ title: string; message: string }> = compu
 
 //Make a request for password reset
 const requestResetCode = async () => {
-  try {
-    const email = authStore.userEmail;
-    if (email) {
-      isSendingResetCode.value = true;
-      await authStore.requestPasswordReset(email);
-      toast.add({
-        severity: "success",
-        summary: "Code Sent",
-        detail: "The reset code was sent to your email address.",
-        life: 5000,
-      });
-    }
-    otpSendingResult.value = "success";
-  } catch (error:AxiosResponse) {
-    otpSendingResult.value = "failure";
-
-    toast.add({
-      severity: "error",
-      summary: "Sending Failed",
-      detail: error,
-      life: 10000,
-    });
-  } finally {
-    isSendingResetCode.value = false;
+  const email = authStore.userEmail;
+  if (email) {
+    isSendingResetCode.value = true;
+    authStore
+      .requestPasswordReset(email)
+      .then(() => {
+        otpSendingResult.value = "success";
+        toast.add({
+          severity: "success",
+          summary: "Code Sent",
+          detail: "The reset code was sent to your email address.",
+          life: 5000,
+        });
+      })
+      .catch((message) => {
+        otpSendingResult.value = "failure";
+        toast.add({
+          severity: "error",
+          summary: "Sending Failed",
+          detail: message,
+          life: 10000,
+        });
+      })
+      .finally(() => (isSendingResetCode.value = false));
   }
 };
 
