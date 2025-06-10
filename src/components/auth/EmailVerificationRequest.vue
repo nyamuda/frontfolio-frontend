@@ -82,7 +82,7 @@ const otpSectionTitleAndMessage: Ref<{ title: string; message: string }> = compu
         ? "Verification Code Sent"
         : "Request a Verification Code",
     message:
-      authStore.emailConfirmationOtpSendingResult === "nothingSent"
+      authStore.emailConfirmationOtpSendingResult === "success"
         ? "Please enter the verification code we sent to your email. <br/> If you don’t see it in your inbox, be sure to check your spam or junk folder."
         : authStore.userEmail
           ? "We'll send an email verification code to"

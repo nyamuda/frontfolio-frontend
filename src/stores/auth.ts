@@ -89,6 +89,9 @@ export const useAuthStore = defineStore("auth", () => {
         .post(`${apiUrl}/auth/register`, registrationDetails)
         .then(() => {
           // Step 2: If registration succeeds, trigger email verification
+          //store the email to be verified
+          userEmail.value = registrationDetails.email;
+          //then request the email to be verified
           requestEmailVerification(registrationDetails.email)
             .then(() => resolve({}))
             .catch((error) => {
