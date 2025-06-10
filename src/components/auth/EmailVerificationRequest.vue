@@ -7,7 +7,7 @@
         </div>
 
         <TitleSection
-          title="Verify Your Account"
+          title="Email Verification Required to Proceed"
           title-size="small"
           align-items="center"
           style="margin-bottom: -1rem"
@@ -83,7 +83,7 @@ const otpSectionTitleAndMessage: Ref<{ title: string; message: string }> = compu
         : "Request a Verification Code",
     message:
       authStore.emailConfirmationOtpSendingResult === "success"
-        ? "Please enter the verification code sent to"
+        ? "Please enter the verification code we sent to your email. If you don’t see it in your inbox, be sure to check your spam or junk folder."
         : authStore.userEmail
           ? "We'll send an email verification code to"
           : "Please enter your email address to receive a verification code.",
@@ -101,7 +101,7 @@ const requestEmailVerificationCode = async () => {
         severity: "success",
         summary: "Code sent",
         detail: "The security code was sent to your email address.",
-        life: 5000,
+        life: 10000,
       });
     }
     authStore.emailConfirmationOtpSendingResult = "success";
@@ -111,7 +111,7 @@ const requestEmailVerificationCode = async () => {
       severity: "error",
       summary: "Sending Failed",
       detail: error,
-      life: 10000,
+      life: 15000,
     });
   } finally {
     isSendingEmailVerificationCode.value = false;

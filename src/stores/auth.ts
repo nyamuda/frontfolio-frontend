@@ -120,6 +120,7 @@ export const useAuthStore = defineStore("auth", () => {
           resolve({});
         })
         .catch((error) => {
+          emailConfirmationOtpSendingResult.value = "failure";
           const message = error.response?.data?.message || unexpectedErrorMessage();
           reject(message);
         });

@@ -148,7 +148,7 @@ const submitForm = async () => {
     authStore
       .register(registrationForm.value)
       .then(() => {
-        router.push("/email-verification/request");
+        router.push("/auth/email-verification/request");
       })
       .catch((message) => {
         toast.add({
