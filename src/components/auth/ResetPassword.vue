@@ -151,7 +151,7 @@ onMounted(() => {
     const exp = jwtDecode(providedToken.value).exp; // in seconds
     const now = Math.floor(Date.now() / 1000); // current time in seconds
 
-    hasTokenExpiredOrIsInvalid.value = exp ? exp > now : true;
+    hasTokenExpiredOrIsInvalid.value = exp ? !(exp > now) : true;
     //throw an exception if the token has expired
     if (hasTokenExpiredOrIsInvalid.value) throw new Error();
   } catch {

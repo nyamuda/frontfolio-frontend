@@ -7,7 +7,7 @@
         </div>
 
         <TitleSection
-          title="Reset Your Password"
+          title="Forgot Your Password?"
           title-size="small"
           align-items="center"
           style="margin-bottom: -1rem"
@@ -92,10 +92,10 @@ const otpSendingResult: Ref<sendingOtpResult> = ref("nothingSent");
 //based on whether an OTP was sent or not
 const otpSectionTitleAndMessage: Ref<{ title: string; message: string }> = computed(() => {
   return {
-    title: otpSendingResult.value === "success" ? "Reset Code Sent" : "Request Reset Code",
+    title: otpSendingResult.value === "success" ? "Reset Code Sent" : "Get Reset Code",
     message:
       otpSendingResult.value === "success"
-        ? "Please enter the password reset security code sent to"
+        ? "Please enter the password reset code we sent to your email. <br/> If you don’t see it in your inbox, be sure to check your spam or junk folder."
         : authStore.userEmail
           ? "We'll send a password reset code to"
           : "Enter your email address and we'll send you a password reset security code.",

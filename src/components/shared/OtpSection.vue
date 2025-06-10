@@ -94,7 +94,7 @@ const props = defineProps({
 const authStore = useAuthStore();
 const otpCode = ref("");
 
-const emailTextfield = ref({ email: "" });
+const emailTextfield = ref({ email: authStore.userEmail ?? "" });
 
 //Verify the OTP code once 6 digits are entered
 const onOtpChange = async () => {
@@ -113,6 +113,9 @@ const v$ = useVuelidate(rules, emailTextfield);
 //if the entered email is valid, save it to the store
 const onEmailChange = async () => {
   const isEmailValid = await v$.value.$validate();
+  //clear the the store
+  authStore.userEmail = "";
+  //save email to store if valid
   if (isEmailValid) {
     authStore.userEmail = emailTextfield.value.email;
   }
