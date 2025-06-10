@@ -1,151 +1,86 @@
 <template>
-  <section class="py-0">
-    <div
-      class="bg-holder"
-      style="
-        background-image: url(assets/img/illustrations/how-it-works.png);
-        background-position: center bottom;
-        background-size: cover;
-      "
-    ></div>
-    <!--/.bg-holder-->
-
-    <div class="container-lg">
+  <section class="bg-color d-flex justify-content-center align-items-center py-5">
+    <div class="container">
       <div class="row justify-content-center">
-        <div class="col-sm-8 col-md-9 col-xl-5 text-center pt-8">
-          <h5 class="fw-bold fs-3 fs-xxl-5 lh-sm mb-3 text-white">How it works</h5>
-          <p class="mb-5 text-white">
+        <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 text-center">
+          <TitleSection title="How it works" align-items="center" />
+          <p class="mb-4">
             Take your pick from the supply chain and participate in agribusiness projects that are
             backed up not only by Zou, but also by the best land, family heritage, innovation and
             overall superior expertise.
           </p>
         </div>
-        <div class="col-sm-9 col-md-12 col-xxl-9">
-          <div class="theme-tab">
-            <ul class="nav justify-content-between">
-              <li class="nav-item" role="presentation">
-                <a
-                  class="nav-link active fw-semi-bold"
-                  href="#bootstrap-tab1"
-                  data-bs-toggle="tab"
-                  data-bs-target="#tab1"
-                  id="tab-1"
-                  ><span class="nav-item-circle-parent"
-                    ><span class="nav-item-circle">01</span></span
-                  ></a
-                >
-              </li>
-              <li class="nav-item" role="presentation">
-                <a
-                  class="nav-link fw-semi-bold"
-                  href="#bootstrap-tab2"
-                  data-bs-toggle="tab"
-                  data-bs-target="#tab2"
-                  id="tab-2"
-                  ><span class="nav-item-circle-parent"
-                    ><span class="nav-item-circle">02</span></span
-                  ></a
-                >
-              </li>
-              <li class="nav-item" role="presentation">
-                <a
-                  class="nav-link fw-semi-bold"
-                  href="#bootstrap-tab3"
-                  data-bs-toggle="tab"
-                  data-bs-target="#tab3"
-                  id="tab-3"
-                  ><span class="nav-item-circle-parent"
-                    ><span class="nav-item-circle">03</span></span
-                  ></a
-                >
-              </li>
-              <li class="nav-item" role="presentation">
-                <a
-                  class="nav-link fw-semi-bold"
-                  href="#bootstrap-tab4"
-                  data-bs-toggle="tab"
-                  data-bs-target="#tab4"
-                  id="tab-4"
-                  ><span class="nav-item-circle-parent"
-                    ><span class="nav-item-circle">04</span></span
-                  ></a
-                >
-              </li>
-            </ul>
-            <div class="tab-content" id="myTabContent">
-              <div
-                class="tab-pane fade show active"
-                id="tab1"
-                role="tabpanel"
-                aria-labelledby="tab-1"
-              >
-                <div class="row align-items-center my-6 mx-auto">
-                  <div class="col-md-6 col-lg-5 offset-md-1">
-                    <h3 class="fw-bold lh-base text-white">
-                      Select your farmshare and complete reservation form here.
-                    </h3>
-                  </div>
-                  <div class="col-md-5 text-white offset-lg-1">
-                    <p class="mb-0">
-                      Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore,
-                      cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod
-                      maxime placeat facere
-                    </p>
+      </div>
+      <div class="row justify-content-center">
+        <!-- Stepper start -->
+        <div class="col-md-10 col-lg-8">
+          <Stepper value="1">
+            <StepList>
+              <Step value="1">Project Selection</Step>
+              <Step value="2">Investment Process</Step>
+              <Step value="3">Profit Distribution</Step>
+            </StepList>
+            <StepPanels>
+              <StepPanel value="1">
+                <div class="bg-color">
+                  <div class="">
+                    <div>
+                      <h4 class="mb-3">Choose Your Project</h4>
+                      <p class="mb-0">
+                        Browse our curated selection of agribusiness opportunities. Each project
+                        includes detailed information about land quality, expected yields, and
+                        historical performance data.
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab-2">
-                <div class="row align-items-center my-6 mx-auto">
-                  <div class="col-md-6 col-lg-5 offset-md-1">
-                    <h3 class="fw-bold lh-base text-white">
-                      The Farm Share has been one of the best new additions to our life
-                    </h3>
-                  </div>
-                  <div class="col-md-5 text-white offset-lg-1">
-                    <p class="mb-0">
-                      We the farmers choose the vegetables in your share each week. A Farm Share is
-                      perfect for those who love the weekly surprise, and who look forward to
-                      cooking with inspiration from the seasons.
-                    </p>
+              </StepPanel>
+              <StepPanel value="2">
+                <div class="bg-color">
+                  <div class="">
+                    <div>
+                      <h4 class="mb-3">Secure Your Investment</h4>
+                      <p class="mb-0">
+                        Complete our streamlined onboarding process. We handle all legal
+                        documentation and provide transparent tracking of fund allocation and
+                        project milestones.
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab-3">
-                <div class="row align-items-center my-6 mx-auto">
-                  <div class="col-md-6 col-lg-5 offset-md-1">
-                    <h3 class="fw-bold lh-base text-white">
-                      There is so much love and thought put into this CSA. You can feel that.
-                    </h3>
-                  </div>
-                  <div class="col-md-5 text-white offset-lg-1">
-                    <p class="mb-0">
-                      We the farmers choose the vegetables in your share each week. A Farm Share is
-                      perfect for those who love the weekly surprise, and who look forward to
-                      cooking with inspiration from the seasons.
-                    </p>
+              </StepPanel>
+              <StepPanel value="3">
+                <div class="bg-color">
+                  <div class="">
+                    <div>
+                      <h4 class="mb-3">Receive Returns</h4>
+                      <p class="mb-0">
+                        Earn quarterly dividends based on project performance. Our platform provides
+                        detailed analytics showing exactly how your investment is performing.
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="tab-pane fade" id="tab4" role="tabpanel" aria-labelledby="tab-4">
-                <div class="row align-items-center my-6 mx-auto">
-                  <div class="col-md-6 col-lg-5 offset-md-1">
-                    <h3 class="fw-bold lh-base text-white">
-                      The Farm Share has been one of the best new additions to our life
-                    </h3>
-                  </div>
-                  <div class="col-md-5 text-white offset-lg-1">
-                    <p class="mb-0">
-                      We the farmers choose the vegetables in your share each week. A Farm Share is
-                      perfect for those who love the weekly surprise, and who look forward to
-                      cooking with inspiration from the seasons.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+              </StepPanel>
+            </StepPanels>
+          </Stepper>
         </div>
       </div>
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import TitleSection from "../shared/TitleSection.vue";
+import Stepper from "primevue/stepper";
+import StepList from "primevue/steplist";
+import StepPanels from "primevue/steppanels";
+import Step from "primevue/step";
+import StepPanel from "primevue/steppanel";
+</script>
+
+<style lang="scss">
+.bg-color {
+  background-color: #fff2dc;
+}
+</style>
