@@ -2,7 +2,7 @@
   <div class="text-center">
     <h5>{{ title }}</h5>
     <div>
-      <span>{{ message }}</span>
+      <span v-html="message"></span>
       <!-- Inline editor for the email the OTP is sent to -->
       <Inplace>
         <template #display>
