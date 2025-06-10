@@ -182,7 +182,7 @@ export const useAuthStore = defineStore("auth", () => {
   };
 
   //Reset user password
-  const resetPassword = (resetDetails: { token: string; password: string }) => {
+  const resetPassword = (resetDetails: { resetToken: string; password: string }) => {
     return new Promise((resolve, reject) => {
       const url = `${apiUrl}/auth/password-reset/reset`;
       axios

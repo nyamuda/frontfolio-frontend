@@ -164,7 +164,10 @@ const isResettingPassword = ref(false);
 const submitForm = async () => {
   const isFormCorrect = await v$.value.$validate();
   if (isFormCorrect && providedToken.value) {
-    const resetDetails = { password: resetPasswordForm.value.password, token: providedToken.value };
+    const resetDetails = {
+      password: resetPasswordForm.value.password,
+      resetToken: providedToken.value,
+    };
     isResettingPassword.value = true;
     authStore
       .resetPassword(resetDetails)
