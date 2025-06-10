@@ -1,12 +1,12 @@
 <template>
-  <section class="py-6">
+  <section class="py-6 my-5">
     <div class="container">
       <div class="container">
         <div class="row align-items-center">
           <div class="col-md-5 order-md-1 text-center text-md-start">
             <img
               class="img-fluid mb-4"
-              src="assets/img/illustrations/ultimate-feature.png"
+              src="../../assets/images/android-mobile-app-development-7815022_1280.png"
               alt=""
             />
           </div>
@@ -21,7 +21,7 @@
                   <div class="py-4">
                     <img
                       class="img-fluid"
-                      src="assets/img/illustrations/app.png"
+                      src="https://images.unsplash.com/vector-1741104194666-113f28d8e3bb?q=80&w=1542&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                       width="90"
                       alt=""
                     />
@@ -38,7 +38,7 @@
                   <div class="py-4">
                     <img
                       class="img-fluid"
-                      src="assets/img/illustrations/ux.png"
+                      src="https://images.unsplash.com/vector-1741104194666-113f28d8e3bb?q=80&w=1542&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                       width="90"
                       alt=""
                     />
@@ -55,7 +55,7 @@
                   <div class="py-4">
                     <img
                       class="img-fluid"
-                      src="assets/img/illustrations/cloud.png"
+                      src="https://images.unsplash.com/vector-1741104194666-113f28d8e3bb?q=80&w=1542&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                       width="90"
                       alt=""
                     />
@@ -72,7 +72,7 @@
                   <div class="py-4">
                     <img
                       class="img-fluid"
-                      src="assets/img/illustrations/support.png"
+                      src="https://images.unsplash.com/vector-1741104194666-113f28d8e3bb?q=80&w=1542&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                       width="90"
                       alt=""
                     />

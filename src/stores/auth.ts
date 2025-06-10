@@ -150,8 +150,16 @@ export const useAuthStore = defineStore("auth", () => {
 
   //Send a request to reset password using a one-time password(OTP)
   //The OTP is emailed to the user email
-  const requestPasswordReset = async (email: string) => {
-    await axios.post(`${apiUrl}/auth/password-reset/request`, { email });
+  const requestPasswordReset = (email: string) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(`${apiUrl}/auth/password-reset/request`, { email })
+        .then(() => resolve({}))
+        .catch((error) => {
+          const message = error.response?.data?.message || unexpectedErrorMessage();
+          reject(message);
+        });
+    });
   };
 
   //Verifies password reset one-time password(OTP)

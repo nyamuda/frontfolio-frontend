@@ -65,6 +65,7 @@ import OtpSection from "../shared/OtpSection.vue";
 import TitleSection from "../shared/TitleSection.vue";
 import type { sendingOtpResult } from "@/types/sendingOtpResult";
 import { useRouter } from "vue-router";
+import type { AxiosError, AxiosResponse } from "axios";
 
 const authStore = useAuthStore();
 const toast = useToast();
@@ -101,8 +102,9 @@ const requestResetCode = async () => {
       });
     }
     otpSendingResult.value = "success";
-  } catch (error) {
+  } catch (error:AxiosResponse) {
     otpSendingResult.value = "failure";
+
     toast.add({
       severity: "error",
       summary: "Sending Failed",
