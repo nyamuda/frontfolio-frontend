@@ -10,6 +10,8 @@ import EmailVerificationRequest from "@/components/auth/EmailVerificationRequest
 import PasswordResetRequest from "@/components/auth/PasswordResetRequest.vue";
 
 import ResetPassword from "@/components/auth/ResetPassword.vue";
+import ProjectView from "@/views/ProjectView.vue";
+import ProjectList from "@/components/projects/ProjectList.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,6 +21,21 @@ const router = createRouter({
       name: "Home",
       component: HomeView,
     },
+    //Project routes
+    {
+      path: "/projects",
+      name: "Projects",
+      component: ProjectView,
+      children: [
+        {
+          path: "",
+          name: "ProjectList",
+          component: ProjectList,
+        },
+      ],
+    },
+
+    //Auth routes
     {
       path: "/auth",
       name: "Auth",
