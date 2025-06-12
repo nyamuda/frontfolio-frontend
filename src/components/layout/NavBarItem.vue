@@ -128,22 +128,24 @@ const items = computed(() => {
       {
         label: "Projects",
         icon: "pi pi-folder",
-        route: "projects",
+
         items: [
           {
             label: "Add Project",
             icon: "pi pi-folder-plus",
+            route: "/projects/add",
           },
           {
             label: "View Projects",
             icon: "pi pi-eye",
+            route: "/projects",
           },
         ],
       },
       {
         label: "Blogs",
         icon: "pi pi-file",
-        route: "projects",
+
         items: [
           {
             label: "Add Blog",

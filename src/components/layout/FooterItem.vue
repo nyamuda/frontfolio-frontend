@@ -1,15 +1,15 @@
 <template>
   <!-- Footer -->
-  <footer class="text-center text-white" style="background-color: #0a4275">
-    <!-- Grid container -->
-    <div class="">
+  <footer class="text-center text-white mt-5" style="background-color: #0a4275">
+    <!-- Text and button -->
+    <div class="py-4">
       <p>
         Get useful tips & free resources directly to your inbox along with exclusive subscriber-only
         content.
       </p>
-      <Button label="SIGN UP NOW" />
+      <Button size="small" label="SIGN UP NOW" />
     </div>
-    <!-- Grid container -->
+    <!-- Text and button -->
 
     <!-- Copyright -->
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
