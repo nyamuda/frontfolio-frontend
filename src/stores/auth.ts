@@ -191,7 +191,6 @@ export const useAuthStore = defineStore("auth", () => {
           resolve("Password reset was successful. You may now use your new password to sign in."),
         )
         .catch((error) => {
-          console.log(error);
           const message = error.response?.data?.message || unexpectedErrorMessage();
           reject(message);
         });

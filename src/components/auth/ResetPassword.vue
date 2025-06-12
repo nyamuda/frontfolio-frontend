@@ -145,7 +145,6 @@ onMounted(() => {
     //get the token provided in the URL from
     //when the user clicks the reset button in their confirmation email
     providedToken.value = router.currentRoute.value.query.token?.toString() ?? "";
-
     //check if the token has expired or not
     //check if access token has expired or not
     const exp = jwtDecode(providedToken.value).exp; // in seconds
