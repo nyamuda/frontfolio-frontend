@@ -60,6 +60,7 @@
                   id="imageUrl"
                   v-model="v$.imageUrl.$model"
                   :invalid="v$.imageUrl.$error"
+                  type="url"
                 />
               </IconField>
               <label for="imageUrl">Image URL</label>
@@ -80,6 +81,7 @@
                   id="githubUrl"
                   v-model="v$.githubUrl.$model"
                   :invalid="v$.githubUrl.$error"
+                  type="url"
                 />
               </IconField>
               <label for="githubUrl">GitHub URL</label>
@@ -100,6 +102,7 @@
                   id="liveUrl"
                   v-model="v$.liveUrl.$model"
                   :invalid="v$.liveUrl.$error"
+                  type="url"
                 />
               </IconField>
               <label for="liveUrl">Live Project URL</label>
