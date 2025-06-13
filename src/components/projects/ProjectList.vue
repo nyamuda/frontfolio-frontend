@@ -9,12 +9,14 @@
       </p>
     </div>
     <div class="d-flex justify-content-end mb-3">
-      <Button
-        icon="pi pi-plus"
-        label="New project"
-        variant="outlined"
-        aria-label="Add new project"
-      />
+      <router-link to="/projects/add">
+        <Button
+          icon="pi pi-plus"
+          label="New project"
+          variant="outlined"
+          aria-label="Add new project"
+        />
+      </router-link>
     </div>
     <div class="row">
       <div class="col-sm-6 col-lg-4 g-3" v-for="i in 8" :key="i">

@@ -12,6 +12,7 @@ import PasswordResetRequest from "@/components/auth/PasswordResetRequest.vue";
 import ResetPassword from "@/components/auth/ResetPassword.vue";
 import ProjectView from "@/views/ProjectView.vue";
 import ProjectList from "@/components/projects/ProjectList.vue";
+import AddProject from "@/components/projects/AddProject.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,6 +32,11 @@ const router = createRouter({
           path: "",
           name: "ProjectList",
           component: ProjectList,
+        },
+        {
+          path: "add",
+          name: "AddProject",
+          component: AddProject,
         },
       ],
     },
