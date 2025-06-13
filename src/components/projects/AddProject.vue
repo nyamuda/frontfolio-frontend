@@ -17,12 +17,9 @@
       <!-- Project main details start -->
       <Panel header="Main Details" class="mb-3" toggleable>
         <!-- Title input -->
-        <div class="form-group mb-3 col-md-6">
+        <div class="form-group mb-3">
           <FloatLabel variant="on">
-            <IconField>
-              <InputIcon class="pi pi-user" />
-              <InputText fluid id="title" v-model="v$.name.$model" :invalid="v$.name.$error" />
-            </IconField>
+            <InputText fluid id="title" v-model="v$.name.$model" :invalid="v$.name.$error" />
             <label for="title">Title</label>
           </FloatLabel>
           <Message size="small" severity="error" v-if="v$.title.$error" variant="simple">
@@ -32,13 +29,13 @@
           </Message>
         </div>
         <!-- Summary input -->
-        <div class="form-group">
+        <div class="form-group mb-3">
           <FloatLabel variant="on">
             <Textarea
               id="summary"
               v-model="v$.summary.$model"
               :invalid="v$.summary.$error"
-              rows="5"
+              rows="4"
               class="w-100"
               style="resize: none"
             />
@@ -49,6 +46,29 @@
               <div>{{ error.$message }}</div>
             </div>
           </Message>
+        </div>
+
+        <!-- Image URL, GitHub URL & Live URL -->
+        <div class="row mb-3">
+          <div class="form-group">
+            <FloatLabel variant="on">
+              <IconField>
+                <InputIcon class="pi pi-image" />
+                <InputText
+                  fluid
+                  id="imageUrl"
+                  v-model="v$.imageUrl.$model"
+                  :invalid="v$.imageUrl.$error"
+                />
+              </IconField>
+              <label for="imageUrl">Image URL</label>
+            </FloatLabel>
+            <Message size="small" severity="error" v-if="v$.imageUrl.$error" variant="simple">
+              <div v-for="error of v$.imageUrl.$errors" :key="error.$uid">
+                <div>{{ error.$message }}</div>
+              </div>
+            </Message>
+          </div>
         </div>
       </Panel>
       <!-- Project main details end -->
@@ -171,6 +191,10 @@ const isRegistering = ref(false);
 const registrationForm = ref({
   title: "",
   summary: "",
+  imageUrl: "",
+  githubUrl: "",
+  liveUrl: "",
+  //END
   name: "",
   email: "",
   password: "",
@@ -182,6 +206,9 @@ const passwordErrorMessage =
 const rules = {
   title: { required },
   summary: { required },
+  imageUrl: { required },
+  githubUrl: { required },
+  liveUrl: { required },
   name: { required, minLengthValue: minLength(3) },
   email: { required, email },
   password: {
