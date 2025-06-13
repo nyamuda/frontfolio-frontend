@@ -50,7 +50,8 @@
 
         <!-- Image URL, GitHub URL & Live URL -->
         <div class="row mb-3">
-          <div class="form-group">
+          <!-- Image URL -->
+          <div class="form-group col-md-4 g-3">
             <FloatLabel variant="on">
               <IconField>
                 <InputIcon class="pi pi-image" />
@@ -65,6 +66,46 @@
             </FloatLabel>
             <Message size="small" severity="error" v-if="v$.imageUrl.$error" variant="simple">
               <div v-for="error of v$.imageUrl.$errors" :key="error.$uid">
+                <div>{{ error.$message }}</div>
+              </div>
+            </Message>
+          </div>
+          <!-- GitHub URL -->
+          <div class="form-group col-md-4 g-3">
+            <FloatLabel variant="on">
+              <IconField>
+                <InputIcon class="pi pi-image" />
+                <InputText
+                  fluid
+                  id="imageUrl"
+                  v-model="v$.imageUrl.$model"
+                  :invalid="v$.imageUrl.$error"
+                />
+              </IconField>
+              <label for="imageUrl">Image URL</label>
+            </FloatLabel>
+            <Message size="small" severity="error" v-if="v$.imageUrl.$error" variant="simple">
+              <div v-for="error of v$.imageUrl.$errors" :key="error.$uid">
+                <div>{{ error.$message }}</div>
+              </div>
+            </Message>
+          </div>
+          <!-- Live URL -->
+          <div class="form-group col-md-4 g-3">
+            <FloatLabel variant="on">
+              <IconField>
+                <InputIcon class="pi pi-globe" />
+                <InputText
+                  fluid
+                  id="liveUrl"
+                  v-model="v$.liveUrl.$model"
+                  :invalid="v$.liveUrl.$error"
+                />
+              </IconField>
+              <label for="liveUrl">Live Project URL</label>
+            </FloatLabel>
+            <Message size="small" severity="error" v-if="v$.liveUrl.$error" variant="simple">
+              <div v-for="error of v$.liveUrl.$errors" :key="error.$uid">
                 <div>{{ error.$message }}</div>
               </div>
             </Message>
