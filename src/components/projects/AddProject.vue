@@ -14,6 +14,36 @@
       </div>
     </div>
     <form @submit.prevent="submitForm" class="">
+      <!-- Project main details -->
+      <Panel header="Main Details" class="mb-3" toggleable>
+        <!-- Title input -->
+        <div class="form-group mb-3">
+          <FloatLabel variant="on">
+            <IconField>
+              <InputIcon class="pi pi-user" />
+              <InputText fluid id="title" v-model="v$.name.$model" :invalid="v$.name.$error" />
+            </IconField>
+            <label for="title">Title</label>
+          </FloatLabel>
+          <Message size="small" severity="error" v-if="v$.title.$error" variant="simple">
+            <div v-for="error of v$.title.$errors" :key="error.$uid">
+              <div>{{ error.$message }}</div>
+            </div>
+          </Message>
+        </div>
+      </Panel>
+      <!-- Project descriptive paragraphs  -->
+      <Panel header="Descriptive Paragraphs" class="mb-3" toggleable>
+        <p class="m-0">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+          ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+          sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+          est laborum.
+        </p>
+      </Panel>
+
       <!-- Name input -->
       <div class="form-group mb-3">
         <FloatLabel variant="on">
@@ -103,6 +133,8 @@ import InputIcon from "primevue/inputicon";
 import TitleSection from "../shared/TitleSection.vue";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
+import Panel from "primevue/panel";
+import { title } from "@primeuix/themes/aura/card";
 
 // Access the store
 const authStore = useAuthStore();
@@ -117,6 +149,7 @@ const isRegistering = ref(false);
 
 //form validation start
 const registrationForm = ref({
+  title: "",
   name: "",
   email: "",
   password: "",
@@ -126,6 +159,7 @@ const passwordErrorMessage =
   "Password must be at least 8 characters long and contain a mix of letters, numbers, and special characters";
 
 const rules = {
+  title: { required },
   name: { required, minLengthValue: minLength(3) },
   email: { required, email },
   password: {
