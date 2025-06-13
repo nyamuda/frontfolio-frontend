@@ -1,6 +1,18 @@
 <template>
   <div>
-    <TitleSection title="Create an account" title-size="small" align-items="center" />
+    <TitleSection title="Tell the story behind your project" subtitle="New Project" />
+
+    <div class="row mb-5">
+      <p class="col-md-6">
+        Let the world see what you’ve been working on. Add a title, description, image, and any
+        links that showcase your project. You can save it as a draft or publish it when you’re
+        ready.
+      </p>
+      <div class="col-md-6 d-flex justify-content-end gap-3 align-items-center">
+        <Button label="Save changes" severity="secondary" size="small" />
+        <Button label="Publish" size="small" />
+      </div>
+    </div>
     <form @submit.prevent="submitForm" class="">
       <!-- Name input -->
       <div class="form-group mb-3">
