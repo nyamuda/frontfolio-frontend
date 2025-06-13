@@ -75,7 +75,7 @@
           <div class="form-group col-md-4 g-3">
             <FloatLabel variant="on">
               <IconField>
-                <InputIcon class="pi pi-image" />
+                <InputIcon class="pi pi-github" />
                 <InputText
                   fluid
                   id="githubUrl"
