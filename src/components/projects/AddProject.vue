@@ -77,15 +77,15 @@
                 <InputIcon class="pi pi-image" />
                 <InputText
                   fluid
-                  id="imageUrl"
-                  v-model="v$.imageUrl.$model"
-                  :invalid="v$.imageUrl.$error"
+                  id="githubUrl"
+                  v-model="v$.githubUrl.$model"
+                  :invalid="v$.githubUrl.$error"
                 />
               </IconField>
-              <label for="imageUrl">Image URL</label>
+              <label for="githubUrl">GitHub URL</label>
             </FloatLabel>
-            <Message size="small" severity="error" v-if="v$.imageUrl.$error" variant="simple">
-              <div v-for="error of v$.imageUrl.$errors" :key="error.$uid">
+            <Message size="small" severity="error" v-if="v$.githubUrl.$error" variant="simple">
+              <div v-for="error of v$.githubUrl.$errors" :key="error.$uid">
                 <div>{{ error.$message }}</div>
               </div>
             </Message>
