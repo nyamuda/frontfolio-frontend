@@ -14,10 +14,10 @@
       </div>
     </div>
     <form @submit.prevent="submitForm" class="">
-      <!-- Project main details -->
+      <!-- Project main details start -->
       <Panel header="Main Details" class="mb-3" toggleable>
         <!-- Title input -->
-        <div class="form-group mb-3">
+        <div class="form-group mb-3 col-md-6">
           <FloatLabel variant="on">
             <IconField>
               <InputIcon class="pi pi-user" />
@@ -31,7 +31,27 @@
             </div>
           </Message>
         </div>
+        <!-- Summary input -->
+        <div class="form-group">
+          <FloatLabel variant="on">
+            <Textarea
+              id="summary"
+              v-model="v$.summary.$model"
+              :invalid="v$.summary.$error"
+              rows="5"
+              class="w-100"
+              style="resize: none"
+            />
+            <label for="summary">Summary</label>
+          </FloatLabel>
+          <Message size="summary" severity="error" v-if="v$.summary.$error" variant="simple">
+            <div v-for="error of v$.summary.$errors" :key="error.$uid">
+              <div>{{ error.$message }}</div>
+            </div>
+          </Message>
+        </div>
       </Panel>
+      <!-- Project main details end -->
       <!-- Project descriptive paragraphs  -->
       <Panel header="Descriptive Paragraphs" class="mb-3" toggleable>
         <p class="m-0">
@@ -134,7 +154,7 @@ import TitleSection from "../shared/TitleSection.vue";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
 import Panel from "primevue/panel";
-import { title } from "@primeuix/themes/aura/card";
+import Textarea from "primevue/textarea";
 
 // Access the store
 const authStore = useAuthStore();
@@ -150,6 +170,7 @@ const isRegistering = ref(false);
 //form validation start
 const registrationForm = ref({
   title: "",
+  summary: "",
   name: "",
   email: "",
   password: "",
@@ -160,6 +181,7 @@ const passwordErrorMessage =
 
 const rules = {
   title: { required },
+  summary: { required },
   name: { required, minLengthValue: minLength(3) },
   email: { required, email },
   password: {
