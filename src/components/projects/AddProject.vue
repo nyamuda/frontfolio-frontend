@@ -29,7 +29,7 @@
           </Message>
         </div>
         <!-- Summary input -->
-        <div class="form-group mb-3">
+        <div class="form-group">
           <FloatLabel variant="on">
             <Textarea
               id="summary"
@@ -207,7 +207,7 @@
 import { onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useVuelidate } from "@vuelidate/core";
-import { required, email, helpers, minLength } from "@vuelidate/validators";
+import { required, email, helpers, minLength, url } from "@vuelidate/validators";
 import { Message } from "primevue";
 import InputText from "primevue/inputtext";
 import FloatLabel from "primevue/floatlabel";
@@ -250,9 +250,9 @@ const passwordErrorMessage =
 const rules = {
   title: { required },
   summary: { required },
-  imageUrl: { required },
-  githubUrl: { required },
-  liveUrl: { required },
+  imageUrl: { required, url },
+  githubUrl: { required, url },
+  liveUrl: { required, url },
   name: { required, minLengthValue: minLength(3) },
   email: { required, email },
   password: {
