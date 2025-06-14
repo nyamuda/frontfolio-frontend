@@ -114,6 +114,26 @@
             </Message>
           </div>
         </div>
+
+        <!-- TechStack input -->
+        <div>
+          <FloatLabel>
+            <AutoComplete
+              v-model="v$.$model.techStack"
+              :invalid="v$.techStack.$error"
+              inputId="techStack"
+              multiple
+              fluid
+              :typeahead="false"
+            />
+            <label for="techStack" class="font-bold mb-2 block">With Typeahead</label>
+          </FloatLabel>
+          <Message size="small" severity="error" v-if="v$.techStack.$error" variant="simple">
+            <div v-for="error of v$.techStack.$errors" :key="error.$uid">
+              <div>{{ error.$message }}</div>
+            </div>
+          </Message>
+        </div>
       </Panel>
       <!-- Project main details end -->
       <!-- Project descriptive paragraphs  -->
@@ -219,6 +239,7 @@ import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
 import Panel from "primevue/panel";
 import Textarea from "primevue/textarea";
+import AutoComplete from "primevue/autocomplete";
 
 // Access the store
 const authStore = useAuthStore();
@@ -238,6 +259,7 @@ const registrationForm = ref({
   imageUrl: "",
   githubUrl: "",
   liveUrl: "",
+  techStack: [],
   //END
   name: "",
   email: "",
@@ -253,6 +275,7 @@ const rules = {
   imageUrl: { required, url },
   githubUrl: { required, url },
   liveUrl: { required, url },
+  techStack: { required, minLengthValue: minLength(1) },
   name: { required, minLengthValue: minLength(3) },
   email: { required, email },
   password: {
