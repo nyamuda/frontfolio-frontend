@@ -126,7 +126,7 @@
               fluid
               :typeahead="false"
             />
-            <label for="techStack" class="font-bold mb-2 block">Tech Stack Used</label>
+            <label for="techStack">Tech Stack Used</label>
           </FloatLabel>
           <Message size="small" severity="error" v-if="v$.techStack.$error" variant="simple">
             <div v-for="error of v$.techStack.$errors" :key="error.$uid">
