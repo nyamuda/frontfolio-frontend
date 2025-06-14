@@ -139,12 +139,10 @@
       <!-- Project descriptive paragraphs  -->
       <Panel header="Descriptive Paragraphs" class="mb-3" toggleable>
         <p class="m-0">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-          ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-          sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-          est laborum.
+          Use this section to add in-depth descriptions of your project. You can talk about your
+          goals, how you approached the build, key features, or anything else that helps explain
+          your work. This is optional, but it's a great way to give more context and highlight your
+          thought process, especially for portfolio reviewers or potential clients.
         </p>
       </Panel>
 
