@@ -117,16 +117,16 @@
 
         <!-- TechStack input -->
         <div>
-          <FloatLabel>
+          <FloatLabel variant="on">
             <AutoComplete
-              v-model="v$.$model.techStack"
+              v-model="v$.techStack.$model"
               :invalid="v$.techStack.$error"
               inputId="techStack"
               multiple
               fluid
               :typeahead="false"
             />
-            <label for="techStack" class="font-bold mb-2 block">With Typeahead</label>
+            <label for="techStack" class="font-bold mb-2 block">Tech Stack Used</label>
           </FloatLabel>
           <Message size="small" severity="error" v-if="v$.techStack.$error" variant="simple">
             <div v-for="error of v$.techStack.$errors" :key="error.$uid">
@@ -275,7 +275,12 @@ const rules = {
   imageUrl: { required, url },
   githubUrl: { required, url },
   liveUrl: { required, url },
-  techStack: { required, minLengthValue: minLength(1) },
+  techStack: {
+    required: helpers.withMessage(
+      "You need to include at least one tool, language, or framework used in this project",
+      required,
+    ),
+  },
   name: { required, minLengthValue: minLength(3) },
   email: { required, email },
   password: {
