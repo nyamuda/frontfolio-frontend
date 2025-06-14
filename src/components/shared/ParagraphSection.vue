@@ -1,5 +1,56 @@
 <template>
-  <section></section>
+  <section>
+    <!-- Title input -->
+    <div class="form-group mb-3">
+      <FloatLabel variant="on">
+        <InputText fluid id="title" v-model="v$.name.$model" :invalid="v$.name.$error" />
+        <label for="title">Title</label>
+      </FloatLabel>
+      <Message size="small" severity="error" v-if="v$.title.$error" variant="simple">
+        <div v-for="error of v$.title.$errors" :key="error.$uid">
+          <div>{{ error.$message }}</div>
+        </div>
+      </Message>
+    </div>
+    <!-- Image Url input -->
+    <div class="form-group mb-3">
+      <FloatLabel variant="on">
+        <InputText fluid id="imageUrl" v-model="v$.name.$model" :invalid="v$.name.$error" />
+        <label for="imageUrl">Image URL</label>
+      </FloatLabel>
+      <Message size="small" severity="error" v-if="v$.imageUrl.$error" variant="simple">
+        <div v-for="error of v$.imageUrl.$errors" :key="error.$uid">
+          <div>{{ error.$message }}</div>
+        </div>
+      </Message>
+    </div>
+
+    <!-- Image caption input -->
+    <div class="form-group mb-3">
+      <FloatLabel variant="on">
+        <InputText fluid id="title" v-model="v$.name.$model" :invalid="v$.name.$error" />
+        <label for="title">Title</label>
+      </FloatLabel>
+      <Message size="small" severity="error" v-if="v$.title.$error" variant="simple">
+        <div v-for="error of v$.title.$errors" :key="error.$uid">
+          <div>{{ error.$message }}</div>
+        </div>
+      </Message>
+    </div>
+
+    <!-- Content input -->
+    <div class="form-group mb-3">
+      <FloatLabel variant="on">
+        <InputText fluid id="title" v-model="v$.name.$model" :invalid="v$.name.$error" />
+        <label for="title">Title</label>
+      </FloatLabel>
+      <Message size="small" severity="error" v-if="v$.title.$error" variant="simple">
+        <div v-for="error of v$.title.$errors" :key="error.$uid">
+          <div>{{ error.$message }}</div>
+        </div>
+      </Message>
+    </div>
+  </section>
 </template>
 
 <script setup lang="ts">
