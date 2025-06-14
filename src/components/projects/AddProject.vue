@@ -226,7 +226,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, type Ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, helpers, minLength, url } from "@vuelidate/validators";
@@ -243,6 +243,8 @@ import Panel from "primevue/panel";
 import Textarea from "primevue/textarea";
 import AutoComplete from "primevue/autocomplete";
 import Divider from "primevue/divider";
+import { Paragraph } from "@/models/paragraph";
+import { title } from "@primeuix/themes/aura/card";
 
 // Access the store
 const authStore = useAuthStore();
@@ -255,8 +257,13 @@ onMounted(() => {
 
 const isRegistering = ref(false);
 
-const descriptiveParagraphs = ref([]);
-
+//the descriptive paragraphs that have been added by a user
+const descriptiveParagraphs: Ref<Paragraph[]> = ref([]);
+//add a new descriptive paragraph
+const addDescriptiveParagraph = () => {
+  const paragraph = new Paragraph("", "", "", "");
+  descriptiveParagraphs.value.push(paragraph);
+};
 //form validation start
 const registrationForm = ref({
   title: "",
