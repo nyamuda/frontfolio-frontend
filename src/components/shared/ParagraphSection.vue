@@ -3,7 +3,7 @@
     <!-- Title input -->
     <div class="form-group mb-3">
       <FloatLabel variant="on">
-        <InputText fluid id="title" v-model="v$.name.$model" :invalid="v$.name.$error" />
+        <InputText fluid id="title" v-model="v$.title.$model" :invalid="v$.title.$error" />
         <label for="title">Title</label>
       </FloatLabel>
       <Message size="small" severity="error" v-if="v$.title.$error" variant="simple">
@@ -15,7 +15,13 @@
     <!-- Image Url input -->
     <div class="form-group mb-3">
       <FloatLabel variant="on">
-        <InputText fluid id="imageUrl" v-model="v$.name.$model" :invalid="v$.name.$error" />
+        <InputText
+          fluid
+          id="imageUrl"
+          type="url"
+          v-model="v$.imageUrl.$model"
+          :invalid="v$.imageUrl.$error"
+        />
         <label for="imageUrl">Image URL</label>
       </FloatLabel>
       <Message size="small" severity="error" v-if="v$.imageUrl.$error" variant="simple">
@@ -28,11 +34,16 @@
     <!-- Image caption input -->
     <div class="form-group mb-3">
       <FloatLabel variant="on">
-        <InputText fluid id="title" v-model="v$.name.$model" :invalid="v$.name.$error" />
-        <label for="title">Title</label>
+        <InputText
+          fluid
+          id="imageCaption"
+          v-model="v$.imageCaption.$model"
+          :invalid="v$.imageCaption.$error"
+        />
+        <label for="imageCaption">Image Caption</label>
       </FloatLabel>
-      <Message size="small" severity="error" v-if="v$.title.$error" variant="simple">
-        <div v-for="error of v$.title.$errors" :key="error.$uid">
+      <Message size="small" severity="error" v-if="v$.imageCaption.$error" variant="simple">
+        <div v-for="error of v$.imageCaption.$errors" :key="error.$uid">
           <div>{{ error.$message }}</div>
         </div>
       </Message>
@@ -62,12 +73,14 @@ import { ref } from "vue";
 const form = ref({
   title: "",
   imageUrl: "",
+  imageCaption: "",
   content: "",
 });
 
 const rules = {
   title: { required },
-  imageUrl: { required, url },
+  imageUrl: { url },
+  imageCaption: {},
   content: { required },
 };
 const v$ = useVuelidate(rules, form);

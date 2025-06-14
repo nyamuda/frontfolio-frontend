@@ -19,7 +19,7 @@
         <!-- Title input -->
         <div class="form-group mb-3">
           <FloatLabel variant="on">
-            <InputText fluid id="title" v-model="v$.name.$model" :invalid="v$.name.$error" />
+            <InputText fluid id="title" v-model="v$.title.$model" :invalid="v$.title.$error" />
             <label for="title">Title</label>
           </FloatLabel>
           <Message size="small" severity="error" v-if="v$.title.$error" variant="simple">
