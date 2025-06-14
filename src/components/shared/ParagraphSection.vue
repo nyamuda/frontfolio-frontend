@@ -52,11 +52,18 @@
     <!-- Content input -->
     <div class="form-group mb-3">
       <FloatLabel variant="on">
-        <InputText fluid id="title" v-model="v$.name.$model" :invalid="v$.name.$error" />
-        <label for="title">Title</label>
+        <Textarea
+          id="content"
+          v-model="v$.content.$model"
+          :invalid="v$.content.$error"
+          rows="4"
+          class="w-100"
+          style="resize: none"
+        />
+        <label for="content">Content</label>
       </FloatLabel>
-      <Message size="small" severity="error" v-if="v$.title.$error" variant="simple">
-        <div v-for="error of v$.title.$errors" :key="error.$uid">
+      <Message size="small" severity="error" v-if="v$.content.$error" variant="simple">
+        <div v-for="error of v$.content.$errors" :key="error.$uid">
           <div>{{ error.$message }}</div>
         </div>
       </Message>
@@ -67,6 +74,7 @@
 <script setup lang="ts">
 import useVuelidate from "@vuelidate/core";
 import { required, url } from "@vuelidate/validators";
+import Textarea from "primevue/textarea";
 import { ref } from "vue";
 
 //form validation start
