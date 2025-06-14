@@ -145,6 +145,9 @@
           thought process, especially for portfolio reviewers or potential clients.
         </p>
         <Divider />
+        <div v-for="(paragraph, index) in descriptiveParagraphs" :key="index">
+          <ParagraphSection />
+        </div>
         <div class="d-flex justify-content-center align-items-center">
           <Button icon="pi pi-plus" severity="contrast" label="New paragraph" size="small" />
         </div>
@@ -244,7 +247,7 @@ import Textarea from "primevue/textarea";
 import AutoComplete from "primevue/autocomplete";
 import Divider from "primevue/divider";
 import { Paragraph } from "@/models/paragraph";
-import { title } from "@primeuix/themes/aura/card";
+import ParagraphSection from "../shared/ParagraphSection.vue";
 
 // Access the store
 const authStore = useAuthStore();

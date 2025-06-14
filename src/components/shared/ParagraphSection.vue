@@ -77,6 +77,29 @@ import { required, url } from "@vuelidate/validators";
 import Textarea from "primevue/textarea";
 import { ref } from "vue";
 
+defineProps({
+  //title of the paragraph
+  title: {
+    type: String,
+    required: true,
+  },
+  //image URL of the paragraph
+  imageUrl: {
+    type: String,
+    required: false,
+  },
+  //caption of the image
+  imageCaption: {
+    type: String,
+    required: false,
+  },
+  //the actual content of the paragraph
+  content: {
+    type: String,
+    required: true,
+  },
+});
+
 //form validation start
 const form = ref({
   title: "",
