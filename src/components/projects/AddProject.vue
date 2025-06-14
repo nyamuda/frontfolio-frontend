@@ -138,12 +138,16 @@
       <!-- Project main details end -->
       <!-- Project descriptive paragraphs  -->
       <Panel header="Descriptive Paragraphs" class="mb-3" toggleable>
-        <p class="m-0">
+        <p class="mb-3">
           Use this section to add in-depth descriptions of your project. You can talk about your
           goals, how you approached the build, key features, or anything else that helps explain
           your work. This is optional, but it's a great way to give more context and highlight your
           thought process, especially for portfolio reviewers or potential clients.
         </p>
+        <Divider />
+        <div class="d-flex justify-content-center align-items-center">
+          <Button icon="pi pi-plus" severity="contrast" label="New paragraph" size="small" />
+        </div>
       </Panel>
 
       <!-- Name input -->
@@ -238,6 +242,7 @@ import { useRouter } from "vue-router";
 import Panel from "primevue/panel";
 import Textarea from "primevue/textarea";
 import AutoComplete from "primevue/autocomplete";
+import Divider from "primevue/divider";
 
 // Access the store
 const authStore = useAuthStore();
@@ -249,6 +254,8 @@ onMounted(() => {
 });
 
 const isRegistering = ref(false);
+
+const descriptiveParagraphs = ref([]);
 
 //form validation start
 const registrationForm = ref({

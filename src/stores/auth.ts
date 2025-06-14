@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import type { CustomJwtPayload } from "@/interfaces/auth/jwtPayload";
-import { User } from "@/models/User";
+import { User } from "@/models/user";
 import { apiUrl } from "@/helpers/urlHelper";
 import { unexpectedErrorMessage } from "@/helpers/errorMessageHelper";
 import type { LoginDetails } from "@/interfaces/auth/loginDetails";
