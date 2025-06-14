@@ -3,7 +3,9 @@
 </template>
 
 <script setup lang="ts">
-import { content } from "@primeuix/themes/aura/accordion";
+import useVuelidate from "@vuelidate/core";
+import { required, url } from "@vuelidate/validators";
+import { ref } from "vue";
 
 //form validation start
 const form = ref({
@@ -12,5 +14,11 @@ const form = ref({
   content: "",
 });
 
-
+const rules = {
+  title: { required },
+  imageUrl: { required, url },
+  content: { required },
+};
+const v$ = useVuelidate(rules, form);
+//form validation end
 </script>
