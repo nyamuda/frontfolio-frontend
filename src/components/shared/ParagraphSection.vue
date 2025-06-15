@@ -77,18 +77,18 @@ import { required, url } from "@vuelidate/validators";
 import Textarea from "primevue/textarea";
 import { ref } from "vue";
 
-defineProps({
-  //title of the paragraph
+const props=defineProps({
+  //title for the paragraph
   title: {
     type: String,
     required: true,
   },
-  //image URL of the paragraph
+  //image URL for the paragraph
   imageUrl: {
     type: String,
     required: false,
   },
-  //caption of the image
+  //caption for the image
   imageCaption: {
     type: String,
     required: false,
