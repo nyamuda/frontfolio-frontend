@@ -73,11 +73,10 @@
 
 <script setup lang="ts">
 import useVuelidate from "@vuelidate/core";
-import { required, url } from "@vuelidate/validators";
 import Textarea from "primevue/textarea";
 import { ref } from "vue";
 
-const props=defineProps({
+const props = defineProps({
   //title for the paragraph
   title: {
     type: String,
@@ -98,21 +97,26 @@ const props=defineProps({
     type: String,
     required: true,
   },
+  //ID of the project the paragraph belongs to
+  projectId: {
+    type: Number,
+    
+  },
 });
 
 //form validation start
 const form = ref({
-  title: "",
-  imageUrl: "",
-  imageCaption: "",
-  content: "",
+  title: props.title,
+  imageUrl: props.imageUrl,
+  imageCaption: props.imageCaption,
+  content: props.content,
 });
 
 const rules = {
-  title: { required },
-  imageUrl: { url },
+  title: {},
+  imageUrl: {},
   imageCaption: {},
-  content: { required },
+  content: {},
 };
 const v$ = useVuelidate(rules, form);
 //form validation end
