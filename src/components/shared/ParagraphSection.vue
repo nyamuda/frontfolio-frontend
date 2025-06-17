@@ -92,26 +92,32 @@ const props = defineProps({
   //title for the paragraph
   title: {
     type: String,
-    required: true,
+    required: false,
+    default: () => "",
   },
   //image URL for the paragraph
   imageUrl: {
     type: String,
     required: false,
+    default: () => "",
   },
   //caption for the image
   imageCaption: {
     type: String,
     required: false,
+    default: () => "",
   },
   //the actual content of the paragraph
   content: {
     type: String,
-    required: true,
+    required: false,
+    default: () => "",
   },
   //ID of the project the paragraph belongs to
   projectId: {
     type: Number,
+    required: false,
+    default: () => 0,
   },
 });
 

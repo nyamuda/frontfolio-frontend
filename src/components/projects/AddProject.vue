@@ -145,7 +145,7 @@
           thought process, especially for portfolio reviewers or potential clients.
         </p>
         <Divider />
-        <div v-for="(paragraph, index) in descriptiveParagraphs" :key="index">
+        <div v-for="(paragraph, index) in projectStore.newProject.description" :key="index">
           <ParagraphSection />
         </div>
         <div class="d-flex justify-content-center align-items-center">
@@ -157,8 +157,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, type Ref } from "vue";
-import { useAuthStore } from "@/stores/auth";
+import { computed, onMounted, ref, type Ref } from "vue";
 import { useProjectStore } from "@/stores/project";
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers, url } from "@vuelidate/validators";
@@ -175,12 +174,12 @@ import Panel from "primevue/panel";
 import Textarea from "primevue/textarea";
 import AutoComplete from "primevue/autocomplete";
 import Divider from "primevue/divider";
-import { Paragraph } from "@/models/paragraph";
 import ParagraphSection from "../shared/ParagraphSection.vue";
 import { Project } from "@/models/project";
+import type { Paragraph } from "@/models/paragraph";
+import { ParagraphType } from "@/enums/paragraphType";
 
 // Access the store
-const authStore = useAuthStore();
 const projectStore = useProjectStore();
 const toast = useToast();
 const router = useRouter();
@@ -191,10 +190,14 @@ onMounted(() => {
   projectStore.newProject = new Project();
 });
 
-const isAddingProject = ref(false);
+//Background paragraphs
+const backgroundParagraphs: Ref<Paragraph[]> = computed(() => {
+  return projectStore.newProject.description.filter(
+    (paragraph) => paragraph.paragraphType == ParagraphType.ProjectBackground,
+  );
+});
 
-//the descriptive paragraphs that have been added by a user
-const descriptiveParagraphs: Ref<Paragraph[]> = ref([]);
+const isAddingProject = ref(false);
 
 //form validation start
 const form = ref({
@@ -204,10 +207,6 @@ const form = ref({
   githubUrl: "",
   liveUrl: "",
   techStack: [],
-  //END
-  name: "",
-  email: "",
-  password: "",
 });
 
 const rules = {
@@ -244,13 +243,14 @@ const submitForm = async () => {
           severity: "error",
           summary: "Success",
           detail: "Project has been created",
-          life:5000,
+          life: 5000,
         });
+        router.push("/projects");
       })
       .catch((message) => {
         toast.add({
           severity: "error",
-          summary: "Registration Failed",
+          summary: "Error",
           detail: message,
           life: 10000,
         });
