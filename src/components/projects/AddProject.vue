@@ -145,9 +145,7 @@
           thought process, especially for portfolio reviewers or potential clients.
         </p>
         <Divider />
-        <div v-for="(paragraph, index) in backgroundParagraphs" :key="index">
-          <ParagraphSection :paragraph="paragraph" />
-        </div>
+        <ParagraphList />
         <div class="d-flex justify-content-center align-items-center">
           <Button icon="pi pi-plus" severity="contrast" label="New paragraph" size="small" />
         </div>
@@ -157,7 +155,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, type Ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useProjectStore } from "@/stores/project";
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers, url } from "@vuelidate/validators";
@@ -174,10 +172,8 @@ import Panel from "primevue/panel";
 import Textarea from "primevue/textarea";
 import AutoComplete from "primevue/autocomplete";
 import Divider from "primevue/divider";
-import ParagraphSection from "../shared/ParagraphSection.vue";
 import { Project } from "@/models/project";
-import type { Paragraph } from "@/models/paragraph";
-import { ParagraphType } from "@/enums/paragraphType";
+import ParagraphList from "../paragraphs/ParagraphList.vue";
 
 // Access the store
 const projectStore = useProjectStore();
@@ -188,13 +184,6 @@ onMounted(() => {
   v$.value.$touch();
   //create a new empty project
   projectStore.newProject = new Project();
-});
-
-//Background paragraphs
-const backgroundParagraphs: Ref<Paragraph[]> = computed(() => {
-  return projectStore.newProject.description.filter(
-    (paragraph) => paragraph.paragraphType == ParagraphType.ProjectBackground,
-  );
 });
 
 const isAddingProject = ref(false);
