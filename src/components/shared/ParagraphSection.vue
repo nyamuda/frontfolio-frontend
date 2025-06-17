@@ -87,37 +87,13 @@ import useVuelidate from "@vuelidate/core";
 import Textarea from "primevue/textarea";
 import { ref } from "vue";
 import Button from "primevue/button";
+import { Paragraph } from "@/models/paragraph";
 
 const props = defineProps({
-  //title for the paragraph
-  title: {
-    type: String,
+  paragraph: {
+    type: Paragraph,
     required: false,
-    default: () => "",
-  },
-  //image URL for the paragraph
-  imageUrl: {
-    type: String,
-    required: false,
-    default: () => "",
-  },
-  //caption for the image
-  imageCaption: {
-    type: String,
-    required: false,
-    default: () => "",
-  },
-  //the actual content of the paragraph
-  content: {
-    type: String,
-    required: false,
-    default: () => "",
-  },
-  //ID of the project the paragraph belongs to
-  projectId: {
-    type: Number,
-    required: false,
-    default: () => 0,
+    default: () => new Paragraph(),
   },
 });
 
