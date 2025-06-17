@@ -7,5 +7,6 @@ export class Paragraph {
     public imageCaption: string,
     public content: string,
     public paragraphType: paragraphType,
+    public projectId: number,
   ) {}
 }
