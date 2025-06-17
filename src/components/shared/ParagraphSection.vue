@@ -119,6 +119,11 @@ const v$ = useVuelidate(rules, form);
 //form validation end
 
 const handleFormChange = () => {
-  emit("update", form.value);
+  const title = form.value.title;
+  const imageUrl = form.value.imageUrl;
+  const imageCaption = form.value.imageCaption;
+  const content = form.value.content;
+  const paragraph = new Paragraph(title, imageUrl, imageCaption, content);
+  emit("update", paragraph);
 };
 </script>
