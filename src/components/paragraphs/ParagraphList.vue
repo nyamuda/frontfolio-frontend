@@ -3,9 +3,9 @@
     <div>
       <ParagraphSection
         v-for="(paragraph, index) in paragraphs"
-        :key="index"
-        @update="(val: Paragraph) => updateParagraphAtIndex(index, val)"
-        @delete="() => deleteParagraphAtIndex(index)"
+        :key="paragraph.id"
+        @update="(val: Paragraph) => updateParagraphById(val)"
+        @delete="() => deleteParagraphById(paragraph.id)"
         :paragraph="paragraph"
       />
     </div>
@@ -37,18 +37,8 @@ const updateParagraphAtIndex = (targetIndex: number, updatedParagraph: Paragraph
     currentIndex === targetIndex ? updatedParagraph : paragraph,
   );
 };
-//delete a paragraph at the specified index
-const deleteParagraphAtIndex = (targetIndex: number) => {
-  console.log(paragraphs.value);
-  paragraphs.value = paragraphs.value.filter((_, index) => {
-    if (index != targetIndex) {
-      console.log(`current index is ${index} & target index is ${targetIndex}`);
-      return true;
-    } else {
-      console.log(`current index is ${index} & target index is ${targetIndex}`);
-      return false;
-    }
-  });
-  console.log(paragraphs.value);
+//delete a paragraph with the specified ID
+const deleteParagraphById = (targetId: string) => {
+  paragraphs.value = paragraphs.value.filter((paragraph) => paragraph.id != targetId);
 };
 </script>
