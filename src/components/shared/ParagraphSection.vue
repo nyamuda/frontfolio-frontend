@@ -86,13 +86,11 @@
 
 <script setup lang="ts">
 import useVuelidate from "@vuelidate/core";
-import { useProjectStore } from "@/stores/project";
 import Textarea from "primevue/textarea";
 import { ref } from "vue";
 import Button from "primevue/button";
 import { Paragraph } from "@/models/paragraph";
 
-const projectStore=useProjectStore();
 const props = defineProps({
   paragraph: {
     type: Paragraph,
@@ -100,6 +98,8 @@ const props = defineProps({
     default: () => new Paragraph(),
   },
 });
+
+const emit = defineEmits(["update", "delete"]);
 
 //form validation start
 const form = ref({
@@ -118,8 +118,7 @@ const rules = {
 const v$ = useVuelidate(rules, form);
 //form validation end
 
-
-const handleFormChange =() => {
-
-}
+const handleFormChange = () => {
+  emit("update", form.value);
+};
 </script>
