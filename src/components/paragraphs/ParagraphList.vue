@@ -31,10 +31,10 @@ const paragraphs: Ref<Paragraph[]> = ref([]);
 
 const addNewParagraph = () => paragraphs.value.push(new Paragraph());
 
-// Update the paragraph at the specified index
-const updateParagraphAtIndex = (targetIndex: number, updatedParagraph: Paragraph) => {
-  paragraphs.value = paragraphs.value.map((paragraph, currentIndex) =>
-    currentIndex === targetIndex ? updatedParagraph : paragraph,
+// Update the paragraph with the specified index
+const updateParagraphById = (targetId: string, updatedParagraph: Paragraph) => {
+  paragraphs.value = paragraphs.value.map((paragraph) =>
+    paragraph.id === targetId ? updatedParagraph : paragraph,
   );
 };
 //delete a paragraph with the specified ID
