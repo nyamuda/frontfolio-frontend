@@ -146,9 +146,6 @@
         </p>
         <Divider />
         <ParagraphList />
-        <div class="d-flex justify-content-center align-items-center">
-          <Button icon="pi pi-plus" severity="contrast" label="New paragraph" size="small" />
-        </div>
       </Panel>
     </form>
   </div>

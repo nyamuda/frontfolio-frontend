@@ -1,8 +1,11 @@
 <template>
   <section>
-    <div v-for="(paragraph, index) in paragraphs" :key="index">
+    <div>
       <ParagraphSection
+        v-for="(paragraph, index) in paragraphs"
+        :key="index"
         @update="(val: Paragraph) => updateParagraphAtIndex(index, val)"
+        @delete="() => deleteParagraphAtIndex(index)"
         :paragraph="paragraph"
       />
     </div>
@@ -21,6 +24,7 @@
 <script setup lang="ts">
 import { Paragraph } from "@/models/paragraph";
 import { ref, type Ref } from "vue";
+import ParagraphSection from "../shared/ParagraphSection.vue";
 import Button from "primevue/button";
 
 const paragraphs: Ref<Paragraph[]> = ref([]);
@@ -32,5 +36,9 @@ const updateParagraphAtIndex = (targetIndex: number, updatedParagraph: Paragraph
   paragraphs.value = paragraphs.value.map((paragraph, currentIndex) =>
     currentIndex === targetIndex ? updatedParagraph : paragraph,
   );
+};
+//delete a paragraph at the specified index
+const deleteParagraphAtIndex = (targetIndex: number) => {
+  paragraphs.value = paragraphs.value.filter((paragraph, index) => targetIndex != index);
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="card px-4 py-3 mb-3">
     <form @change="handleFormChange">
       <!-- Title input -->
       <div class="form-group mb-3">
@@ -51,7 +51,7 @@
       </div>
 
       <!-- Content input -->
-      <div class="form-group mb-3">
+      <div class="form-group">
         <FloatLabel variant="on">
           <Textarea
             id="content"
@@ -70,14 +70,13 @@
         </Message>
       </div>
       <!-- Button section -->
-      <div>
+      <div class="text-end">
         <Button
-          icon="pi pi-bookmark"
-          severity="secondary"
-          variant="text"
-          raised
+          @click="deleteParagraph"
+          icon="pi pi-trash"
+          severity="danger"
           rounded
-          aria-label="Bookmark"
+          aria-label="Delete"
         />
       </div>
     </form>
@@ -87,6 +86,9 @@
 <script setup lang="ts">
 import useVuelidate from "@vuelidate/core";
 import Textarea from "primevue/textarea";
+import { Message } from "primevue";
+import InputText from "primevue/inputtext";
+import FloatLabel from "primevue/floatlabel";
 import { ref } from "vue";
 import Button from "primevue/button";
 import { Paragraph } from "@/models/paragraph";
@@ -126,4 +128,6 @@ const handleFormChange = () => {
   const paragraph = new Paragraph(title, imageUrl, imageCaption, content);
   emit("update", paragraph);
 };
+
+const deleteParagraph = () => emit("delete");
 </script>
