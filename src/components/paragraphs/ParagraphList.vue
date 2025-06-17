@@ -39,6 +39,16 @@ const updateParagraphAtIndex = (targetIndex: number, updatedParagraph: Paragraph
 };
 //delete a paragraph at the specified index
 const deleteParagraphAtIndex = (targetIndex: number) => {
-  paragraphs.value = paragraphs.value.filter((paragraph, index) => targetIndex != index);
+  console.log(paragraphs.value);
+  paragraphs.value = paragraphs.value.filter((_, index) => {
+    if (index != targetIndex) {
+      console.log(`current index is ${index} & target index is ${targetIndex}`);
+      return true;
+    } else {
+      console.log(`current index is ${index} & target index is ${targetIndex}`);
+      return false;
+    }
+  });
+  console.log(paragraphs.value);
 };
 </script>
