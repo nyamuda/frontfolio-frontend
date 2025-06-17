@@ -237,20 +237,25 @@ const submitForm = async () => {
     projectStore.newProject.liveUrl = form.value.liveUrl;
 
     isAddingProject.value = true;
-    authStore
-      .register(registrationForm.value)
+    projectStore
+      .addNewProject()
       .then(() => {
-        router.push("/auth/email-verification/request");
+        toast.add({
+          severity: "error",
+          summary: "Success",
+          detail: "Project has been created",
+          life:5000,
+        });
       })
       .catch((message) => {
         toast.add({
           severity: "error",
           summary: "Registration Failed",
           detail: message,
-          life: 20000,
+          life: 10000,
         });
       })
-      .finally(() => (isRegistering.value = false));
+      .finally(() => (isAddingProject.value = false));
   }
 };
 </script>
