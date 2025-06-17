@@ -136,8 +136,8 @@
         </div>
       </Panel>
       <!-- Project main details end -->
-      <!-- Project descriptive paragraphs  -->
-      <Panel header="Project Background" class="mb-3" toggleable>
+      <!-- Project background paragraphs start  -->
+      <Panel header="Project Background" class="mb-3" toggleable :collapsed="true">
         <p class="mb-3">
           Use this section to add in-depth descriptions of your project. You can talk about your
           goals, how you approached the build, key features, or anything else that helps explain
@@ -147,6 +147,31 @@
 
         <ParagraphList />
       </Panel>
+      <!-- Project background paragraphs end  -->
+      <!-- Project challenges paragraphs start  -->
+      <Panel header="Project Challenges" class="mb-3" toggleable :collapsed="true">
+        <p class="mb-3">
+          Use this section to add in-depth descriptions of your project. You can talk about your
+          goals, how you approached the build, key features, or anything else that helps explain
+          your work. This is optional, but it's a great way to give more context and highlight your
+          thought process, especially for portfolio reviewers or potential clients.
+        </p>
+
+        <ParagraphList />
+      </Panel>
+      <!-- Project challenges paragraphs end  -->
+      <!-- Project achievements paragraphs start  -->
+      <Panel header="Project Achievements" class="mb-3" toggleable :collapsed="true">
+        <p class="mb-3">
+          Use this section to add in-depth descriptions of your project. You can talk about your
+          goals, how you approached the build, key features, or anything else that helps explain
+          your work. This is optional, but it's a great way to give more context and highlight your
+          thought process, especially for portfolio reviewers or potential clients.
+        </p>
+
+        <ParagraphList />
+      </Panel>
+      <!-- Project achievements paragraphs end  -->
     </form>
   </div>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <section>
     <form @change="handleFormChange" class="mb-4">
-      <Divider align="center" type="dotted"> 📝 Paragraph {{ index + 1 }} </Divider>
+      <Divider align="center" type="dashed"> 📝 Paragraph {{ index + 1 }} </Divider>
       <!-- Title input -->
       <div class="form-group mb-3">
         <FloatLabel variant="on">
