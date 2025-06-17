@@ -78,7 +78,7 @@ import ProgressSpinner from "primevue/progressspinner";
 import { useToast } from "primevue/usetoast";
 import OtpSection from "../shared/OtpSection.vue";
 import TitleSection from "../shared/TitleSection.vue";
-import type { sendingOtpResult } from "@/types/sendingOtpResult";
+import type { sendingOtpResult } from "@/enums/sendingOtpResult";
 import { useRouter } from "vue-router";
 import Button from "primevue/button";
 

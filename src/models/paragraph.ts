@@ -1,4 +1,4 @@
-import type { paragraphType } from "@/types/paragraphType";
+import type { paragraphType } from "@/enums/paragraphType";
 
 export class Paragraph {
   public constructor(

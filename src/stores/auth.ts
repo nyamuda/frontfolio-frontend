@@ -8,7 +8,7 @@ import { apiUrl } from "@/helpers/urlHelper";
 import { unexpectedErrorMessage } from "@/helpers/errorMessageHelper";
 import type { LoginDetails } from "@/interfaces/auth/loginDetails";
 import type { RegistrationDetails } from "@/interfaces/auth/registerDetails";
-import type { sendingOtpResult } from "@/types/sendingOtpResult";
+import type { sendingOtpResult } from "@/enums/sendingOtpResult";
 
 export const useAuthStore = defineStore("auth", () => {
   const isAuthenticated = ref(false);
