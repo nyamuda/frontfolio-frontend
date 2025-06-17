@@ -145,7 +145,7 @@
           thought process, especially for portfolio reviewers or potential clients.
         </p>
         <Divider />
-        <div v-for="(paragraph, index) in projectStore.newProject.description" :key="index">
+        <div v-for="(paragraph, index) in backgroundParagraphs" :key="index">
           <ParagraphSection />
         </div>
         <div class="d-flex justify-content-center align-items-center">
