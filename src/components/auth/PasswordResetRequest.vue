@@ -25,7 +25,10 @@
           <!-- Otp input section -->
           <!-- Displayed if OTP was successfully sent or hasn't been sent yet -->
           <OtpSection
-            v-if="otpSendingResult == 'success' || otpSendingResult == 'nothingSent'"
+            v-if="
+              otpSendingResult == SendingOtpResult.Success ||
+              otpSendingResult == SendingOtpResult.NothingSent
+            "
             :callback-to-verify="verifyPasswordResetCode"
             :is-verifying-otp="authStore.isVerifyingPasswordResetOtp"
             :title="otpSectionTitleAndMessage.title"
@@ -33,7 +36,7 @@
           />
           <!-- Displayed gf an attempt to resend OTP was a failure -->
           <div
-            v-else-if="otpSendingResult == 'failure'"
+            v-else-if="otpSendingResult == SendingOtpResult.Failure"
             class="d-flex flex-column align-items-center text-danger"
           >
             <i class="pi pi-times-circle mb-2" style="font-size: 3rem"></i>
@@ -54,9 +57,9 @@
         <RequestCodeButton
           v-if="authStore.userEmail"
           :button-label="
-            otpSendingResult == 'success'
+            otpSendingResult == SendingOtpResult.Success
               ? 'Resend Code'
-              : otpSendingResult == 'failure'
+              : otpSendingResult == SendingOtpResult.Failure
                 ? 'Retry Sending Code'
                 : 'Send Code'
           "
@@ -78,7 +81,7 @@ import ProgressSpinner from "primevue/progressspinner";
 import { useToast } from "primevue/usetoast";
 import OtpSection from "../shared/OtpSection.vue";
 import TitleSection from "../shared/TitleSection.vue";
-import type { sendingOtpResult } from "@/enums/sendingOtpResult";
+import { SendingOtpResult } from "@/enums/sendingOtpResult";
 import { useRouter } from "vue-router";
 import Button from "primevue/button";
 
@@ -86,15 +89,16 @@ const authStore = useAuthStore();
 const toast = useToast();
 const router = useRouter();
 const isSendingResetCode = ref(false);
-const otpSendingResult: Ref<sendingOtpResult> = ref("nothingSent");
+const otpSendingResult: Ref<SendingOtpResult> = ref(SendingOtpResult.NothingSent);
 
 //title and message for the OTP section
 //based on whether an OTP was sent or not
 const otpSectionTitleAndMessage: Ref<{ title: string; message: string }> = computed(() => {
   return {
-    title: otpSendingResult.value === "success" ? "Reset Code Sent" : "Get Reset Code",
+    title:
+      otpSendingResult.value === SendingOtpResult.Success ? "Reset Code Sent" : "Get Reset Code",
     message:
-      otpSendingResult.value === "success"
+      otpSendingResult.value === SendingOtpResult.Success
         ? "Please enter the password reset code we sent to your email. <br/> If you don’t see it in your inbox, be sure to check your spam or junk folder."
         : authStore.userEmail
           ? "We'll send a password reset code to"
@@ -110,7 +114,7 @@ const requestResetCode = async () => {
     authStore
       .requestPasswordReset(email)
       .then(() => {
-        otpSendingResult.value = "success";
+        otpSendingResult.value = SendingOtpResult.Success;
         toast.add({
           severity: "success",
           summary: "Code Sent",
@@ -119,7 +123,7 @@ const requestResetCode = async () => {
         });
       })
       .catch((message) => {
-        otpSendingResult.value = "failure";
+        otpSendingResult.value = SendingOtpResult.Failure;
         toast.add({
           severity: "error",
           summary: "Sending Failed",
@@ -158,6 +162,6 @@ const verifyPasswordResetCode = async (otpCode: string) => {
 
 //Change the value of otpSendingResult to "nothingSent" (the default value)
 //This will allow the OTPSection component to be displayed
-//and thus allow the user to edit their email in call a password reset request was a "failure"
-const makeOtpSendingResultDefault = () => (otpSendingResult.value = "nothingSent");
+//and thus allow the user to edit their email if a password reset request was a "failure"
+const makeOtpSendingResultDefault = () => (otpSendingResult.value = SendingOtpResult.NothingSent);
 </script>

@@ -1,4 +1,4 @@
-import type { projectStatus } from "@/enums/projectStatus";
+import type { ProjectStatus } from "@/enums/projectStatus";
 import type { Paragraph } from "./paragraph";
 
 export class Project {
@@ -9,7 +9,7 @@ export class Project {
     public githubUrl: string,
     public imageUrl: string,
     public liveUrl: string,
-    public projectStatus: projectStatus,
+    public projectStatus: ProjectStatus,
     public description: Paragraph[],
   ) {}
 }

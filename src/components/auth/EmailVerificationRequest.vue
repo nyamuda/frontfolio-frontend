@@ -26,8 +26,8 @@
           <!-- Displayed if OTP was successfully sent or hasn't been sent yet -->
           <OtpSection
             v-if="
-              authStore.emailConfirmationOtpSendingResult == 'success' ||
-              authStore.emailConfirmationOtpSendingResult == 'nothingSent'
+              authStore.emailConfirmationOtpSendingResult == SendingOtpResult.Success ||
+              authStore.emailConfirmationOtpSendingResult == SendingOtpResult.NothingSent
             "
             :callback-to-verify="verifyEmail"
             :is-verifying-otp="authStore.isVerifyingEmailOtp"
@@ -36,7 +36,7 @@
           />
           <!-- Displayed gf an attempt to resend OTP was a failure -->
           <div
-            v-else-if="authStore.emailConfirmationOtpSendingResult == 'failure'"
+            v-else-if="authStore.emailConfirmationOtpSendingResult == SendingOtpResult.Failure"
             class="d-flex flex-column align-items-center text-danger"
           >
             <i class="pi pi-times-circle mb-2" style="font-size: 2rem"></i>
@@ -67,6 +67,7 @@ import { useToast } from "primevue/usetoast";
 import OtpSection from "../shared/OtpSection.vue";
 import TitleSection from "../shared/TitleSection.vue";
 import { useRouter } from "vue-router";
+import { SendingOtpResult } from "@/enums/sendingOtpResult";
 
 const authStore = useAuthStore();
 const toast = useToast();
@@ -78,11 +79,11 @@ const isSendingEmailVerificationCode = ref(false);
 const otpSectionTitleAndMessage: Ref<{ title: string; message: string }> = computed(() => {
   return {
     title:
-      authStore.emailConfirmationOtpSendingResult === "success"
+      authStore.emailConfirmationOtpSendingResult === SendingOtpResult.Success
         ? "Verification Code Sent"
         : "Request a Verification Code",
     message:
-      authStore.emailConfirmationOtpSendingResult === "success"
+      authStore.emailConfirmationOtpSendingResult === SendingOtpResult.Success
         ? "Please enter the verification code we sent to your email. <br/> If you don’t see it in your inbox, be sure to check your spam or junk folder."
         : authStore.userEmail
           ? "We'll send an email verification code to"
@@ -104,9 +105,9 @@ const requestEmailVerificationCode = async () => {
         life: 10000,
       });
     }
-    authStore.emailConfirmationOtpSendingResult = "success";
+    authStore.emailConfirmationOtpSendingResult = SendingOtpResult.Success;
   } catch (error) {
-    authStore.emailConfirmationOtpSendingResult = "failure";
+    authStore.emailConfirmationOtpSendingResult = SendingOtpResult.Failure;
     toast.add({
       severity: "error",
       summary: "Sending Failed",

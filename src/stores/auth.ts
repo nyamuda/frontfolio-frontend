@@ -8,7 +8,7 @@ import { apiUrl } from "@/helpers/urlHelper";
 import { unexpectedErrorMessage } from "@/helpers/errorMessageHelper";
 import type { LoginDetails } from "@/interfaces/auth/loginDetails";
 import type { RegistrationDetails } from "@/interfaces/auth/registerDetails";
-import type { sendingOtpResult } from "@/enums/sendingOtpResult";
+import { SendingOtpResult } from "@/enums/sendingOtpResult";
 
 export const useAuthStore = defineStore("auth", () => {
   const isAuthenticated = ref(false);
@@ -19,7 +19,7 @@ export const useAuthStore = defineStore("auth", () => {
   const isVerifyingEmailOtp: Ref<boolean> = ref(false);
   //The result of sending an email verification code to use
   //e.g success, failure
-  const emailConfirmationOtpSendingResult: Ref<sendingOtpResult> = ref("nothingSent");
+  const emailConfirmationOtpSendingResult: Ref<SendingOtpResult> = ref(SendingOtpResult.NothingSent);
 
   //attempted url if the user is not logged in
   //and they're redirected to the log in page
@@ -119,11 +119,11 @@ export const useAuthStore = defineStore("auth", () => {
       axios
         .post(url, { email })
         .then(() => {
-          emailConfirmationOtpSendingResult.value = "success";
+          emailConfirmationOtpSendingResult.value = SendingOtpResult.Success;
           resolve({});
         })
         .catch((error) => {
-          emailConfirmationOtpSendingResult.value = "failure";
+          emailConfirmationOtpSendingResult.value = SendingOtpResult.Failure;
           const message = error.response?.data?.message || unexpectedErrorMessage();
           reject(message);
         });
