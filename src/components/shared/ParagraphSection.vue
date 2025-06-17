@@ -68,6 +68,17 @@
         </div>
       </Message>
     </div>
+    <!-- Button section -->
+    <div>
+      <Button
+        icon="pi pi-bookmark"
+        severity="secondary"
+        variant="text"
+        raised
+        rounded
+        aria-label="Bookmark"
+      />
+    </div>
   </section>
 </template>
 
@@ -75,6 +86,7 @@
 import useVuelidate from "@vuelidate/core";
 import Textarea from "primevue/textarea";
 import { ref } from "vue";
+import Button from "primevue/button";
 
 const props = defineProps({
   //title for the paragraph
@@ -100,7 +112,6 @@ const props = defineProps({
   //ID of the project the paragraph belongs to
   projectId: {
     type: Number,
-    
   },
 });
 
