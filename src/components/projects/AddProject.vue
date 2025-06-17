@@ -178,6 +178,7 @@ import AutoComplete from "primevue/autocomplete";
 import Divider from "primevue/divider";
 import { Paragraph } from "@/models/paragraph";
 import ParagraphSection from "../shared/ParagraphSection.vue";
+import { Project } from "@/models/project";
 
 // Access the store
 const authStore = useAuthStore();
@@ -187,6 +188,8 @@ const router = useRouter();
 
 onMounted(() => {
   v$.value.$touch();
+//create a new empty project
+projectStore.newProject = new Project()
 });
 
 const isRegistering = ref(false);

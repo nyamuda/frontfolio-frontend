@@ -3,19 +3,21 @@ import { defineStore } from "pinia";
 import type { Project } from "@/models/project";
 import { apiUrl } from "@/helpers/urlHelper";
 import axios from "axios";
+import { unexpectedErrorMessage } from "@/helpers/errorMessageHelper";
 
 export const useProjectStore = defineStore("project", () => {
   const projects: Ref<Project[]> = ref([]);
   const newProject: Ref<Project | null> = ref(null);
 
   //submit a new portfolio project
-  const addNewProject = (project: Project) => {
+  const addNewProject = () => {
     return new Promise((resolve, reject) => {
       const url = `${apiUrl}/projects`;
       //add an access token to the request to access the protected route
       setAuthToken();
+      //make the request
       axios
-        .post(url, project)
+        .post(url, newProject.value)
         .then(() => resolve({}))
         .catch((error) => {
           const message = error.response?.data?.message || unexpectedErrorMessage();
@@ -35,5 +37,5 @@ export const useProjectStore = defineStore("project", () => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   };
 
-  return { projects, newProject };
+  return { projects, newProject, addNewProject };
 });
