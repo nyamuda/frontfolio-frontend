@@ -2,7 +2,7 @@
   <section>
     <div>
       <ParagraphSection
-        v-for="(paragraph, index) in paragraphs"
+        v-for="paragraph in paragraphs"
         :key="paragraph.id"
         @update="(val: Paragraph) => updateParagraphById(val)"
         @delete="() => deleteParagraphById(paragraph.id)"
@@ -31,10 +31,10 @@ const paragraphs: Ref<Paragraph[]> = ref([]);
 
 const addNewParagraph = () => paragraphs.value.push(new Paragraph());
 
-// Update the paragraph with the specified index
-const updateParagraphById = (targetId: string, updatedParagraph: Paragraph) => {
+// Update the paragraph with the specified ID
+const updateParagraphById = (updatedParagraph: Paragraph) => {
   paragraphs.value = paragraphs.value.map((paragraph) =>
-    paragraph.id === targetId ? updatedParagraph : paragraph,
+    paragraph.id === updatedParagraph.id ? updatedParagraph : paragraph,
   );
 };
 //delete a paragraph with the specified ID
