@@ -1,13 +1,13 @@
 import { ref, type Ref } from "vue";
 import { defineStore } from "pinia";
-import type { Project } from "@/models/project";
+import { Project } from "@/models/project";
 import { apiUrl } from "@/helpers/urlHelper";
 import axios from "axios";
 import { unexpectedErrorMessage } from "@/helpers/errorMessageHelper";
 
 export const useProjectStore = defineStore("project", () => {
   const projects: Ref<Project[]> = ref([]);
-  const newProject: Ref<Project | null> = ref(null);
+  const newProject: Ref<Project> = ref(new Project());
 
   //submit a new portfolio project
   const addNewProject = () => {

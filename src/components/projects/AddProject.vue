@@ -152,7 +152,6 @@
           <Button icon="pi pi-plus" severity="contrast" label="New paragraph" size="small" />
         </div>
       </Panel>
-
     </form>
   </div>
 </template>
@@ -162,7 +161,7 @@ import { onMounted, ref, type Ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useProjectStore } from "@/stores/project";
 import { useVuelidate } from "@vuelidate/core";
-import { required,helpers, url } from "@vuelidate/validators";
+import { required, helpers, url } from "@vuelidate/validators";
 import { Message } from "primevue";
 import InputText from "primevue/inputtext";
 import FloatLabel from "primevue/floatlabel";
@@ -182,17 +181,17 @@ import { Project } from "@/models/project";
 
 // Access the store
 const authStore = useAuthStore();
-const projectStore=useProjectStore();
+const projectStore = useProjectStore();
 const toast = useToast();
 const router = useRouter();
 
 onMounted(() => {
   v$.value.$touch();
-//create a new empty project
-projectStore.newProject = new Project()
+  //create a new empty project
+  projectStore.newProject = new Project();
 });
 
-const isRegistering = ref(false);
+const isAddingProject = ref(false);
 
 //the descriptive paragraphs that have been added by a user
 const descriptiveParagraphs: Ref<Paragraph[]> = ref([]);
@@ -224,13 +223,20 @@ const rules = {
     ),
   },
 };
-const v$ = useVuelidate(rules,form);
+const v$ = useVuelidate(rules, form);
 //form validation end
 
 const submitForm = async () => {
   const isFormCorrect = await v$.value.$validate();
   if (isFormCorrect) {
-    isRegistering.value = true;
+    //save the project main details to the store
+    projectStore.newProject.title = form.value.title;
+    projectStore.newProject.summary = form.value.summary;
+    projectStore.newProject.imageUrl = form.value.imageUrl;
+    projectStore.newProject.githubUrl = form.value.githubUrl;
+    projectStore.newProject.liveUrl = form.value.liveUrl;
+
+    isAddingProject.value = true;
     authStore
       .register(registrationForm.value)
       .then(() => {
