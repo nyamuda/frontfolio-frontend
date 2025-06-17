@@ -146,7 +146,7 @@
         </p>
         <Divider />
         <div v-for="(paragraph, index) in backgroundParagraphs" :key="index">
-          <ParagraphSection />
+          <ParagraphSection :paragraph="paragraph" />
         </div>
         <div class="d-flex justify-content-center align-items-center">
           <Button icon="pi pi-plus" severity="contrast" label="New paragraph" size="small" />
