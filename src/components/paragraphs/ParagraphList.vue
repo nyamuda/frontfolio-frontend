@@ -2,7 +2,8 @@
   <section>
     <div>
       <ParagraphSection
-        v-for="paragraph in paragraphs"
+        v-for="(paragraph, index) in paragraphs"
+        :index="index"
         :key="paragraph.id"
         @update="(val: Paragraph) => updateParagraphById(val)"
         @delete="() => deleteParagraphById(paragraph.id)"

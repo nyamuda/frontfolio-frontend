@@ -1,6 +1,7 @@
 <template>
-  <section class="card px-4 py-3 mb-3">
-    <form @change="handleFormChange">
+  <section>
+    <form @change="handleFormChange" class="mb-4">
+      <Divider align="center" type="dotted"> 📝 Paragraph {{ index + 1 }} </Divider>
       <!-- Title input -->
       <div class="form-group mb-3">
         <FloatLabel variant="on">
@@ -92,12 +93,18 @@ import FloatLabel from "primevue/floatlabel";
 import { ref } from "vue";
 import Button from "primevue/button";
 import { Paragraph } from "@/models/paragraph";
+import Divider from "primevue/divider";
 
 const props = defineProps({
   paragraph: {
     type: Paragraph,
     required: false,
     default: () => new Paragraph(),
+  },
+  index: {
+    type: Number,
+    required: false,
+    default: () => 0,
   },
 });
 
