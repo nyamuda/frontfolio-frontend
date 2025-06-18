@@ -15,7 +15,7 @@
         @click="addNewParagraph"
         icon="pi pi-plus"
         severity="contrast"
-        label=""
+        :label="buttonLabel"
         size="small"
       />
     </div>
@@ -24,14 +24,14 @@
 
 <script setup lang="ts">
 import { Paragraph } from "@/models/paragraph";
-import { ref, type Ref } from "vue";
+import { ref, type PropType, type Ref } from "vue";
 import ParagraphSection from "../shared/ParagraphSection.vue";
 import Button from "primevue/button";
-import { ParagraphType } from "@/types/paragraphType";
+import type { ParagraphType } from "@/types/paragraphType";
 
-defineProps({
+const props = defineProps({
   paragraphType: {
-    type: String,
+    type: String as PropType<ParagraphType>,
     required: true,
   },
   buttonLabel: {
@@ -43,7 +43,13 @@ defineProps({
 
 const paragraphs: Ref<Paragraph[]> = ref([]);
 
-const addNewParagraph = () => paragraphs.value.push(new Paragraph());
+//Add a new paragraph to the list of paragraphs when the button is clicked
+const addNewParagraph = () => {
+  const newParagraph = new Paragraph();
+  //set the paragraph type e.g project background, project challenge etc
+  newParagraph.paragraphType = props.paragraphType;
+  paragraphs.value.push(newParagraph);
+};
 
 // Update the paragraph with the specified ID
 const updateParagraphById = (updatedParagraph: Paragraph) => {
