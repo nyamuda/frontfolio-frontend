@@ -156,7 +156,7 @@
           wonderful way to show your thinking and help others understand your work and vision.
         </p>
 
-        <ParagraphList />
+        <ParagraphList paragraphType="ProjectBackground" />
       </Panel>
       <!-- Project background paragraphs end  -->
       <!-- Project challenges paragraphs start  -->
@@ -173,7 +173,7 @@
           skills. Sharing challenges shows how you work through problems.
         </p>
 
-        <ParagraphList />
+        <ParagraphList paragraphType="ProjectChallenge" buttonLabel="Add challenge" />
       </Panel>
       <!-- Project challenges paragraphs end  -->
       <!-- Project achievements paragraphs start  -->
@@ -189,7 +189,7 @@
           complex feature you implemented, a skill you developed, or positive feedback you received.
           It’s a great way to show the impact and results of your work.
         </p>
-        <ParagraphList />
+        <ParagraphList paragraphType="ProjectAchievement" buttonLabel="Add achievement" />
       </Panel>
       <!-- Project achievements paragraphs end  -->
     </form>

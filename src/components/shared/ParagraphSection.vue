@@ -137,11 +137,13 @@ const v$ = useVuelidate(rules, form);
 //form validation end
 
 const handleFormChange = () => {
-  const title = form.value.title;
-  const imageUrl = form.value.imageUrl;
-  const imageCaption = form.value.imageCaption;
-  const content = form.value.content;
-  const paragraph = new Paragraph(title, imageUrl, imageCaption, content);
+  //save the new paragraph details
+  const paragraph = props.paragraph;
+  paragraph.title = form.value.title;
+  paragraph.imageUrl = form.value.imageUrl;
+  paragraph.imageCaption = form.value.imageCaption;
+  paragraph.content = form.value.content;
+
   emit("update", paragraph);
 };
 
