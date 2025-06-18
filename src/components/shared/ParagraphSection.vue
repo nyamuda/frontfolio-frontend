@@ -1,7 +1,7 @@
 <template>
   <section>
     <form @change="handleFormChange" class="mb-4">
-      <Divider align="center" type="dashed"> 📝 Paragraph {{ index + 1 }} </Divider>
+      <Divider align="center" type="dashed"> 📝 {{ dividerLabel }} {{ index + 1 }} </Divider>
       <!-- Title input -->
       <div class="form-group mb-3">
         <FloatLabel variant="on">
@@ -99,7 +99,7 @@ import Textarea from "primevue/textarea";
 import { Message } from "primevue";
 import InputText from "primevue/inputtext";
 import FloatLabel from "primevue/floatlabel";
-import { ref } from "vue";
+import { computed, ref, type Ref } from "vue";
 import Button from "primevue/button";
 import { Paragraph } from "@/models/paragraph";
 import Divider from "primevue/divider";
@@ -118,6 +118,18 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["update", "delete"]);
+
+//Text for the divider
+const dividerLabel: Ref<string> = computed(() => {
+  switch (props.paragraph.paragraphType) {
+    case "ProjectChallenge":
+      return "Challenge";
+    case "ProjectAchievement":
+      return "Achievement";
+    default:
+      return "Paragraph";
+  }
+});
 
 //form validation start
 const form = ref({
