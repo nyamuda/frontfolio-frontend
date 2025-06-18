@@ -161,7 +161,13 @@
       </Panel>
       <!-- Project background paragraphs end  -->
       <!-- Project challenges paragraphs start  -->
-      <Panel header="Project Challenges" class="mb-3" toggleable :collapsed="true">
+      <Panel class="mb-3" toggleable :collapsed="true">
+        <template #header>
+          <div class="d-flex justify-content-start align-items-center gap-1 fw-bold">
+            <i class="pi pi-exclamation-triangle mt-1"></i>
+            <span class="fs-4 text-secondary">Project Challenges</span>
+          </div>
+        </template>
         <p class="mb-3">
           Use this section to add in-depth descriptions of your project. You can talk about your
           goals, how you approached the build, key features, or anything else that helps explain
