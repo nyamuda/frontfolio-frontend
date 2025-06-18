@@ -168,10 +168,9 @@
           </div>
         </template>
         <p class="mb-3">
-          Use this section to add in-depth descriptions of your project. You can talk about your
-          goals, how you approached the build, key features, or anything else that helps explain
-          your work. This is optional, but it's a great way to give more context and highlight your
-          thought process, especially for portfolio reviewers or potential clients.
+          Use this section to describe any challenges or obstacles you faced while building the
+          project. It could be technical issues, time constraints, or anything that tested your
+          skills. Sharing challenges shows how you work through problems.
         </p>
 
         <ParagraphList />
