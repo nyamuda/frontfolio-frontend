@@ -189,7 +189,6 @@
           complex feature you implemented, a skill you developed, or positive feedback you received.
           It’s a great way to show the impact and results of your work.
         </p>
-
         <ParagraphList />
       </Panel>
       <!-- Project achievements paragraphs end  -->

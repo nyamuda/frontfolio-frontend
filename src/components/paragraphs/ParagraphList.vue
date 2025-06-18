@@ -15,7 +15,7 @@
         @click="addNewParagraph"
         icon="pi pi-plus"
         severity="contrast"
-        label="New paragraph"
+        label=""
         size="small"
       />
     </div>
@@ -27,6 +27,19 @@ import { Paragraph } from "@/models/paragraph";
 import { ref, type Ref } from "vue";
 import ParagraphSection from "../shared/ParagraphSection.vue";
 import Button from "primevue/button";
+import { ParagraphType } from "@/types/paragraphType";
+
+defineProps({
+  paragraphType: {
+    type: String,
+    required: true,
+  },
+  buttonLabel: {
+    type: String,
+    required: false,
+    default: () => "New paragraph",
+  },
+});
 
 const paragraphs: Ref<Paragraph[]> = ref([]);
 
