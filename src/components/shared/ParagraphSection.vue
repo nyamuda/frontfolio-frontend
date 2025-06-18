@@ -5,7 +5,13 @@
       <!-- Title input -->
       <div class="form-group mb-3">
         <FloatLabel variant="on">
-          <InputText fluid id="title" v-model="v$.title.$model" :invalid="v$.title.$error" />
+          <InputText
+            size="small"
+            fluid
+            id="title"
+            v-model="v$.title.$model"
+            :invalid="v$.title.$error"
+          />
           <label for="title">Title</label>
         </FloatLabel>
         <Message size="small" severity="error" v-if="v$.title.$error" variant="simple">
@@ -18,6 +24,7 @@
       <div class="form-group mb-3">
         <FloatLabel variant="on">
           <InputText
+            size="small"
             fluid
             id="imageUrl"
             type="url"
@@ -38,6 +45,7 @@
         <FloatLabel variant="on">
           <InputText
             fluid
+            size="small"
             id="imageCaption"
             v-model="v$.imageCaption.$model"
             :invalid="v$.imageCaption.$error"
@@ -56,9 +64,10 @@
         <FloatLabel variant="on">
           <Textarea
             id="content"
+            size="small"
             v-model="v$.content.$model"
             :invalid="v$.content.$error"
-            rows="4"
+            rows="6"
             class="w-100"
             style="resize: none"
           />

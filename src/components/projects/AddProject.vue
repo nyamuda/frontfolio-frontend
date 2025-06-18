@@ -15,7 +15,13 @@
     </div>
     <form class="">
       <!-- Project main details start -->
-      <Panel header="Main Details" class="mb-3" toggleable>
+      <Panel class="mb-3" toggleable>
+        <template #header>
+          <div class="d-flex justify-content-start align-items-center gap-1 fw-bold">
+            <i class="pi pi-info-circle mt-1"></i>
+            <span class="fs-4 text-secondary">Main Details</span>
+          </div>
+        </template>
         <!-- Title input -->
         <div class="form-group mb-3">
           <FloatLabel variant="on">
@@ -223,9 +229,9 @@ const form = ref({
 const rules = {
   title: { required },
   summary: { required },
-  imageUrl: { required, url },
-  githubUrl: { required, url },
-  liveUrl: { required, url },
+  imageUrl: { url },
+  githubUrl: { url },
+  liveUrl: { url },
   techStack: {
     required: helpers.withMessage(
       "You need to include at least one tool, language, or framework used in this project",
