@@ -42,27 +42,6 @@
         </Message>
       </div>
 
-      <!-- Solution input -->
-      <div class="form-group">
-        <FloatLabel variant="on">
-          <Textarea
-            id="solution"
-            size="small"
-            v-model="v$.solution.$model"
-            :invalid="v$.solution.$error"
-            rows="6"
-            class="w-100"
-            style="resize: none"
-          />
-          <label for="solution">solution</label>
-        </FloatLabel>
-        <Message size="small" severity="error" v-if="v$.solution.$error" variant="simple">
-          <div v-for="error of v$.solution.$errors" :key="error.$uid">
-            <div>{{ error.$message }}</div>
-          </div>
-        </Message>
-      </div>
-
       <!-- Button section -->
       <div class="text-end">
         <Button

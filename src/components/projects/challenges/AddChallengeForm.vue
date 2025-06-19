@@ -66,7 +66,7 @@
       <!-- Button section -->
       <div class="text-end">
         <Button
-          @click="deleteParagraph"
+          @click="deleteChallenge"
           icon="pi pi-trash"
           severity="danger"
           rounded
@@ -127,5 +127,5 @@ const handleFormChange = () => {
   emit("update", challenge);
 };
 
-const deleteParagraph = () => emit("delete");
+const deleteChallenge = () => emit("delete");
 </script>
