@@ -159,7 +159,8 @@
         <ParagraphList paragraphType="ProjectBackground" />
       </Panel>
       <!-- Project background paragraphs end  -->
-      <!-- Project challenges paragraphs start  -->
+
+      <!-- Project challenges start  -->
       <Panel class="mb-3" toggleable :collapsed="true">
         <template #header>
           <div class="d-flex justify-content-start align-items-center gap-1 fw-bold text-secondary">
@@ -172,11 +173,11 @@
           project. It could be technical issues, time constraints, or anything that tested your
           skills. Sharing challenges shows how you work through problems.
         </p>
-
         <ChallengeListEditor />
       </Panel>
-      <!-- Project challenges paragraphs end  -->
-      <!-- Project achievements paragraphs start  -->
+      <!-- Project challenges end  -->
+
+      <!-- Project achievements start  -->
       <Panel class="mb-3" toggleable :collapsed="true">
         <template #header>
           <div class="d-flex justify-content-start align-items-center gap-1 fw-bold text-secondary">
@@ -186,12 +187,29 @@
         </template>
         <p class="mb-3">
           Use this section to highlight what you’re most proud of in the project. This could be a
+          complex feature you implemented or a skill you developed. It’s a great way to show the
+          impact and results of your work.
+        </p>
+        <AchievementListEditor />
+      </Panel>
+      <!-- Project achievements end  -->
+
+      <!-- Project feedback start  -->
+      <Panel class="mb-3" toggleable :collapsed="true">
+        <template #header>
+          <div class="d-flex justify-content-start align-items-center gap-1 fw-bold text-secondary">
+            <i class="pi pi-comment mt-1" style="font-size: 1.2rem"></i>
+            <span class="fs-4">Project Feedback</span>
+          </div>
+        </template>
+        <p class="mb-3">
+          Use this section to highlight what you’re most proud of in the project. This could be a
           complex feature you implemented, a skill you developed, or positive feedback you received.
           It’s a great way to show the impact and results of your work.
         </p>
         <AchievementListEditor />
       </Panel>
-      <!-- Project achievements paragraphs end  -->
+      <!-- Project feedback end  -->
     </form>
   </div>
 </template>

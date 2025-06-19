@@ -1,5 +1,8 @@
 import { ProjectStatus } from "@/enums/projectStatus";
 import type { Paragraph } from "./paragraph";
+import type { Challenge } from "./challenge";
+import type { Achievement } from "./achievement";
+import type { Feedback } from "./feedback";
 
 export class Project {
   public constructor(
@@ -10,6 +13,9 @@ export class Project {
     public imageUrl: string = "",
     public liveUrl: string = "",
     public projectStatus: ProjectStatus = ProjectStatus.Draft,
-    public description: Paragraph[] = [],
+    public background: Paragraph[] = [],
+    public challenges: Challenge[] = [],
+    public achievements: Achievement[] = [],
+    public feedback: Feedback[] = [],
   ) {}
 }
