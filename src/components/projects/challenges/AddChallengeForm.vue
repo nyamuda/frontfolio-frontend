@@ -101,7 +101,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update", "delete"]);
+const emit = defineEmits(["update", "delete", "isValid"]);
 
 //form validation start
 const form = ref({
@@ -118,13 +118,17 @@ const rules = {
 const v$ = useVuelidate(rules, form);
 //form validation end
 
-const handleFormChange = () => {
+const handleFormChange = async () => {
   //save the new form updated details
   const challenge = props.challenge;
   challenge.title = form.value.title;
   challenge.problem = form.value.problem;
   challenge.solution = form.value.solution;
   emit("update", challenge);
+
+  //is the form valid or not
+  const isFormValid: boolean = await v$.value.$validate();
+  emit("isValid", isFormValid);
 };
 
 const deleteChallenge = () => emit("delete");
