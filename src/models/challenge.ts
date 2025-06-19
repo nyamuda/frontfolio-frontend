@@ -2,7 +2,7 @@ import type { Project } from "./project";
 
 export class Challenge {
   public constructor(
-    public Id: string = crypto.randomUUID(),
+    public id: string = crypto.randomUUID(),
     public title: string = "",
     public problem: string = "",
     public solution: string = "",
