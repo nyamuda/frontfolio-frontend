@@ -159,6 +159,9 @@
         <ParagraphList
           paragraphType="ProjectBackground"
           @paragraphs="(paragraphs: Paragraph[]) => (project.background = paragraphs)"
+          @is-any-paragraph-invalid="
+            (isAnyInvalid: boolean) => (isAnyBackgroundParagraphInvalid = isAnyInvalid)
+          "
         />
       </Panel>
       <!-- Project background paragraphs end  -->
@@ -254,6 +257,7 @@ onMounted(() => {
 
 //the new project
 const project: Ref<Project> = ref(new Project());
+const isAnyBackgroundParagraphInvalid: Ref<boolean> = ref(false);
 
 const isAddingProject = ref(false);
 
