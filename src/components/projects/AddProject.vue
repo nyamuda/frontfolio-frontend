@@ -163,6 +163,7 @@
             (isAnyInvalid: boolean) => (isAnyBackgroundParagraphInvalid = isAnyInvalid)
           "
         />
+        {{ isAnyBackgroundParagraphInvalid }}
       </Panel>
       <!-- Project background paragraphs end  -->
 

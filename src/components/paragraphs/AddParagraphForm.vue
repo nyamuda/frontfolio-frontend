@@ -99,7 +99,7 @@ import Textarea from "primevue/textarea";
 import { Message } from "primevue";
 import InputText from "primevue/inputtext";
 import FloatLabel from "primevue/floatlabel";
-import { computed, ref, type Ref } from "vue";
+import { computed, onMounted, ref, type Ref } from "vue";
 import Button from "primevue/button";
 import { Paragraph } from "@/models/paragraph";
 import Divider from "primevue/divider";
@@ -118,8 +118,11 @@ const props = defineProps({
     default: () => 0,
   },
 });
-
 const emit = defineEmits(["update", "delete", "isValid"]);
+
+onMounted(() => {
+  v$.value.$touch();
+});
 
 //Text for the divider
 const dividerLabel: Ref<string> = computed(() => {
