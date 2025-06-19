@@ -104,6 +104,7 @@ import Button from "primevue/button";
 import { Paragraph } from "@/models/paragraph";
 import Divider from "primevue/divider";
 import type { ValidatedParagraph } from "@/interfaces/projects/validatedParagraph";
+import { required, url } from "@vuelidate/validators";
 
 const props = defineProps({
   paragraph: {
@@ -139,10 +140,10 @@ const form = ref({
 });
 
 const rules = {
-  title: {},
-  imageUrl: {},
+  title: { required },
+  imageUrl: { url },
   imageCaption: {},
-  content: {},
+  content: { required },
 };
 const v$ = useVuelidate(rules, form);
 //form validation end
