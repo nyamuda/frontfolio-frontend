@@ -117,13 +117,13 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update", "delete"]);
+const emit = defineEmits(["update", "delete", "isValid"]);
 
 //Text for the divider
 const dividerLabel: Ref<string> = computed(() => {
   switch (props.paragraph.paragraphType) {
     case "ProjectBackground":
-      return "Background";
+      return "Project Description Paragraph";
     default:
       return "Paragraph";
   }
@@ -146,15 +146,18 @@ const rules = {
 const v$ = useVuelidate(rules, form);
 //form validation end
 
-const handleFormChange = () => {
+const handleFormChange = async () => {
   //save the new paragraph details
   const paragraph = props.paragraph;
   paragraph.title = form.value.title;
   paragraph.imageUrl = form.value.imageUrl;
   paragraph.imageCaption = form.value.imageCaption;
   paragraph.content = form.value.content;
-
   emit("update", paragraph);
+
+  //is the form valid or not
+  const isFormValid: boolean = await v$.value.$validate();
+  emit("isValid", isFormValid);
 };
 
 const deleteParagraph = () => emit("delete");

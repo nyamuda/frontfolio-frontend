@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { Paragraph } from "@/models/paragraph";
 import { ref, type PropType, type Ref } from "vue";
-import ParagraphSection from "./ParagraphSection.vue";
+import ParagraphSection from "./AddParagraphForm.vue";
 import Button from "primevue/button";
 import type { ParagraphType } from "@/types/paragraphType";
 

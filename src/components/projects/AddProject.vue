@@ -232,7 +232,7 @@ import Panel from "primevue/panel";
 import Textarea from "primevue/textarea";
 import AutoComplete from "primevue/autocomplete";
 import { Project } from "@/models/project";
-import ParagraphList from "../paragraphs/ParagraphList.vue";
+import ParagraphList from "../paragraphs/ParagraphListEditor.vue";
 import ChallengeListEditor from "./challenges/ChallengeListEditor.vue";
 import AchievementListEditor from "./achievements/AchievementListEditor.vue";
 import FeedbackListEditor from "./feedback/FeedbackListEditor.vue";
