@@ -20,15 +20,18 @@
           </div>
         </Message>
       </div>
+
       <!-- Problem input -->
-      <div class="form-group mb-3">
+      <div class="form-group">
         <FloatLabel variant="on">
-          <InputText
-            size="small"
-            fluid
+          <Textarea
             id="problem"
+            size="small"
             v-model="v$.problem.$model"
             :invalid="v$.problem.$error"
+            rows="3"
+            class="w-100"
+            style="resize: none"
           />
           <label for="problem">Problem Faced</label>
         </FloatLabel>
@@ -40,16 +43,18 @@
       </div>
 
       <!-- Solution input -->
-      <div class="form-group mb-3">
+      <div class="form-group">
         <FloatLabel variant="on">
-          <InputText
-            fluid
-            size="small"
+          <Textarea
             id="solution"
+            size="small"
             v-model="v$.solution.$model"
             :invalid="v$.solution.$error"
+            rows="6"
+            class="w-100"
+            style="resize: none"
           />
-          <label for="solution">Solution</label>
+          <label for="solution">solution</label>
         </FloatLabel>
         <Message size="small" severity="error" v-if="v$.solution.$error" variant="simple">
           <div v-for="error of v$.solution.$errors" :key="error.$uid">
@@ -58,26 +63,6 @@
         </Message>
       </div>
 
-      <!-- Content input -->
-      <div class="form-group">
-        <FloatLabel variant="on">
-          <Textarea
-            id="content"
-            size="small"
-            v-model="v$.content.$model"
-            :invalid="v$.content.$error"
-            rows="6"
-            class="w-100"
-            style="resize: none"
-          />
-          <label for="content">Content</label>
-        </FloatLabel>
-        <Message size="small" severity="error" v-if="v$.content.$error" variant="simple">
-          <div v-for="error of v$.content.$errors" :key="error.$uid">
-            <div>{{ error.$message }}</div>
-          </div>
-        </Message>
-      </div>
       <!-- Button section -->
       <div class="text-end">
         <Button
