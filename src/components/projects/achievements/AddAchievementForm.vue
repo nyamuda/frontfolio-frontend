@@ -80,7 +80,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update", "delete"]);
+const emit = defineEmits(["update", "delete", "isValid"]);
 
 //form validation start
 const form = ref({
@@ -95,12 +95,16 @@ const rules = {
 const v$ = useVuelidate(rules, form);
 //form validation end
 
-const handleFormChange = () => {
+const handleFormChange = async () => {
   //save the new form updated details
   const achievement = props.achievement;
   achievement.title = form.value.title;
   achievement.description = form.value.description;
   emit("update", achievement);
+
+  //is the form valid or not
+  const isFormValid: boolean = await v$.value.$validate();
+  emit("isValid", isFormValid);
 };
 
 const deleteAchievement = () => emit("delete");
