@@ -1,5 +1,1 @@
-export type ParagraphType =
-  | "ProjectChallenge"
-  | "ProjectAchievement"
-  | "ProjectBackground"
-  | "BlogSection";
+export type ParagraphType = "ProjectBackground" | "BlogSection";

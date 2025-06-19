@@ -122,10 +122,8 @@ const emit = defineEmits(["update", "delete"]);
 //Text for the divider
 const dividerLabel: Ref<string> = computed(() => {
   switch (props.paragraph.paragraphType) {
-    case "ProjectChallenge":
-      return "Challenge";
-    case "ProjectAchievement":
-      return "Achievement";
+    case "ProjectBackground":
+      return "Background";
     default:
       return "Paragraph";
   }
