@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import { Paragraph } from "@/models/paragraph";
-import { ref, type PropType, type Ref } from "vue";
+import { computed, ref, type PropType, type Ref } from "vue";
 import AddParagraphForm from "./AddParagraphForm.vue";
 import Button from "primevue/button";
 import type { ParagraphType } from "@/types/paragraphType";
@@ -43,6 +43,15 @@ const props = defineProps({
 });
 
 const validatedParagraphs: Ref<ValidatedParagraph[]> = ref([]);
+
+// Determine if any paragraph in the list has failed validation
+const isAnyParagraphInvalid: Ref<boolean> = computed(() => {
+  //look for any paragraphs whose validation is false
+  const anyInvalid: ValidatedParagraph[] = validatedParagraphs.value.filter(
+    (validatedParagraphs) => !validatedParagraphs.isValid,
+  );
+  return anyInvalid.length > 0;
+});
 
 //Add a new paragraph to the list of paragraphs when the button is clicked
 const addNewParagraph = () => {
