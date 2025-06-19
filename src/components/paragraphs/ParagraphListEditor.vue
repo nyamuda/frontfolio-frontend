@@ -83,16 +83,22 @@ const deleteParagraphById = (targetId: string) => {
 // Whenever any paragraph's content or validation state updates,
 // extract the paragraph data and emit both the updated list
 // and the combined validation status to keep the parent component in sync.
-watch(validatedParagraphs, () => {
-  // Extract the Paragraph objects from the validatedParagraphs array
-  const paragraphs: Paragraph[] = validatedParagraphs.value.map(
-    (validatedParagraph) => validatedParagraph.paragraph,
-  );
+watch(
+  validatedParagraphs,
+  (newValidatedParagraphs) => {
+    // Extract the Paragraph objects from the validatedParagraphs array
+    const paragraphs: Paragraph[] = newValidatedParagraphs.map(
+      (validatedParagraph) => validatedParagraph.paragraph,
+    );
 
-  // Emit the updated list of paragraphs to the parent component
-  emit("paragraphs", paragraphs);
+    alert("paragraphs");
 
-  // Emit the current overall validation status indicating if any paragraph is invalid
-  emit("isAnyParagraphInvalid", isAnyParagraphInvalid.value);
-});
+    // Emit the updated list of paragraphs to the parent component
+    emit("paragraphs", paragraphs);
+
+    // Emit the current overall validation status indicating if any paragraph is invalid
+    emit("isAnyParagraphInvalid", isAnyParagraphInvalid.value);
+  },
+  { deep: true },
+);
 </script>
