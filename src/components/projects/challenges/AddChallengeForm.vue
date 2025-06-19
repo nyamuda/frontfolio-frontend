@@ -22,7 +22,7 @@
       </div>
 
       <!-- Problem input -->
-      <div class="form-group">
+      <div class="form-group mb-3">
         <FloatLabel variant="on">
           <Textarea
             id="problem"
@@ -54,7 +54,7 @@
             class="w-100"
             style="resize: none"
           />
-          <label for="solution">solution</label>
+          <label for="solution">Solution</label>
         </FloatLabel>
         <Message size="small" severity="error" v-if="v$.solution.$error" variant="simple">
           <div v-for="error of v$.solution.$errors" :key="error.$uid">
