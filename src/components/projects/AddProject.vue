@@ -173,7 +173,7 @@
           skills. Sharing challenges shows how you work through problems.
         </p>
 
-        <ParagraphList paragraphType="ProjectChallenge" buttonLabel="Add challenge" />
+        <ChallengeListEditor />
       </Panel>
       <!-- Project challenges paragraphs end  -->
       <!-- Project achievements paragraphs start  -->
@@ -189,7 +189,7 @@
           complex feature you implemented, a skill you developed, or positive feedback you received.
           It’s a great way to show the impact and results of your work.
         </p>
-        <ParagraphList paragraphType="ProjectAchievement" buttonLabel="Add achievement" />
+        <AchievementListEditor />
       </Panel>
       <!-- Project achievements paragraphs end  -->
     </form>
@@ -213,9 +213,10 @@ import { useRouter } from "vue-router";
 import Panel from "primevue/panel";
 import Textarea from "primevue/textarea";
 import AutoComplete from "primevue/autocomplete";
-
 import { Project } from "@/models/project";
 import ParagraphList from "../paragraphs/ParagraphList.vue";
+import ChallengeListEditor from "./challenges/ChallengeListEditor.vue";
+import AchievementListEditor from "./achievements/AchievementListEditor.vue";
 
 // Access the store
 const projectStore = useProjectStore();
