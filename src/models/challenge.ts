@@ -7,8 +7,8 @@ export class Challenge {
     public problem: string = "",
     public solution: string = "",
     public projectId: number = 0,
-    public Project: Project | null = null,
-    public CreatedAt: Date = new Date(),
-    public UpdatedAt: Date = new Date(),
+    public project: Project | null = null,
+    public createdAt: Date = new Date(),
+    public updatedAt: Date = new Date(),
   ) {}
 }
