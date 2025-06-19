@@ -39,20 +39,20 @@
         </Message>
       </div>
 
-      <!-- Image caption input -->
+      <!-- Solution input -->
       <div class="form-group mb-3">
         <FloatLabel variant="on">
           <InputText
             fluid
             size="small"
-            id="imageCaption"
-            v-model="v$.imageCaption.$model"
-            :invalid="v$.imageCaption.$error"
+            id="solution"
+            v-model="v$.solution.$model"
+            :invalid="v$.solution.$error"
           />
-          <label for="imageCaption">Image Caption</label>
+          <label for="solution">Solution</label>
         </FloatLabel>
-        <Message size="small" severity="error" v-if="v$.imageCaption.$error" variant="simple">
-          <div v-for="error of v$.imageCaption.$errors" :key="error.$uid">
+        <Message size="small" severity="error" v-if="v$.solution.$error" variant="simple">
+          <div v-for="error of v$.solution.$errors" :key="error.$uid">
             <div>{{ error.$message }}</div>
           </div>
         </Message>
