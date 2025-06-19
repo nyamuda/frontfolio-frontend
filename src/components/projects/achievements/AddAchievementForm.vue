@@ -1,7 +1,7 @@
 <template>
   <section>
     <form @change="handleFormChange" class="mb-4">
-      <Divider align="center" type="dashed"> 📝 Challenge {{ index + 1 }} </Divider>
+      <Divider align="center" type="dashed"> 📝 Achievement {{ index + 1 }} </Divider>
       <!-- Title input -->
       <div class="form-group mb-3">
         <FloatLabel variant="on">
@@ -21,22 +21,22 @@
         </Message>
       </div>
 
-      <!-- Problem input -->
+      <!-- Description input -->
       <div class="form-group">
         <FloatLabel variant="on">
           <Textarea
-            id="problem"
+            id="description"
             size="small"
-            v-model="v$.problem.$model"
-            :invalid="v$.problem.$error"
+            v-model="v$.description.$model"
+            :invalid="v$.description.$error"
             rows="3"
             class="w-100"
             style="resize: none"
           />
-          <label for="problem">Problem Faced</label>
+          <label for="description">Description</label>
         </FloatLabel>
-        <Message size="small" severity="error" v-if="v$.problem.$error" variant="simple">
-          <div v-for="error of v$.problem.$errors" :key="error.$uid">
+        <Message size="small" severity="error" v-if="v$.description.$error" variant="simple">
+          <div v-for="error of v$.description.$errors" :key="error.$uid">
             <div>{{ error.$message }}</div>
           </div>
         </Message>
@@ -66,7 +66,7 @@
       <!-- Button section -->
       <div class="text-end">
         <Button
-          @click="deleteParagraph"
+          @click="deleteAchievement"
           icon="pi pi-trash"
           severity="danger"
           rounded
@@ -86,13 +86,13 @@ import FloatLabel from "primevue/floatlabel";
 import { ref } from "vue";
 import Button from "primevue/button";
 import Divider from "primevue/divider";
-import { Challenge } from "@/models/challenge";
+import { Achievement } from "@/models/achievement";
 
 const props = defineProps({
-  challenge: {
-    type: Challenge,
+  achievement: {
+    type: Achievement,
     required: false,
-    default: () => new Challenge(),
+    default: () => new Achievement(),
   },
   index: {
     type: Number,
@@ -105,27 +105,24 @@ const emit = defineEmits(["update", "delete"]);
 
 //form validation start
 const form = ref({
-  title: props.challenge.title,
-  problem: props.challenge.problem,
-  solution: props.challenge.solution,
+  title: props.achievement.title,
+  description: props.achievement.description,
 });
 
 const rules = {
   title: {},
-  problem: {},
-  solution: {},
+  description: {},
 };
 const v$ = useVuelidate(rules, form);
 //form validation end
 
 const handleFormChange = () => {
   //save the new form updated details
-  const challenge = props.challenge;
-  challenge.title = form.value.title;
-  challenge.problem = form.value.problem;
-  challenge.solution = form.value.solution;
-  emit("update", challenge);
+  const achievement = props.achievement;
+  achievement.title = form.value.title;
+  achievement.description = form.value.description;
+  emit("update", achievement);
 };
 
-const deleteParagraph = () => emit("delete");
+const deleteAchievement = () => emit("delete");
 </script>
