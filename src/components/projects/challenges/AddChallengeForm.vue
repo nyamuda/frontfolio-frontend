@@ -83,14 +83,13 @@ import Textarea from "primevue/textarea";
 import { Message } from "primevue";
 import InputText from "primevue/inputtext";
 import FloatLabel from "primevue/floatlabel";
-import { computed, ref, type Ref } from "vue";
+import { ref } from "vue";
 import Button from "primevue/button";
-import { Paragraph } from "@/models/paragraph";
 import Divider from "primevue/divider";
 import { Challenge } from "@/models/challenge";
 
 const props = defineProps({
-  paragraph: {
+  challenge: {
     type: Challenge,
     required: false,
     default: () => new Challenge(),
@@ -104,34 +103,28 @@ const props = defineProps({
 
 const emit = defineEmits(["update", "delete"]);
 
-
-
 //form validation start
 const form = ref({
-  title: props.paragraph.title,
-  imageUrl: props.paragraph.imageUrl,
-  imageCaption: props.paragraph.imageCaption,
-  content: props.paragraph.content,
+  title: props.challenge.title,
+  problem: props.challenge.problem,
+  solution: props.challenge.solution,
 });
 
 const rules = {
   title: {},
-  imageUrl: {},
-  imageCaption: {},
-  content: {},
+  problem: {},
+  solution: {},
 };
 const v$ = useVuelidate(rules, form);
 //form validation end
 
 const handleFormChange = () => {
-  //save the new paragraph details
-  const paragraph = props.paragraph;
-  paragraph.title = form.value.title;
-  paragraph.imageUrl = form.value.imageUrl;
-  paragraph.imageCaption = form.value.imageCaption;
-  paragraph.content = form.value.content;
-
-  emit("update", paragraph);
+  //save the new form updated details
+  const challenge = props.challenge;
+  challenge.title = form.value.title;
+  challenge.problem = form.value.problem;
+  challenge.solution = form.value.solution;
+  emit("update", challenge);
 };
 
 const deleteParagraph = () => emit("delete");
