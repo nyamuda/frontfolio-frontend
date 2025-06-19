@@ -29,7 +29,7 @@
             size="small"
             v-model="v$.description.$model"
             :invalid="v$.description.$error"
-            rows="3"
+            rows="5"
             class="w-100"
             style="resize: none"
           />

@@ -29,7 +29,7 @@
             size="small"
             v-model="v$.problem.$model"
             :invalid="v$.problem.$error"
-            rows="3"
+            rows="5"
             class="w-100"
             style="resize: none"
           />

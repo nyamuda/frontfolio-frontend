@@ -70,7 +70,7 @@
             size="small"
             v-model="v$.comment.$model"
             :invalid="v$.comment.$error"
-            rows="3"
+            rows="4"
             class="w-100"
             style="resize: none"
           />
@@ -122,7 +122,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update", "delete"]);
+const emit = defineEmits(["update", "delete", "isValid"]);
 
 //form validation start
 const form = ref({
@@ -141,7 +141,7 @@ const rules = {
 const v$ = useVuelidate(rules, form);
 //form validation end
 
-const handleFormChange = () => {
+const handleFormChange = async () => {
   //save the new form updated details
   const feedback = props.feedback;
   feedback.authorName = form.value.authorName;
@@ -149,6 +149,10 @@ const handleFormChange = () => {
   feedback.comment = form.value.comment;
   feedback.submittedAt = form.value.submittedAt;
   emit("update", feedback);
+
+  //is the form valid or not
+  const isFormValid: boolean = await v$.value.$validate();
+  emit("isValid", isFormValid);
 };
 
 const deleteFeedback = () => emit("delete");
