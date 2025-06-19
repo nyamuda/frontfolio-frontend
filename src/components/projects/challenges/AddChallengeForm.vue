@@ -1,7 +1,7 @@
 <template>
   <section>
     <form @change="handleFormChange" class="mb-4">
-      <Divider align="center" type="dashed"> 📝 {{ dividerLabel }} {{ index + 1 }} </Divider>
+      <Divider align="center" type="dashed"> 📝 Challenge {{ index + 1 }} </Divider>
       <!-- Title input -->
       <div class="form-group mb-3">
         <FloatLabel variant="on">
@@ -87,12 +87,13 @@ import { computed, ref, type Ref } from "vue";
 import Button from "primevue/button";
 import { Paragraph } from "@/models/paragraph";
 import Divider from "primevue/divider";
+import { Challenge } from "@/models/challenge";
 
 const props = defineProps({
   paragraph: {
-    type: Paragraph,
+    type: Challenge,
     required: false,
-    default: () => new Paragraph(),
+    default: () => new Challenge(),
   },
   index: {
     type: Number,
@@ -103,15 +104,7 @@ const props = defineProps({
 
 const emit = defineEmits(["update", "delete"]);
 
-//Text for the divider
-const dividerLabel: Ref<string> = computed(() => {
-  switch (props.paragraph.paragraphType) {
-    case "ProjectBackground":
-      return "Background";
-    default:
-      return "Paragraph";
-  }
-});
+
 
 //form validation start
 const form = ref({
