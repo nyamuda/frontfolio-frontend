@@ -153,10 +153,13 @@ const handleFormChange = async () => {
   paragraph.imageUrl = form.value.imageUrl;
   paragraph.imageCaption = form.value.imageCaption;
   paragraph.content = form.value.content;
-  emit("update", paragraph);
 
   //is the form valid or not
   const isFormValid: boolean = await v$.value.$validate();
+
+//emit the updated form detail and the validation state
+  emit("update", paragraph);
+
   emit("isValid", isFormValid);
 };
 
