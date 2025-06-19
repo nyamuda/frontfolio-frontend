@@ -82,7 +82,7 @@
       <!-- Button section -->
       <div class="text-end">
         <Button
-          @click="deleteChallenge"
+          @click="deleteFeedback"
           icon="pi pi-trash"
           severity="danger"
           rounded
@@ -102,14 +102,14 @@ import FloatLabel from "primevue/floatlabel";
 import { ref } from "vue";
 import Button from "primevue/button";
 import Divider from "primevue/divider";
-import { Challenge } from "@/models/challenge";
+import { Feedback } from "@/models/feedback";
 import DatePicker from "primevue/datepicker";
 
 const props = defineProps({
-  challenge: {
-    type: Challenge,
+  feedback: {
+    type: Feedback,
     required: false,
-    default: () => new Challenge(),
+    default: () => new Feedback(),
   },
   index: {
     type: Number,
@@ -122,27 +122,30 @@ const emit = defineEmits(["update", "delete"]);
 
 //form validation start
 const form = ref({
-  title: props.challenge.title,
-  problem: props.challenge.problem,
-  solution: props.challenge.solution,
+  authorName: props.feedback.authorName,
+  authorRole: props.feedback.authorRole,
+  comment: props.feedback.comment,
+  submittedAt: props.feedback.submittedAt,
 });
 
 const rules = {
-  title: {},
-  problem: {},
-  solution: {},
+  authorName: {},
+  authorRole: {},
+  comment: {},
+  submittedAt: {},
 };
 const v$ = useVuelidate(rules, form);
 //form validation end
 
 const handleFormChange = () => {
   //save the new form updated details
-  const challenge = props.challenge;
-  challenge.title = form.value.title;
-  challenge.problem = form.value.problem;
-  challenge.solution = form.value.solution;
-  emit("update", challenge);
+  const feedback = props.feedback;
+  feedback.authorName = form.value.authorName;
+  feedback.authorRole = form.value.authorRole;
+  feedback.comment = form.value.comment;
+  feedback.submittedAt = form.value.submittedAt;
+  emit("update", feedback);
 };
 
-const deleteChallenge = () => emit("delete");
+const deleteFeedback = () => emit("delete");
 </script>
