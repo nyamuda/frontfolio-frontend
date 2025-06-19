@@ -203,11 +203,11 @@
           </div>
         </template>
         <p class="mb-3">
-          Use this section to highlight what you’re most proud of in the project. This could be a
-          complex feature you implemented, a skill you developed, or positive feedback you received.
-          It’s a great way to show the impact and results of your work.
+          Use this section to include feedback or comments you received from others about your
+          project. It could be input from mentors, peers, users, or clients. Sharing feedback helps
+          show how your work was received and can highlight areas of strength or improvement.
         </p>
-        <AchievementListEditor />
+        <FeedbackListEditor />
       </Panel>
       <!-- Project feedback end  -->
     </form>
@@ -235,6 +235,7 @@ import { Project } from "@/models/project";
 import ParagraphList from "../paragraphs/ParagraphList.vue";
 import ChallengeListEditor from "./challenges/ChallengeListEditor.vue";
 import AchievementListEditor from "./achievements/AchievementListEditor.vue";
+import FeedbackListEditor from "./feedback/FeedbackListEditor.vue";
 
 // Access the store
 const projectStore = useProjectStore();
