@@ -20,21 +20,20 @@
           </div>
         </Message>
       </div>
-      <!-- Image Url input -->
+      <!-- Problem input -->
       <div class="form-group mb-3">
         <FloatLabel variant="on">
           <InputText
             size="small"
             fluid
-            id="imageUrl"
-            type="url"
-            v-model="v$.imageUrl.$model"
-            :invalid="v$.imageUrl.$error"
+            id="problem"
+            v-model="v$.problem.$model"
+            :invalid="v$.problem.$error"
           />
-          <label for="imageUrl">Image URL</label>
+          <label for="problem">Problem Faced</label>
         </FloatLabel>
-        <Message size="small" severity="error" v-if="v$.imageUrl.$error" variant="simple">
-          <div v-for="error of v$.imageUrl.$errors" :key="error.$uid">
+        <Message size="small" severity="error" v-if="v$.problem.$error" variant="simple">
+          <div v-for="error of v$.problem.$errors" :key="error.$uid">
             <div>{{ error.$message }}</div>
           </div>
         </Message>
