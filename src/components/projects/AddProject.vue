@@ -156,7 +156,10 @@
           wonderful way to show your thinking and help others understand your work and vision.
         </p>
 
-        <ParagraphList paragraphType="ProjectBackground" />
+        <ParagraphList
+          paragraphType="ProjectBackground"
+          @paragraphs="(paragraphs: Paragraph[]) => (project.background = paragraphs)"
+        />
       </Panel>
       <!-- Project background paragraphs end  -->
 
@@ -215,7 +218,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, type Ref } from "vue";
 import { useProjectStore } from "@/stores/project";
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers, url } from "@vuelidate/validators";
@@ -236,6 +239,7 @@ import ParagraphList from "../paragraphs/ParagraphListEditor.vue";
 import ChallengeListEditor from "./challenges/ChallengeListEditor.vue";
 import AchievementListEditor from "./achievements/AchievementListEditor.vue";
 import FeedbackListEditor from "./feedback/FeedbackListEditor.vue";
+import type { Paragraph } from "@/models/paragraph";
 
 // Access the store
 const projectStore = useProjectStore();
@@ -247,6 +251,9 @@ onMounted(() => {
   //create a new empty project
   projectStore.newProject = new Project();
 });
+
+//the new project
+const project: Ref<Project> = ref(new Project());
 
 const isAddingProject = ref(false);
 
