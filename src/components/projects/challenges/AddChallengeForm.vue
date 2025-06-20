@@ -83,10 +83,12 @@ import Textarea from "primevue/textarea";
 import { Message } from "primevue";
 import InputText from "primevue/inputtext";
 import FloatLabel from "primevue/floatlabel";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import Button from "primevue/button";
 import Divider from "primevue/divider";
 import { Challenge } from "@/models/challenge";
+import type { ValidatedItem } from "@/interfaces/projects/validatedItem";
+import { required } from "@vuelidate/validators";
 
 const props = defineProps({
   challenge: {
@@ -100,8 +102,11 @@ const props = defineProps({
     default: () => 0,
   },
 });
+const emit = defineEmits(["update", "delete"]);
 
-const emit = defineEmits(["update", "delete", "isValid"]);
+onMounted(() => {
+  v$.value.$touch();
+});
 
 //form validation start
 const form = ref({
@@ -111,9 +116,9 @@ const form = ref({
 });
 
 const rules = {
-  title: {},
-  problem: {},
-  solution: {},
+  title: { required },
+  problem: { required },
+  solution: { required },
 };
 const v$ = useVuelidate(rules, form);
 //form validation end
@@ -124,11 +129,11 @@ const handleFormChange = async () => {
   challenge.title = form.value.title;
   challenge.problem = form.value.problem;
   challenge.solution = form.value.solution;
-  emit("update", challenge);
-
   //is the form valid or not
   const isFormValid: boolean = await v$.value.$validate();
-  emit("isValid", isFormValid);
+  //emit the updated form details and the validation state
+  const validatedChallenge: ValidatedItem<Challenge> = { item: challenge, isValid: isFormValid };
+  emit("update", validatedChallenge);
 };
 
 const deleteChallenge = () => emit("delete");

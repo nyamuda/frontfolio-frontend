@@ -103,8 +103,8 @@ import { computed, onMounted, ref, type Ref } from "vue";
 import Button from "primevue/button";
 import { Paragraph } from "@/models/paragraph";
 import Divider from "primevue/divider";
-import type { ValidatedParagraph } from "@/interfaces/projects/validatedParagraph";
 import { required, url } from "@vuelidate/validators";
+import type { ValidatedItem } from "@/interfaces/projects/validatedItem";
 
 const props = defineProps({
   paragraph: {
@@ -161,7 +161,7 @@ const handleFormChange = async () => {
   //is the form valid or not
   const isFormValid: boolean = await v$.value.$validate();
   //emit the updated form details and the validation state
-  const validatedParagraph: ValidatedParagraph = { paragraph, isValid: isFormValid };
+  const validatedParagraph: ValidatedItem<Paragraph> = { item: paragraph, isValid: isFormValid };
   emit("update", validatedParagraph);
 };
 

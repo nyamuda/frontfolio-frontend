@@ -4,10 +4,10 @@
       <AddParagraphForm
         v-for="(validatedParagraph, index) in validatedParagraphs"
         :index="index"
-        :key="validatedParagraph.paragraph.id"
-        @update="(val: ValidatedParagraph) => updateParagraphById(val)"
-        @delete="() => deleteParagraphById(validatedParagraph.paragraph.id)"
-        :paragraph="validatedParagraph.paragraph"
+        :key="validatedParagraph.item.id"
+        @update="(val: ValidatedItem<Paragraph>) => updateParagraphById(val)"
+        @delete="() => deleteParagraphById(validatedParagraph.item.id)"
+        :paragraph="validatedParagraph.item"
       />
     </div>
     <div class="d-flex justify-content-center align-items-center">
@@ -28,7 +28,7 @@ import { computed, ref, watch, type PropType, type Ref } from "vue";
 import AddParagraphForm from "./AddParagraphForm.vue";
 import Button from "primevue/button";
 import type { ParagraphType } from "@/types/paragraphType";
-import type { ValidatedParagraph } from "@/interfaces/projects/validatedParagraph";
+import type { ValidatedItem } from "@/interfaces/projects/validatedItem";
 
 const emit = defineEmits(["paragraphs", "isAnyParagraphInvalid"]);
 const props = defineProps({
@@ -43,12 +43,12 @@ const props = defineProps({
   },
 });
 
-const validatedParagraphs: Ref<ValidatedParagraph[]> = ref([]);
+const validatedParagraphs: Ref<ValidatedItem<Paragraph>[]> = ref([]);
 
 // Determine if any paragraph in the list has failed validation
 const isAnyParagraphInvalid: Ref<boolean> = computed(() => {
   //look for any paragraphs whose validation is false
-  const anyInvalid: ValidatedParagraph[] = validatedParagraphs.value.filter(
+  const anyInvalid: ValidatedItem<Paragraph>[] = validatedParagraphs.value.filter(
     (validatedParagraphs) => !validatedParagraphs.isValid,
   );
   return anyInvalid.length > 0;
@@ -61,21 +61,19 @@ const addNewParagraph = () => {
   newParagraph.paragraphType = props.paragraphType;
   //by default, the a new paragraph form is invalid since its fields (the required ones) will be  empty
   const isValid = false;
-  validatedParagraphs.value.push({ paragraph: newParagraph, isValid });
+  validatedParagraphs.value.push({ item: newParagraph, isValid });
 };
 
 // Update the paragraph with the specified ID
-const updateParagraphById = (updatedParagraph: ValidatedParagraph) => {
+const updateParagraphById = (updatedParagraph: ValidatedItem<Paragraph>) => {
   validatedParagraphs.value = validatedParagraphs.value.map((validatedParagraph) =>
-    validatedParagraph.paragraph.id === updatedParagraph.paragraph.id
-      ? updatedParagraph
-      : validatedParagraph,
+    validatedParagraph.item.id === updatedParagraph.item.id ? updatedParagraph : validatedParagraph,
   );
 };
 //delete a paragraph with the specified ID
 const deleteParagraphById = (targetId: string) => {
   validatedParagraphs.value = validatedParagraphs.value.filter(
-    (validatedParagraph) => validatedParagraph.paragraph.id != targetId,
+    (validatedParagraph) => validatedParagraph.item.id != targetId,
   );
 };
 
@@ -88,7 +86,7 @@ watch(
   (newValidatedParagraphs) => {
     // Extract the Paragraph objects from the validatedParagraphs array
     const paragraphs: Paragraph[] = newValidatedParagraphs.map(
-      (validatedParagraph) => validatedParagraph.paragraph,
+      (validatedParagraph) => validatedParagraph.item,
     );
 
     // Emit the updated list of paragraphs to the parent component

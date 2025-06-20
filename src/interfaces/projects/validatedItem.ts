@@ -8,5 +8,5 @@
  */
 export interface ValidatedItem<T> {
   item: T;
-  isValidated: boolean;
+  isValid: boolean;
 }
