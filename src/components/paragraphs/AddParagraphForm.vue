@@ -118,7 +118,7 @@ const props = defineProps({
     default: () => 0,
   },
 });
-const emit = defineEmits(["update", "delete", "isValid"]);
+const emit = defineEmits(["update", "delete"]);
 
 onMounted(() => {
   v$.value.$touch();

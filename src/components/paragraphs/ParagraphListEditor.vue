@@ -59,7 +59,7 @@ const addNewParagraph = () => {
   const newParagraph = new Paragraph();
   //set the paragraph type e.g project background, project challenge etc
   newParagraph.paragraphType = props.paragraphType;
-  //by default, the a new paragraph form is invalid since its fields are empty
+  //by default, the a new paragraph form is invalid since its fields (the required ones) will be  empty
   const isValid = false;
   validatedParagraphs.value.push({ paragraph: newParagraph, isValid });
 };
@@ -90,8 +90,6 @@ watch(
     const paragraphs: Paragraph[] = newValidatedParagraphs.map(
       (validatedParagraph) => validatedParagraph.paragraph,
     );
-
-    alert("paragraphs");
 
     // Emit the updated list of paragraphs to the parent component
     emit("paragraphs", paragraphs);
