@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { Achievement } from "@/models/achievement";
-import { computed, ref, type Ref } from "vue";
+import { computed, ref, watch, type Ref } from "vue";
 
 import Button from "primevue/button";
 import AddAchievementForm from "./AddAchievementForm.vue";
@@ -39,13 +39,14 @@ defineProps({
     default: () => "New achievement",
   },
 });
+const emit = defineEmits(["achievements", "isAnyAchievementInvalid"]);
 
 const validatedAchievements: Ref<ValidatedItem<Achievement>[]> = ref([]);
 
 // Determine if any achievement in the list has failed validation
 const isAnyAchievementInvalid: Ref<boolean> = computed(() => {
   //look for any achievement whose validation is invalid
-  const anyInvalid: ValidatedItem<Achievement>[] = validatedAchievements.value.filter(
+  const anyInvalid = validatedAchievements.value.filter(
     (validatedAchievement) => !validatedAchievement.isValid,
   );
   return anyInvalid.length > 0;
@@ -73,4 +74,25 @@ const deleteAchievementById = (targetId: string) => {
     (achievement) => achievement.item.id != targetId,
   );
 };
+
+// Watch for changes in the validatedAchievements array.
+// Whenever any achievement's content or validation state updates,
+// extract the achievement data and emit both the updated list
+// and the combined validation status to keep the parent component in sync.
+watch(
+  validatedAchievements,
+  (newValidatedAchievements) => {
+    // Extract the achievement objects from the validatedAchievements array
+    const achievements = newValidatedAchievements.map(
+      (validatedAchievement) => validatedAchievement.item,
+    );
+
+    // Emit the updated list of achievements to the parent component
+    emit("achievements", achievements);
+
+    // Emit the current overall validation status indicating if any achievement is invalid
+    emit("isAnyAchievementInvalid", isAnyAchievementInvalid.value);
+  },
+  { deep: true },
+);
 </script>
