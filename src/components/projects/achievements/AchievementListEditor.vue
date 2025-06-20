@@ -43,7 +43,12 @@ defineProps({
 const achievements: Ref<ValidatedItem<Achievement>[]> = ref([]);
 
 //Add a new achievement to the list of achievements when the button is clicked
-const addNewAchievement = () => achievements.value.push(new Achievement());
+const addNewAchievement = () => {
+  const newAchievement = new Achievement();
+  //by default, the a new achievement form is invalid since its fields (the required ones) will be  empty
+  const isValid = false;
+  achievements.value.push({ item: newAchievement, isValid });
+};
 
 // Update the achievement with the specified ID
 const updateAchievementById = (updatedAchievement: Achievement) => {
