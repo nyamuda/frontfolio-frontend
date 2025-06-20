@@ -62,10 +62,11 @@ import Textarea from "primevue/textarea";
 import { Message } from "primevue";
 import InputText from "primevue/inputtext";
 import FloatLabel from "primevue/floatlabel";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import Button from "primevue/button";
 import Divider from "primevue/divider";
 import { Achievement } from "@/models/achievement";
+import { required } from "@vuelidate/validators";
 
 const props = defineProps({
   achievement: {
@@ -79,8 +80,11 @@ const props = defineProps({
     default: () => 0,
   },
 });
+const emit = defineEmits(["update", "delete"]);
 
-const emit = defineEmits(["update", "delete", "isValid"]);
+onMounted(() => {
+  v$.value.$touch();
+});
 
 //form validation start
 const form = ref({
@@ -89,8 +93,8 @@ const form = ref({
 });
 
 const rules = {
-  title: {},
-  description: {},
+  title: { required },
+  description: { required },
 };
 const v$ = useVuelidate(rules, form);
 //form validation end
