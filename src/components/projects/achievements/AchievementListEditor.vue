@@ -3,12 +3,12 @@
     <!-- List of forms -->
     <div>
       <AddAchievementForm
-        v-for="(achievement, index) in achievements"
+        v-for="(validatedAchievement, index) in validatedAchievements"
         :index="index"
-        :key="achievement.id"
-        @update="(val: Achievement) => updateAchievementById(val)"
-        @delete="() => deleteAchievementById(achievement.id)"
-        :achievement="achievement"
+        :key="validatedAchievement.item.id"
+        @update="(val: ValidatedItem<Achievement>) => updateAchievementById(val)"
+        @delete="() => deleteAchievementById(validatedAchievement.item.id)"
+        :achievement="validatedAchievement.item"
       />
     </div>
     <!-- Add new form button -->
@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { Achievement } from "@/models/achievement";
-import { ref, type Ref } from "vue";
+import { computed, ref, type Ref } from "vue";
 
 import Button from "primevue/button";
 import AddAchievementForm from "./AddAchievementForm.vue";
@@ -41,6 +41,15 @@ defineProps({
 });
 
 const validatedAchievements: Ref<ValidatedItem<Achievement>[]> = ref([]);
+
+// Determine if any achievement in the list has failed validation
+const isAnyAchievementInvalid: Ref<boolean> = computed(() => {
+  //look for any achievement whose validation is invalid
+  const anyInvalid: ValidatedItem<Achievement>[] = validatedAchievements.value.filter(
+    (validatedAchievement) => !validatedAchievement.isValid,
+  );
+  return anyInvalid.length > 0;
+});
 
 //Add a new achievement to the list of achievements when the button is clicked
 const addNewAchievement = () => {

@@ -47,7 +47,7 @@ const validatedParagraphs: Ref<ValidatedItem<Paragraph>[]> = ref([]);
 
 // Determine if any paragraph in the list has failed validation
 const isAnyParagraphInvalid: Ref<boolean> = computed(() => {
-  //look for any paragraphs whose validation is false
+  //look for any paragraphs whose validation is invalid
   const anyInvalid: ValidatedItem<Paragraph>[] = validatedParagraphs.value.filter(
     (validatedParagraphs) => !validatedParagraphs.isValid,
   );
