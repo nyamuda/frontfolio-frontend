@@ -40,24 +40,28 @@ defineProps({
   },
 });
 
-const achievements: Ref<ValidatedItem<Achievement>[]> = ref([]);
+const validatedAchievements: Ref<ValidatedItem<Achievement>[]> = ref([]);
 
 //Add a new achievement to the list of achievements when the button is clicked
 const addNewAchievement = () => {
   const newAchievement = new Achievement();
   //by default, the a new achievement form is invalid since its fields (the required ones) will be  empty
   const isValid = false;
-  achievements.value.push({ item: newAchievement, isValid });
+  validatedAchievements.value.push({ item: newAchievement, isValid });
 };
 
 // Update the achievement with the specified ID
-const updateAchievementById = (updatedAchievement: Achievement) => {
-  achievements.value = achievements.value.map((achievement) =>
-    achievement.id === updatedAchievement.id ? updatedAchievement : achievement,
+const updateAchievementById = (updatedAchievement: ValidatedItem<Achievement>) => {
+  validatedAchievements.value = validatedAchievements.value.map((validatedAchievement) =>
+    validatedAchievement.item.id === updatedAchievement.item.id
+      ? updatedAchievement
+      : validatedAchievement,
   );
 };
 //delete a achievement with the specified ID
 const deleteAchievementById = (targetId: string) => {
-  achievements.value = achievements.value.filter((achievement) => achievement.id != targetId);
+  validatedAchievements.value = validatedAchievements.value.filter(
+    (achievement) => achievement.item.id != targetId,
+  );
 };
 </script>
