@@ -223,7 +223,10 @@
           project. It could be input from mentors, peers, users, or clients. Sharing feedback helps
           show how your work was received and can highlight areas of strength or improvement.
         </p>
-        <FeedbackListEditor />
+        <FeedbackListEditor
+          @feedback="(feedback: Feedback[]) => (project.feedback = feedback)"
+          @is-any-feedback-invalid="(isAnyInvalid) => (hasInvalidFeedbackForms = isAnyInvalid)"
+        />
       </Panel>
       <!-- Project feedback end  -->
     </form>
@@ -255,6 +258,7 @@ import FeedbackListEditor from "./feedback/FeedbackListEditor.vue";
 import type { Paragraph } from "@/models/paragraph";
 import type { Challenge } from "@/models/challenge";
 import type { Achievement } from "@/models/achievement";
+import type { Feedback } from "@/models/feedback";
 
 // Access the store
 const projectStore = useProjectStore();
