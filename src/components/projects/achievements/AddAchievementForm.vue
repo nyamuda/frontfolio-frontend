@@ -67,6 +67,7 @@ import Button from "primevue/button";
 import Divider from "primevue/divider";
 import { Achievement } from "@/models/achievement";
 import { required } from "@vuelidate/validators";
+import type { ValidatedAchievement } from "@/interfaces/projects/validatedAchievement";
 
 const props = defineProps({
   achievement: {
@@ -104,11 +105,11 @@ const handleFormChange = async () => {
   const achievement = props.achievement;
   achievement.title = form.value.title;
   achievement.description = form.value.description;
-  emit("update", achievement);
-
   //is the form valid or not
   const isFormValid: boolean = await v$.value.$validate();
-  emit("isValid", isFormValid);
+  //emit the updated form details and the validation state
+  const validatedAchievement: ValidatedAchievement = { achievement, isValid: isFormValid };
+  emit("update", validatedAchievement);
 };
 
 const deleteAchievement = () => emit("delete");
