@@ -7,17 +7,16 @@ import { unexpectedErrorMessage } from "@/helpers/errorMessageHelper";
 
 export const useProjectStore = defineStore("project", () => {
   const projects: Ref<Project[]> = ref([]);
-  const newProject: Ref<Project> = ref(new Project());
 
   //submit a new portfolio project
-  const addNewProject = () => {
+  const addNewProject = (project: Project) => {
     return new Promise((resolve, reject) => {
       const url = `${apiUrl}/projects`;
       //add an access token to the request to access the protected route
       setAuthToken();
       //make the request
       axios
-        .post(url, newProject.value)
+        .post(url, project)
         .then(() => resolve({}))
         .catch((error) => {
           const message = error.response?.data?.message || unexpectedErrorMessage();
@@ -37,5 +36,5 @@ export const useProjectStore = defineStore("project", () => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   };
 
-  return { projects, newProject, addNewProject };
+  return { projects, addNewProject };
 });

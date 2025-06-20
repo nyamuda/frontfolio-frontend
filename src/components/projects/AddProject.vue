@@ -221,7 +221,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, type Ref } from "vue";
+import { onMounted, ref, type Ref } from "vue";
 import { useProjectStore } from "@/stores/project";
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers, url } from "@vuelidate/validators";
@@ -270,20 +270,20 @@ const hasInvalidAchievementForms: Ref<boolean> = ref(false);
 // Track whether any feedback form is invalid
 const hasInvalidFeedbackForms: Ref<boolean> = ref(false);
 
-
-// Check  hhe overall form validity of the entire form
-const isEntireFormInvalid= async (): Promise<boolean> => {
+// Check the validity of the entire form
+const isEntireFormInvalid = async (): Promise<boolean> => {
   // Validate the main form fields
   const areMainFieldsValid = await v$.value.$validate();
 
   // Return true if any section (main or sub-forms) is invalid
-  return !areMainFieldsValid ||
-         hasInvalidBackgroundForms.value ||
-         hasInvalidChallengeForms.value ||
-         hasInvalidAchievementForms.value ||
-         hasInvalidFeedbackForms.value;
-}
-
+  return (
+    !areMainFieldsValid ||
+    hasInvalidBackgroundForms.value ||
+    hasInvalidChallengeForms.value ||
+    hasInvalidAchievementForms.value ||
+    hasInvalidFeedbackForms.value
+  );
+};
 
 const isAddingProject = ref(false);
 
@@ -314,38 +314,40 @@ const v$ = useVuelidate(rules, form);
 //form validation end
 
 const submitForm = async () => {
+  // Validate the entire form (main fields + paragraph sections)
+  const isInvalid = await isEntireFormInvalid();
 
-//check if the entire form is valid
-const isEntireFormValid= areFormMainDetailsValid && !()
-  if (isFormCorrect) {
-    //save the project main details to the store
-    projectStore.newProject.title = form.value.title;
-    projectStore.newProject.summary = form.value.summary;
-    projectStore.newProject.imageUrl = form.value.imageUrl;
-    projectStore.newProject.githubUrl = form.value.githubUrl;
-    projectStore.newProject.liveUrl = form.value.liveUrl;
-
+  // Only proceed if form is valid
+  if (!isInvalid) {
     isAddingProject.value = true;
+
     projectStore
-      .addNewProject()
+      .addNewProject(project.value)
       .then(() => {
+        // Show success toast notification
         toast.add({
-          severity: "error",
-          summary: "Success",
-          detail: "Project has been created",
+          severity: "success", // Changed from "error"
+          summary: "Project Created",
+          detail: "Your project was successfully created.",
           life: 5000,
         });
+
+        // Redirect to the project list page
         router.push("/projects");
       })
       .catch((message) => {
+        // Show error toast if the project creation fails
         toast.add({
           severity: "error",
-          summary: "Error",
+          summary: "Failed to Create Project",
           detail: message,
           life: 10000,
         });
       })
-      .finally(() => (isAddingProject.value = false));
+      .finally(() => {
+        // Re-enable the submit button
+        isAddingProject.value = false;
+      });
   }
 };
 </script>
