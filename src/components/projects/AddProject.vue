@@ -18,13 +18,19 @@
         size="small"
       />
       <Button
-        @click="submitForm"
+        @click="submitForm('Draft')"
         label="Save draft"
         severity="contrast"
         variant="outlined"
         size="small"
       />
-      <Button label="Publish project" size="small" />
+      <Button
+        v-if=""
+        @click="submitForm('Published')"
+        label="Publish project"
+        size="small"
+        :disabled="isPublishingProject || isSavingProject"
+      />
     </div>
     <form class="">
       <!-- Project main details start -->
