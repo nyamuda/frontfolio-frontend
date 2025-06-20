@@ -181,6 +181,9 @@
         </p>
         <ChallengeListEditor
           @challenges="(challenges: Challenge[]) => (project.challenges = challenges)"
+          @is-any-challenge-invalid="
+            (isAnyInvalid: boolean) => (hasInvalidChallengeForms = isAnyInvalid)
+          "
         />
       </Panel>
       <!-- Project challenges end  -->
@@ -198,7 +201,12 @@
           complex feature you implemented or a skill you developed. It’s a great way to show the
           impact and results of your work.
         </p>
-        <AchievementListEditor />
+        <AchievementListEditor
+          @achievements="(achievements: Achievement[]) => (project.achievements = achievements)"
+          @is-any-achievement-invalid="
+            (isAnyInvalid: boolean) => (hasInvalidAchievementForms = isAnyInvalid)
+          "
+        />
       </Panel>
       <!-- Project achievements end  -->
 
@@ -246,6 +254,7 @@ import AchievementListEditor from "./achievements/AchievementListEditor.vue";
 import FeedbackListEditor from "./feedback/FeedbackListEditor.vue";
 import type { Paragraph } from "@/models/paragraph";
 import type { Challenge } from "@/models/challenge";
+import type { Achievement } from "@/models/achievement";
 
 // Access the store
 const projectStore = useProjectStore();
