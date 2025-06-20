@@ -49,8 +49,9 @@
               inputId="submittedAt"
               v-model="v$.submittedAt.$model"
               view="month"
-              dateFormat="mm/yy"
+              dateFormat="M/yy"
               size="small"
+              :invalid="v$.submittedAt.$error"
             />
             <label for="submittedAt">Date Submitted</label>
           </FloatLabel>
@@ -103,7 +104,7 @@ import Textarea from "primevue/textarea";
 import { Message } from "primevue";
 import InputText from "primevue/inputtext";
 import FloatLabel from "primevue/floatlabel";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import Button from "primevue/button";
 import Divider from "primevue/divider";
 import { Feedback } from "@/models/feedback";
@@ -123,8 +124,10 @@ const props = defineProps({
     default: () => 0,
   },
 });
-
 const emit = defineEmits(["update", "delete"]);
+onMounted(() => {
+  v$.value.$touch();
+});
 
 //form validation start
 const form = ref({
@@ -135,10 +138,10 @@ const form = ref({
 });
 
 const rules = {
-  authorName: {required},
+  authorName: { required },
   authorRole: {},
-  comment: {required},
-  submittedAt: {required},
+  comment: { required },
+  submittedAt: { required },
 };
 const v$ = useVuelidate(rules, form);
 //form validation end
