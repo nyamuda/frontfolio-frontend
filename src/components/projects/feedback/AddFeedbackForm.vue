@@ -108,6 +108,8 @@ import Button from "primevue/button";
 import Divider from "primevue/divider";
 import { Feedback } from "@/models/feedback";
 import DatePicker from "primevue/datepicker";
+import type { ValidatedItem } from "@/interfaces/projects/validatedItem";
+import { required } from "@vuelidate/validators";
 
 const props = defineProps({
   feedback: {
@@ -122,7 +124,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update", "delete", "isValid"]);
+const emit = defineEmits(["update", "delete"]);
 
 //form validation start
 const form = ref({
@@ -133,10 +135,10 @@ const form = ref({
 });
 
 const rules = {
-  authorName: {},
+  authorName: {required},
   authorRole: {},
-  comment: {},
-  submittedAt: {},
+  comment: {required},
+  submittedAt: {required},
 };
 const v$ = useVuelidate(rules, form);
 //form validation end
@@ -148,11 +150,13 @@ const handleFormChange = async () => {
   feedback.authorRole = form.value.authorRole;
   feedback.comment = form.value.comment;
   feedback.submittedAt = form.value.submittedAt;
-  emit("update", feedback);
 
   //is the form valid or not
   const isFormValid: boolean = await v$.value.$validate();
-  emit("isValid", isFormValid);
+
+  //emit the updated form details and the validation state
+  const validatedFeedback: ValidatedItem<Feedback> = { item: feedback, isValid: isFormValid };
+  emit("update", validatedFeedback);
 };
 
 const deleteFeedback = () => emit("delete");
