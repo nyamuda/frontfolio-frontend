@@ -3,7 +3,6 @@ import { defineStore } from "pinia";
 import { Project } from "@/models/project";
 import { apiUrl } from "@/helpers/urlHelper";
 import axios from "axios";
-import { unexpectedErrorMessage } from "@/helpers/errorMessageHelper";
 
 export const useProjectStore = defineStore("project", () => {
   const projects: Ref<Project[]> = ref([]);
@@ -19,7 +18,9 @@ export const useProjectStore = defineStore("project", () => {
         .post(url, project)
         .then(() => resolve({}))
         .catch((error) => {
-          const message = error.response?.data?.message || unexpectedErrorMessage();
+          const message =
+            error.response?.data?.message ||
+            "An unexpected error occurred while saving your project.";
           reject(message);
         });
     });

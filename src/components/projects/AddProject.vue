@@ -160,7 +160,7 @@
           paragraphType="ProjectBackground"
           @paragraphs="(paragraphs: Paragraph[]) => (project.background = paragraphs)"
           @is-any-paragraph-invalid="
-            (isAnyInvalid: boolean) => (isAnyBackgroundParagraphInvalid = isAnyInvalid)
+            (isAnyInvalid: boolean) => (hasInvalidBackgroundForms = isAnyInvalid)
           "
         />
       </Panel>
@@ -179,7 +179,9 @@
           project. It could be technical issues, time constraints, or anything that tested your
           skills. Sharing challenges shows how you work through problems.
         </p>
-        <ChallengeListEditor />
+        <ChallengeListEditor
+          @challenges="(challenges: Challenge[]) => (project.challenges = challenges)"
+        />
       </Panel>
       <!-- Project challenges end  -->
 
@@ -243,6 +245,7 @@ import ChallengeListEditor from "./challenges/ChallengeListEditor.vue";
 import AchievementListEditor from "./achievements/AchievementListEditor.vue";
 import FeedbackListEditor from "./feedback/FeedbackListEditor.vue";
 import type { Paragraph } from "@/models/paragraph";
+import type { Challenge } from "@/models/challenge";
 
 // Access the store
 const projectStore = useProjectStore();
@@ -314,21 +317,20 @@ const v$ = useVuelidate(rules, form);
 //form validation end
 
 const submitForm = async () => {
-  // Validate the entire form (main fields + paragraph sections)
+  // Validate the entire form (main fields + paragraph + challenge + achievement + feedback sections)
   const isInvalid = await isEntireFormInvalid();
 
   // Only proceed if form is valid
   if (!isInvalid) {
     isAddingProject.value = true;
-
     projectStore
       .addNewProject(project.value)
       .then(() => {
         // Show success toast notification
         toast.add({
-          severity: "success", // Changed from "error"
+          severity: "success",
           summary: "Project Created",
-          detail: "Your project was successfully created.",
+          detail: "Your project has been successfully created.",
           life: 5000,
         });
 
@@ -345,7 +347,6 @@ const submitForm = async () => {
         });
       })
       .finally(() => {
-        // Re-enable the submit button
         isAddingProject.value = false;
       });
   }
