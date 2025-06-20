@@ -52,7 +52,7 @@ const isAnyAchievementInvalid: Ref<boolean> = computed(() => {
   return anyInvalid.length > 0;
 });
 
-//Add a new achievement to the list of achievements when the button is clicked
+//Add a new achievement to the list of achievements when the Add button is clicked
 const addNewAchievement = () => {
   const newAchievement = new Achievement();
   //by default, the a new achievement form is invalid since its fields (the required ones) will be  empty

@@ -54,7 +54,7 @@ const isAnyParagraphInvalid: Ref<boolean> = computed(() => {
   return anyInvalid.length > 0;
 });
 
-//Add a new paragraph to the list of paragraphs when the button is clicked
+//Add a new paragraph to the list of paragraphs when the Add button is clicked
 const addNewParagraph = () => {
   const newParagraph = new Paragraph();
   //set the paragraph type e.g project background, project challenge etc
