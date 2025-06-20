@@ -2,16 +2,29 @@
   <div>
     <TitleSection title="Tell the story behind your project" subtitle="New Project" />
 
-    <div class="row mb-5">
+    <div class="row mb-2">
       <p class="col-md-6">
         Let the world see what you’ve been working on. Add a title, description, image, and any
         links that showcase your project. You can save it as a draft or publish it when you’re
         ready.
       </p>
-      <div class="col-md-6 d-flex justify-content-end gap-3 align-items-center">
-        <Button @click="submitForm" label="Submit" severity="secondary" size="small" />
-        <Button label="Publish" size="small" />
-      </div>
+    </div>
+    <div class="d-flex justify-content-end gap-3 align-items-center mb-5">
+      <Button
+        icon="pi pi-spin pi-refresh"
+        label="Saving as draft..."
+        variant="text"
+        severity="secondary"
+        size="small"
+      />
+      <Button
+        @click="submitForm"
+        label="Save draft"
+        severity="contrast"
+        variant="outlined"
+        size="small"
+      />
+      <Button label="Publish project" size="small" />
     </div>
     <form class="">
       <!-- Project main details start -->
@@ -267,8 +280,6 @@ const router = useRouter();
 
 onMounted(() => {
   v$.value.$touch();
-  //create a new empty project
-  projectStore.newProject = new Project();
 });
 
 // The new project being created
