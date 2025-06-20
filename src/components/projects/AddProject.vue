@@ -221,7 +221,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, type Ref } from "vue";
+import { computed, onMounted, ref, type Ref } from "vue";
 import { useProjectStore } from "@/stores/project";
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers, url } from "@vuelidate/validators";
@@ -255,12 +255,34 @@ onMounted(() => {
   projectStore.newProject = new Project();
 });
 
-//the new project
+// The new project being created
 const project: Ref<Project> = ref(new Project());
-const isAnyBackgroundParagraphInvalid: Ref<boolean> = ref(false);
-const isAnyChallengeInvalid:Ref<boolean> =ref(false);
-const isAnyAchievementInvalid:Ref<boolean> =ref(false);
-const isAnyFeedbackInvalid:Ref<boolean> =ref(false);
+
+// Track whether any background paragraph form is invalid
+const hasInvalidBackgroundForms: Ref<boolean> = ref(false);
+
+// Track whether any challenge form is invalid
+const hasInvalidChallengeForms: Ref<boolean> = ref(false);
+
+// Track whether any achievement form is invalid
+const hasInvalidAchievementForms: Ref<boolean> = ref(false);
+
+// Track whether any feedback form is invalid
+const hasInvalidFeedbackForms: Ref<boolean> = ref(false);
+
+
+// Check  hhe overall form validity of the entire form
+const isEntireFormInvalid= async (): Promise<boolean> => {
+  // Validate the main form fields
+  const areMainFieldsValid = await v$.value.$validate();
+
+  // Return true if any section (main or sub-forms) is invalid
+  return !areMainFieldsValid ||
+         hasInvalidBackgroundForms.value ||
+         hasInvalidChallengeForms.value ||
+         hasInvalidAchievementForms.value ||
+         hasInvalidFeedbackForms.value;
+}
 
 
 const isAddingProject = ref(false);
@@ -292,8 +314,9 @@ const v$ = useVuelidate(rules, form);
 //form validation end
 
 const submitForm = async () => {
-//check if the main details of the form are valid
-  const areFormMainDetailsValid = await v$.value.$validate();
+
+//check if the entire form is valid
+const isEntireFormValid= areFormMainDetailsValid && !()
   if (isFormCorrect) {
     //save the project main details to the store
     projectStore.newProject.title = form.value.title;
