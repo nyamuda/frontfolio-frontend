@@ -30,6 +30,7 @@ import { ref, type Ref } from "vue";
 
 import Button from "primevue/button";
 import AddAchievementForm from "./AddAchievementForm.vue";
+import type { ValidatedItem } from "@/interfaces/projects/validatedItem";
 
 defineProps({
   buttonLabel: {
@@ -39,7 +40,7 @@ defineProps({
   },
 });
 
-const achievements: Ref<Achievement[]> = ref([]);
+const achievements: Ref<ValidatedItem<Achievement>[]> = ref([]);
 
 //Add a new achievement to the list of achievements when the button is clicked
 const addNewAchievement = () => achievements.value.push(new Achievement());
