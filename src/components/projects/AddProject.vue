@@ -23,9 +23,10 @@
         severity="contrast"
         variant="outlined"
         size="small"
+        :disabled="isPublishingProject || isSavingProject"
       />
       <Button
-        v-if=""
+        v-if="project.status != ProjectStatus.Published"
         @click="submitForm('Published')"
         label="Publish project"
         size="small"
