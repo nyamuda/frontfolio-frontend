@@ -272,6 +272,7 @@ import type { Paragraph } from "@/models/paragraph";
 import type { Challenge } from "@/models/challenge";
 import type { Achievement } from "@/models/achievement";
 import type { Feedback } from "@/models/feedback";
+import { ProjectStatus } from "@/enums/projectStatus";
 
 // Access the store
 const projectStore = useProjectStore();
@@ -312,7 +313,8 @@ const isEntireFormInvalid = async (): Promise<boolean> => {
   );
 };
 
-const isAddingProject = ref(false);
+const isSavingProject = ref(false);
+const isPublishingProject = ref(false);
 
 //form validation start
 const form = ref({
@@ -340,13 +342,22 @@ const rules = {
 const v$ = useVuelidate(rules, form);
 //form validation end
 
-const submitForm = async () => {
+const submitForm = async (savingStatus: "Draft" | "Published") => {
   // Validate the entire form (main fields + paragraph + challenge + achievement + feedback sections)
   const isInvalid = await isEntireFormInvalid();
 
   // Only proceed if form is valid
   if (!isInvalid) {
-    isAddingProject.value = true;
+    //mark the project as being published
+    //change the project status to Published if user has clicked "Publish" button
+    if (savingStatus == "Published") {
+      isPublishingProject.value = true;
+      project.value.status = ProjectStatus.Published;
+    }
+    //else just mark the project as being saved as a draft
+    else {
+      isSavingProject.value = true;
+    }
     projectStore
       .addNewProject(project.value)
       .then(() => {
@@ -371,7 +382,8 @@ const submitForm = async () => {
         });
       })
       .finally(() => {
-        isAddingProject.value = false;
+        isSavingProject.value = false;
+        isPublishingProject.value = false;
       });
   }
 };

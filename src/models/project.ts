@@ -12,7 +12,7 @@ export class Project {
     public githubUrl: string = "",
     public imageUrl: string = "",
     public liveUrl: string = "",
-    public projectStatus: ProjectStatus = ProjectStatus.Draft,
+    public status: ProjectStatus = ProjectStatus.Draft,
     public background: Paragraph[] = [],
     public challenges: Challenge[] = [],
     public achievements: Achievement[] = [],
