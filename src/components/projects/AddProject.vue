@@ -11,8 +11,14 @@
     </div>
     <div class="d-flex justify-content-end gap-3 align-items-center mb-5">
       <Button
-        icon="pi pi-spin pi-refresh"
-        label="Saving as draft..."
+        :icon="isPublishingProject || isSavingProject ? 'pi pi-spin pi-refresh' : 'pi pi-refresh'"
+        :label="
+          isSavingProject
+            ? 'Saving as draft...'
+            : isPublishingProject
+              ? 'Publishing project...'
+              : 'Not saved'
+        "
         variant="text"
         severity="secondary"
         size="small"
@@ -23,14 +29,18 @@
         severity="contrast"
         variant="outlined"
         size="small"
-        :disabled="isPublishingProject || isSavingProject"
+        :disabled="
+          isPublishingProject || isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms
+        "
       />
       <Button
         v-if="project.status != ProjectStatus.Published"
         @click="submitForm('Published')"
         label="Publish project"
         size="small"
-        :disabled="isPublishingProject || isSavingProject"
+        :disabled="
+          isPublishingProject || isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms
+        "
       />
     </div>
     <form class="">
@@ -254,7 +264,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, type Ref } from "vue";
+import { computed, onMounted, ref, type Ref } from "vue";
 import { useProjectStore } from "@/stores/project";
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers, url } from "@vuelidate/validators";
@@ -319,6 +329,16 @@ const isEntireFormInvalid = async (): Promise<boolean> => {
     hasInvalidFeedbackForms.value
   );
 };
+// Check whether any of the project’s sub-sections (e.g. background, challenges,
+// achievements, or feedback) contain invalid forms. Returns true if at least one
+// sub-form is invalid
+const hasInvalidSubForms = computed(
+  () =>
+    hasInvalidBackgroundForms.value ||
+    hasInvalidChallengeForms.value ||
+    hasInvalidAchievementForms.value ||
+    hasInvalidFeedbackForms.value,
+);
 
 const isSavingProject = ref(false);
 const isPublishingProject = ref(false);
