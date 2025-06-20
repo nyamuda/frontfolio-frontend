@@ -128,7 +128,7 @@ onMounted(() => {
 const dividerLabel: Ref<string> = computed(() => {
   switch (props.paragraph.paragraphType) {
     case "ProjectBackground":
-      return "Project Description Paragraph";
+      return "Project Paragraph";
     default:
       return "Paragraph";
   }

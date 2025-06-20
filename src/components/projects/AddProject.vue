@@ -315,20 +315,6 @@ const hasInvalidAchievementForms: Ref<boolean> = ref(false);
 // Track whether any feedback form is invalid
 const hasInvalidFeedbackForms: Ref<boolean> = ref(false);
 
-// Check the validity of the entire form
-const isEntireFormInvalid = async (): Promise<boolean> => {
-  // Validate the main form fields
-  const areMainFieldsValid = await v$.value.$validate();
-
-  // Return true if any section (main or sub-forms) is invalid
-  return (
-    !areMainFieldsValid ||
-    hasInvalidBackgroundForms.value ||
-    hasInvalidChallengeForms.value ||
-    hasInvalidAchievementForms.value ||
-    hasInvalidFeedbackForms.value
-  );
-};
 // Check whether any of the project’s sub-sections (e.g. background, challenges,
 // achievements, or feedback) contain invalid forms. Returns true if at least one
 // sub-form is invalid
@@ -339,6 +325,13 @@ const hasInvalidSubForms = computed(
     hasInvalidAchievementForms.value ||
     hasInvalidFeedbackForms.value,
 );
+// Check the validity of the entire form
+const isEntireFormInvalid = async (): Promise<boolean> => {
+  // Validate the main form fields
+  const areMainFieldsValid = await v$.value.$validate();
+  // Return true if any section (main or sub-forms) is invalid
+  return !areMainFieldsValid || hasInvalidSubForms.value;
+};
 
 const isSavingProject = ref(false);
 const isPublishingProject = ref(false);

@@ -1,7 +1,9 @@
 <template>
   <section>
     <form @change="handleFormChange" class="mb-4">
-      <Divider align="center" type="dashed"> 📝 Achievement {{ index + 1 }} </Divider>
+      <Divider align="center" type="dashed">
+        <i class="pi pi-flag"></i> Achievement {{ index + 1 }}
+      </Divider>
       <!-- Title input -->
       <div class="form-group mb-3">
         <FloatLabel variant="on">

@@ -1,7 +1,9 @@
 <template>
   <section>
     <form @change="handleFormChange" class="mb-4">
-      <Divider align="center" type="dashed"> 📝 Feedback {{ index + 1 }} </Divider>
+      <Divider align="center" type="dashed">
+        <i class="pi pi-comment"></i> Feedback {{ index + 1 }}
+      </Divider>
       <!-- Author name input -->
       <div class="form-group mb-3">
         <FloatLabel variant="on">
