@@ -258,6 +258,10 @@ onMounted(() => {
 //the new project
 const project: Ref<Project> = ref(new Project());
 const isAnyBackgroundParagraphInvalid: Ref<boolean> = ref(false);
+const isAnyChallengeInvalid:Ref<boolean> =ref(false);
+const isAnyAchievementInvalid:Ref<boolean> =ref(false);
+const isAnyFeedbackInvalid:Ref<boolean> =ref(false);
+
 
 const isAddingProject = ref(false);
 
@@ -288,7 +292,8 @@ const v$ = useVuelidate(rules, form);
 //form validation end
 
 const submitForm = async () => {
-  const isFormCorrect = await v$.value.$validate();
+//check if the main details of the form are valid
+  const areFormMainDetailsValid = await v$.value.$validate();
   if (isFormCorrect) {
     //save the project main details to the store
     projectStore.newProject.title = form.value.title;
