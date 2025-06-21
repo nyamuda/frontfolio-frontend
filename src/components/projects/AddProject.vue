@@ -362,10 +362,20 @@ const rules = {
 const v$ = useVuelidate(rules, form);
 //form validation end
 
-//Change the project status to Published if user has clicked "Publish" button
+//Change the project status to Draft if user has clicked the "Save" button
 const saveProjectAsDraft = async () => {
+  isSavingProject.value = true;
   //change the status to Draft
   project.value.status = ProjectStatus.Draft;
+  //then submit the project
+  await submitProject();
+};
+
+//Change the project status to Published if user has clicked the "Publish" button
+const publishProject = async () => {
+  isPublishingProject.value = true;
+  //change the status to Published
+  project.value.status = ProjectStatus.Published;
   //then submit the project
   await submitProject();
 };
@@ -383,16 +393,6 @@ const submitProject = async () => {
     project.value.imageUrl = form.value.imageUrl;
     project.value.githubUrl = form.value.githubUrl;
     project.value.liveUrl = form.value.liveUrl;
-    //mark the project as being published or a draft
-    //change the project status to Published if user has clicked "Publish" button
-    if (savingStatus == "Published") {
-      isPublishingProject.value = true;
-      project.value.status = ProjectStatus.Published;
-    }
-    //else just mark the project as being saved as a draft
-    else {
-      isSavingProject.value = true;
-    }
 
     projectStore
       .addNewProject(project.value)
