@@ -16,7 +16,10 @@ export const useProjectStore = defineStore("project", () => {
       //make the request
       axios
         .post(url, project)
-        .then(() => resolve({}))
+        .then((response) => {
+          //return the ID of the newly created project
+          resolve({ id: response?.data?.id });
+        })
         .catch((error) => {
           console.log(error);
           const message =
