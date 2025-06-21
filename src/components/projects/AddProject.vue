@@ -340,9 +340,9 @@ const isPublishingProject = ref(false);
 const form = ref({
   title: "",
   summary: "",
-  imageUrl: "",
-  githubUrl: "",
-  liveUrl: "",
+  imageUrl: null,
+  githubUrl: null,
+  liveUrl: null,
   techStack: [],
 });
 
