@@ -19,7 +19,9 @@ export const useAuthStore = defineStore("auth", () => {
   const isVerifyingEmailOtp: Ref<boolean> = ref(false);
   //The result of sending an email verification code to use
   //e.g success, failure
-  const emailConfirmationOtpSendingResult: Ref<SendingOtpResult> = ref(SendingOtpResult.NothingSent);
+  const emailConfirmationOtpSendingResult: Ref<SendingOtpResult> = ref(
+    SendingOtpResult.NothingSent,
+  );
 
   //attempted url if the user is not logged in
   //and they're redirected to the log in page
@@ -223,6 +225,7 @@ export const useAuthStore = defineStore("auth", () => {
       const now = Math.floor(Date.now() / 1000); // current time in seconds
 
       const hasExpired: boolean = exp ? !(exp > now) : true;
+
 
       //if token has expired, then the user is not authenticated
       isAuthenticated.value = hasExpired ? false : true;

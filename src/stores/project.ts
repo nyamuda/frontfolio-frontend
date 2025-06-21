@@ -18,6 +18,7 @@ export const useProjectStore = defineStore("project", () => {
         .post(url, project)
         .then(() => resolve({}))
         .catch((error) => {
+          console.log(error);
           const message =
             error.response?.data?.message ||
             "An unexpected error occurred while saving your project.";

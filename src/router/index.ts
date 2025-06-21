@@ -27,6 +27,17 @@ const router = createRouter({
       path: "/projects",
       name: "Projects",
       component: ProjectView,
+      beforeEnter: (to) => {
+        const authStore = useAuthStore();
+        //this is a protected route
+        if (!authStore.isAuthenticated) {
+          //store the attempted URL
+          authStore.attemptedUrl = to.fullPath;
+          // Redirect to login page
+          return { name: "Login" };
+        }
+        return true;
+      },
       children: [
         {
           path: "",
