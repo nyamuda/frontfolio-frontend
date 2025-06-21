@@ -9,6 +9,7 @@
         ready.
       </p>
     </div>
+    <!-- Save and Publish buttons start-->
     <div class="d-flex justify-content-end gap-3 align-items-center mb-5">
       <Button
         :icon="isPublishingProject || isSavingProject ? 'pi pi-spin pi-refresh' : 'pi pi-refresh'"
@@ -24,7 +25,7 @@
         size="small"
       />
       <Button
-        @click="submitForm('Draft')"
+        @click="saveProjectAsDraft"
         label="Save draft"
         severity="contrast"
         variant="outlined"
@@ -35,7 +36,7 @@
       />
       <Button
         v-if="project.status != ProjectStatus.Published"
-        @click="submitForm('Published')"
+        @click="publishProject"
         label="Publish project"
         size="small"
         :disabled="
@@ -43,6 +44,7 @@
         "
       />
     </div>
+    <!-- Save and Publish buttons end-->
     <form class="">
       <!-- Project main details start -->
       <Panel class="mb-3" toggleable>
@@ -405,8 +407,8 @@ const submitProject = async () => {
           life: 5000,
         });
 
-        // Redirect to the project list page
-        router.push("/projects");
+        // Redirect to the project list page if the project was published
+        if (project.value.status == ProjectStatus.Published) router.push("/projects");
       })
       .catch((message) => {
         // Show error toast if the project creation fails
