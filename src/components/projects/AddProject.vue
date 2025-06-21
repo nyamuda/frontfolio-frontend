@@ -368,6 +368,13 @@ const submitForm = async (savingStatus: "Draft" | "Published") => {
 
   // Only proceed if form is valid
   if (!isInvalid) {
+    //add main project details
+    project.value.title = form.value.title;
+    project.value.summary = form.value.summary;
+    project.value.techStack = form.value.techStack;
+    project.value.imageUrl = form.value.imageUrl;
+    project.value.githubUrl = form.value.githubUrl;
+    project.value.liveUrl = form.value.liveUrl;
     //mark the project as being published
     //change the project status to Published if user has clicked "Publish" button
     if (savingStatus == "Published") {
@@ -378,6 +385,7 @@ const submitForm = async (savingStatus: "Draft" | "Published") => {
     else {
       isSavingProject.value = true;
     }
+
     projectStore
       .addNewProject(project.value)
       .then(() => {
