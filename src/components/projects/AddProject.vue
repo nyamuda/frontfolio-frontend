@@ -362,7 +362,15 @@ const rules = {
 const v$ = useVuelidate(rules, form);
 //form validation end
 
-const submitForm = async (savingStatus: "Draft" | "Published") => {
+//Change the project status to Published if user has clicked "Publish" button
+const saveProjectAsDraft = async () => {
+  //change the status to Draft
+  project.value.status = ProjectStatus.Draft;
+  //then submit the project
+  await submitProject();
+};
+
+const submitProject = async () => {
   // Validate the entire form (main fields + paragraph + challenge + achievement + feedback sections)
   const isInvalid = await isEntireFormInvalid();
 
