@@ -375,7 +375,7 @@ const submitForm = async (savingStatus: "Draft" | "Published") => {
     project.value.imageUrl = form.value.imageUrl;
     project.value.githubUrl = form.value.githubUrl;
     project.value.liveUrl = form.value.liveUrl;
-    //mark the project as being published
+    //mark the project as being published or a draft
     //change the project status to Published if user has clicked "Publish" button
     if (savingStatus == "Published") {
       isPublishingProject.value = true;

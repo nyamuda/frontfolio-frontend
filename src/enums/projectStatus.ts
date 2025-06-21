@@ -1,4 +1,4 @@
 export enum ProjectStatus {
-  Published,
-  Draft,
+  Published = "Published",
+  Draft = "Draft",
 }
