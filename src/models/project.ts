@@ -6,6 +6,7 @@ import type { Feedback } from "./feedback";
 
 export class Project {
   public constructor(
+    public id: number = 0,
     public title: string = "",
     public summary: string = "",
     public techStack: string[] = [],

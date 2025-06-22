@@ -354,8 +354,12 @@ const isPublishingProject = ref(false);
 //Show loading project loader or not
 const isLoadingProject = ref(false);
 
-//form validation start
+// Tracks whether the project was saved automatically (via auto-save) or manually by the user.
+// This is used to decide whether a toast notification should be shown.
+// If the project was saved automatically, no toast is displayed.
+const isAutoSaved = ref(true);
 
+//form validation start
 const rules = {
   title: { required },
   summary: { required },
@@ -390,8 +394,8 @@ const getProjectById = (id: number) => {
     .finally(() => (isLoadingProject.value = false));
 };
 
-//Change the project status to Draft if user has clicked the "Save" button
-const saveProjectAsDraft = async () => {
+//save the project changes if it was already published
+const saveProject = async () => {
   isSavingProject.value = true;
   //change the status to Draft
   project.value.status = ProjectStatus.Draft;
@@ -399,7 +403,8 @@ const saveProjectAsDraft = async () => {
   await submitProject();
 };
 
-//Change the project status to Published if user has clicked the "Publish" button
+//Change the project status to Published if the project hasn't been published yet
+// and user has clicked the "Publish" button
 const publishProject = async () => {
   isPublishingProject.value = true;
   //change the status to Published
@@ -415,9 +420,8 @@ const submitProject = async () => {
   // Only proceed if form is valid
   if (!isInvalid) {
     projectStore
-      .addNewProject(project.value)
-      .then(({ id }) => {
-        console.log(`id is: ${id}`);
+      .editProject(project.value.id, project.value)
+      .then(() => {
         // Show success toast notification
         toast.add({
           severity: "success",
@@ -467,6 +471,7 @@ watch(
       return;
     }
 
+    isAutoSaved.value = true;
     // Trigger the debounced save function
     // This ensures we wait for 10 seconds of no changes before saving
     debouncedSubmitProject(); // Watch nested properties inside the project object
