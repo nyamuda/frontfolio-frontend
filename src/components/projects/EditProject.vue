@@ -396,6 +396,7 @@ const getProjectById = (id: number) => {
 
 //save the project changes if it was already published
 const saveProject = async () => {
+  isAutoSaved.value = false;
   isSavingProject.value = true;
   //change the status to Draft
   project.value.status = ProjectStatus.Draft;
@@ -406,6 +407,7 @@ const saveProject = async () => {
 //Change the project status to Published if the project hasn't been published yet
 // and user has clicked the "Publish" button
 const publishProject = async () => {
+  isAutoSaved.value = false;
   isPublishingProject.value = true;
   //change the status to Published
   project.value.status = ProjectStatus.Published;
@@ -419,14 +421,23 @@ const submitProject = async () => {
 
   // Only proceed if form is valid
   if (!isInvalid) {
+    //project status
+    const status: ProjectStatus = project.value.status;
     projectStore
       .editProject(project.value.id, project.value)
       .then(() => {
-        // Show success toast notification
+        //show success toast notification after editing a project
+        const toastSummary =
+          status === ProjectStatus.Published ? "Project Updated" : "Draft Updated";
+
+        const toastDetail =
+          status === ProjectStatus.Published
+            ? "Your changes have been saved and are now live in your portfolio."
+            : "Your draft has been updated. You can continue editing and publish it when you're ready.";
         toast.add({
           severity: "success",
-          summary: "Project Created",
-          detail: "Your project has been successfully created.",
+          summary: toastSummary,
+          detail: toastDetail,
           life: 5000,
         });
 
