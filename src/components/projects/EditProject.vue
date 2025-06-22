@@ -25,17 +25,11 @@
             ? 'Saving changes...'
             : isPublishingProject
               ? 'Publishing project...'
-              : 'Saved'
+              : 'Save changes'
         "
         variant="text"
         severity="secondary"
-        size="small"
-      />
-      <Button
         @click="saveProject"
-        label="Save changes"
-        severity="contrast"
-        variant="outlined"
         size="small"
         :disabled="
           isPublishingProject ||
@@ -45,6 +39,7 @@
           !hasUnsavedChanges
         "
       />
+
       <Button
         v-if="project.status != ProjectStatus.Published"
         @click="publishProject"
@@ -436,6 +431,7 @@ const submitProject = async () => {
     projectStore
       .editProject(project.value.id, project.value)
       .then(() => {
+        hasUnsavedChanges.value = false;
         //Don't show toast if the project was autosaved
         if (isAutoSaved.value) return;
 
@@ -453,9 +449,6 @@ const submitProject = async () => {
           detail: toastDetail,
           life: 5000,
         });
-
-        // Redirect to the project list page if the project was published
-        if (project.value.status == ProjectStatus.Published) router.push("/projects");
       })
       .catch((message) => {
         // Show error toast if the project creation fails
@@ -469,7 +462,6 @@ const submitProject = async () => {
       .finally(() => {
         isSavingProject.value = false;
         isPublishingProject.value = false;
-        hasUnsavedChanges.value = false;
       });
   }
 };
@@ -477,11 +469,10 @@ const submitProject = async () => {
 // Debounced version of the submitProject function
 // This ensures that the function will only be called after 10 seconds of inactivity.
 // If the user makes another change before 10 seconds pass, the timer is reset.
-const debouncedSubmitProject = debounce(() => {
+const debouncedSubmitProject = debounce(async () => {
   isAutoSaved.value = true;
   isSavingProject.value = true;
-  hasUnsavedChanges.value = true;
-  alert("hey");
+  await submitProject();
 }, 10000);
 // Flag to determine if the current change to the project object is the initial load.
 // This is used to prevent triggering auto-save when the project is first loaded from the backend.
@@ -500,7 +491,7 @@ watch(
       isInitialLoad.value = false;
       return;
     }
-
+    hasUnsavedChanges.value = true;
     // Trigger the debounced save function
     // This ensures we wait for 10 seconds of no changes before saving
     debouncedSubmitProject(); // Watch nested properties inside the project object
