@@ -353,13 +353,14 @@ const isSavingProject = ref(false);
 const isPublishingProject = ref(false);
 //Show loading project loader or not
 const isLoadingProject = ref(false);
-
 // Tracks whether the project was saved automatically (via auto-save) or manually by the user.
 // This is used to decide whether a toast notification should be shown.
 // If the project was saved automatically, no toast is displayed.
 const isAutoSaved = ref(true);
 
-//form validation start
+const hasUnsavedChanges = ref(false);
+
+//Form validation start
 const rules = {
   title: { required },
   summary: { required },
@@ -374,7 +375,7 @@ const rules = {
   },
 };
 const v$ = useVuelidate(rules, project);
-//form validation end
+//Form validation end
 
 //Fetch a project with a given ID
 const getProjectById = (id: number) => {
@@ -430,6 +431,9 @@ const submitProject = async () => {
     projectStore
       .editProject(project.value.id, project.value)
       .then(() => {
+        //Don't show toast if the project was autosaved
+        if (isAutoSaved.value) return;
+
         //show success toast notification after editing a project
         const toastSummary =
           status === ProjectStatus.Published ? "Project Updated" : "Draft Updated";
