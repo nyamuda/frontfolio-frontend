@@ -268,6 +268,7 @@
       </Panel>
       <!-- Project feedback end  -->
     </form>
+    {{ project }}
   </div>
 </template>
 
@@ -399,8 +400,7 @@ const getProjectById = (id: number) => {
 const saveProject = async () => {
   isAutoSaved.value = false;
   isSavingProject.value = true;
-  //change the status to Draft
-  project.value.status = ProjectStatus.Draft;
+
   //cancel the pending auto-save if there is one in progress
   debouncedSubmitProject.cancel();
   //then submit the project
@@ -441,7 +441,7 @@ const submitProject = async () => {
 
         const toastDetail =
           status === ProjectStatus.Published
-            ? "Your changes have been saved and are now live in your portfolio."
+            ? "Your project has been published and is now live in your portfolio."
             : "Your draft has been updated. You can continue editing and publish it when you're ready.";
         toast.add({
           severity: "success",
