@@ -12,6 +12,7 @@
     <!-- Save and Publish buttons start-->
     <div class="d-flex justify-content-end gap-3 align-items-center mb-5">
       <Button
+        size="small"
         @click="saveProjectAsDraft"
         :label="isSavingProject ? 'Saving...' : 'Save as draft'"
         severity="contrast"
@@ -22,6 +23,7 @@
         "
       />
       <Button
+        size="small"
         v-if="project.status != ProjectStatus.Published"
         @click="publishProject"
         :label="isPublishingProject ? 'Publishing project...' : 'Publish'"
@@ -366,11 +368,11 @@ const submitProject = async () => {
 
   // Only proceed if form is valid
   if (!isInvalid) {
+    //project status
+    const status: ProjectStatus = project.value.status;
     projectStore
       .addNewProject(project.value)
       .then(({ id }) => {
-        //project status
-        const status: ProjectStatus = project.value.status;
         // Show success toast notification
         const toastSummary =
           status == ProjectStatus.Published ? "Project Published" : "Project Saved as Draft";
@@ -392,12 +394,19 @@ const submitProject = async () => {
           router.push(`/projects/${id}/edit`);
         }
       })
-      .catch((message) => {
-        // Show error toast if the project creation fails
+      .catch(() => {
+        // Show error toast notification
+        const toastSummary =
+          status == ProjectStatus.Published ? "Failed to Publish Project" : "Failed to Save Draft";
+
+        const toastDetail =
+          status == ProjectStatus.Published
+            ? "Something went wrong while publishing your project. Please try again."
+            : "We couldn’t save your draft. Make sure you're connected and try again.";
         toast.add({
           severity: "error",
-          summary: "Failed to Create Project",
-          detail: message,
+          summary: toastSummary,
+          detail: toastDetail,
           life: 10000,
         });
       })
