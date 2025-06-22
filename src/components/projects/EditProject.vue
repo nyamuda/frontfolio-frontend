@@ -273,7 +273,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, type Ref } from "vue";
+import { computed, onMounted, ref, watch, type Ref } from "vue";
 import { useProjectStore } from "@/stores/project";
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers, url } from "@vuelidate/validators";
@@ -300,6 +300,7 @@ import type { Achievement } from "@/models/achievement";
 import type { Feedback } from "@/models/feedback";
 import { ProjectStatus } from "@/enums/projectStatus";
 import ProgressBar from "primevue/progressbar";
+import debounce from "lodash.debounce";
 
 // Access the store
 const projectStore = useProjectStore();
@@ -443,6 +444,35 @@ const submitProject = async () => {
       });
   }
 };
+
+// Debounced version of the submitProject function
+// This ensures that the function will only be called after 10 seconds of inactivity.
+// If the user makes another change before 10 seconds pass, the timer is reset.
+const debouncedSubmitProject = debounce(submitProject, 10000);
+// Flag to determine if the current change to the project object is the initial load.
+// This is used to prevent triggering auto-save when the project is first loaded from the backend.
+const isInitialLoad = ref(true);
+// Watcher that observes any deep changes to the project object.
+// Purpose:
+// - To automatically save changes the user makes while editing a project.
+// - After any change is detected, the debounced submitProject function is triggered.
+// - This avoids excessive saves and only calls the save function after 10 seconds of inactivity.
+watch(
+  project,
+  () => {
+    // Skip the first watcher trigger, which happens when the project is initially loaded
+    // from the backend. We only want to auto-save user-initiated edits.
+    if (isInitialLoad.value) {
+      isInitialLoad.value = false;
+      return;
+    }
+
+    // Trigger the debounced save function
+    // This ensures we wait for 10 seconds of no changes before saving
+    debouncedSubmitProject(); // Watch nested properties inside the project object
+  },
+  { deep: true },
+);
 </script>
 
 <style scoped lang="scss">
