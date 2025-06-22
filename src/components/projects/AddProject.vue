@@ -326,15 +326,6 @@ const isSavingProject = ref(false);
 const isPublishingProject = ref(false);
 
 //form validation start
-const form = ref({
-  title: "",
-  summary: "",
-  imageUrl: null,
-  githubUrl: null,
-  liveUrl: null,
-  techStack: [],
-});
-
 const rules = {
   title: { required },
   summary: { required },
@@ -348,7 +339,7 @@ const rules = {
     ),
   },
 };
-const v$ = useVuelidate(rules, form);
+const v$ = useVuelidate(rules, project);
 //form validation end
 
 //Change the project status to Draft if user has clicked the "Save" button
@@ -375,14 +366,6 @@ const submitProject = async () => {
 
   // Only proceed if form is valid
   if (!isInvalid) {
-    //add main project details
-    project.value.title = form.value.title;
-    project.value.summary = form.value.summary;
-    project.value.techStack = form.value.techStack;
-    project.value.imageUrl = form.value.imageUrl;
-    project.value.githubUrl = form.value.githubUrl;
-    project.value.liveUrl = form.value.liveUrl;
-
     projectStore
       .addNewProject(project.value)
       .then(({ id }) => {

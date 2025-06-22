@@ -11,8 +11,13 @@
         </p>
       </div>
     </div>
+
+    <!-- Loader -->
+    <div v-if="isLoadingProject" class="mb-5">
+      <ProgressBar mode="indeterminate" style="height: 6px"></ProgressBar>
+    </div>
     <!-- Save and Publish buttons start-->
-    <div class="d-flex justify-content-end gap-3 align-items-center mb-5">
+    <div v-else class="d-flex justify-content-end gap-3 align-items-center mb-5">
       <Button
         :icon="isPublishingProject || isSavingProject ? 'pi pi-spin pi-refresh' : 'pi pi-refresh'"
         :label="
@@ -294,6 +299,7 @@ import type { Challenge } from "@/models/challenge";
 import type { Achievement } from "@/models/achievement";
 import type { Feedback } from "@/models/feedback";
 import { ProjectStatus } from "@/enums/projectStatus";
+import ProgressBar from "primevue/progressbar";
 
 // Access the store
 const projectStore = useProjectStore();
@@ -344,6 +350,8 @@ const isEntireFormInvalid = async (): Promise<boolean> => {
 
 const isSavingProject = ref(false);
 const isPublishingProject = ref(false);
+//Show loading project loader or not
+const isLoadingProject = ref(false);
 
 //form validation start
 
@@ -365,6 +373,7 @@ const v$ = useVuelidate(rules, project);
 
 //Fetch a project with a given ID
 const getProjectById = (id: number) => {
+  isLoadingProject.value = true;
   projectStore
     .getProjectById(id)
     .then((data) => (project.value = data))
@@ -376,7 +385,8 @@ const getProjectById = (id: number) => {
         detail: message,
         life: 10000,
       });
-    });
+    })
+    .finally(() => (isLoadingProject.value = false));
 };
 
 //Change the project status to Draft if user has clicked the "Save" button
