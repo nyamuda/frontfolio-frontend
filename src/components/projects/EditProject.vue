@@ -3,11 +3,13 @@
     <TitleSection title="Edit your project details" subtitle="Edit Project" />
 
     <div class="row mb-2">
-      <p class="col-md-6">
-        Continue editing your project. If it hasn't been published yet, you can publish it when
-        you're ready. For published projects, changes are saved automatically and take effect
-        immediately.
-      </p>
+      <div class="col-md-6">
+        <p>
+          You can continue editing your project. Your changes are saved automatically. If your
+          project is published, updates will be reflected immediately in your public portfolio. You
+          can also manually save your changes whenever you'd like.
+        </p>
+      </div>
     </div>
     <!-- Save and Publish buttons start-->
     <div class="d-flex justify-content-end gap-3 align-items-center mb-5">
@@ -308,9 +310,8 @@ onMounted(async () => {
   }
 });
 
-// The new project being created
+// The project being edited
 const project: Ref<Project> = ref(new Project());
-
 // Track whether any background paragraph form is invalid
 const hasInvalidBackgroundForms: Ref<boolean> = ref(false);
 
@@ -345,14 +346,6 @@ const isSavingProject = ref(false);
 const isPublishingProject = ref(false);
 
 //form validation start
-const form = ref({
-  title: "",
-  summary: "",
-  imageUrl: null,
-  githubUrl: null,
-  liveUrl: null,
-  techStack: [],
-});
 
 const rules = {
   title: { required },
@@ -367,9 +360,10 @@ const rules = {
     ),
   },
 };
-const v$ = useVuelidate(rules, form);
+const v$ = useVuelidate(rules, project);
 //form validation end
 
+//Fetch a project with a given ID
 const getProjectById = (id: number) => {
   projectStore
     .getProjectById(id)
@@ -409,14 +403,6 @@ const submitProject = async () => {
 
   // Only proceed if form is valid
   if (!isInvalid) {
-    //add main project details
-    project.value.title = form.value.title;
-    project.value.summary = form.value.summary;
-    project.value.techStack = form.value.techStack;
-    project.value.imageUrl = form.value.imageUrl;
-    project.value.githubUrl = form.value.githubUrl;
-    project.value.liveUrl = form.value.liveUrl;
-
     projectStore
       .addNewProject(project.value)
       .then(({ id }) => {

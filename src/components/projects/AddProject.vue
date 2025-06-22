@@ -393,7 +393,7 @@ const submitProject = async () => {
           status == ProjectStatus.Published ? "Project Published" : "Project Saved as Draft";
         const toastDetail =
           status == ProjectStatus.Published
-            ? "Your project has been successfully published and is now visible."
+            ? "Your project has been successfully published."
             : "You can continue editing and publish it when you're ready.";
         toast.add({
           severity: "success",
