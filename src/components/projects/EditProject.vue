@@ -470,6 +470,10 @@ const submitProject = async () => {
 // This ensures that the function will only be called after 10 seconds of inactivity.
 // If the user makes another change before 10 seconds pass, the timer is reset.
 const debouncedSubmitProject = debounce(async () => {
+  //Don't auto save if form is invalid
+  const isInvalid: boolean = await isEntireFormInvalid();
+  if (isInvalid) return;
+
   isAutoSaved.value = true;
   isSavingProject.value = true;
   await submitProject();
