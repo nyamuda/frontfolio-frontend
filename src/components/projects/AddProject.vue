@@ -12,24 +12,12 @@
     <!-- Save and Publish buttons start-->
     <div class="d-flex justify-content-end gap-3 align-items-center mb-5">
       <Button
-        :icon="isPublishingProject || isSavingProject ? 'pi pi-spin pi-refresh' : 'pi pi-refresh'"
-        :label="
-          isSavingProject
-            ? 'Saving as draft...'
-            : isPublishingProject
-              ? 'Publishing project...'
-              : 'Not saved'
-        "
-        variant="text"
-        severity="secondary"
-        size="small"
-      />
-      <Button
         @click="saveProjectAsDraft"
         :label="isSavingProject ? 'Saving...' : 'Save as draft'"
         severity="contrast"
         variant="outlined"
         size="small"
+        :loading="isSavingProject"
         :disabled="
           isPublishingProject || isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms
         "
@@ -39,6 +27,7 @@
         @click="publishProject"
         :label="isPublishingProject ? 'Publishing project...' : 'Publish'"
         size="small"
+        :loading="isPublishingProject"
         :disabled="
           isPublishingProject || isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms
         "
