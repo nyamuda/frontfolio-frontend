@@ -399,7 +399,6 @@ const submitProject = async () => {
     projectStore
       .addNewProject(project.value)
       .then(({ id }) => {
-        console.log(`id is: ${id}`);
         // Show success toast notification
         toast.add({
           severity: "success",
@@ -408,8 +407,12 @@ const submitProject = async () => {
           life: 5000,
         });
 
-        // Redirect to the project list page if the project was published
+        // Navigate to the project list page if the project was published
         if (project.value.status == ProjectStatus.Published) router.push("/projects");
+        //if its a draft, navigate to the edit project page
+        else {
+          router.push(`/project/${id}/edit`);
+        }
       })
       .catch((message) => {
         // Show error toast if the project creation fails
