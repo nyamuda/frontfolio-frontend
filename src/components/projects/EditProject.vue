@@ -357,7 +357,8 @@ const isLoadingProject = ref(false);
 // This is used to decide whether a toast notification should be shown.
 // If the project was saved automatically, no toast is displayed.
 const isAutoSaved = ref(true);
-
+// Tracks whether the user has made any changes to the project since the last save.
+// This is used to enable or disable the "Save Changes" button and prevent unnecessary saves.
 const hasUnsavedChanges = ref(false);
 
 //Form validation start
@@ -464,6 +465,7 @@ const submitProject = async () => {
       .finally(() => {
         isSavingProject.value = false;
         isPublishingProject.value = false;
+        hasUnsavedChanges.value = false;
       });
   }
 };
@@ -492,6 +494,7 @@ watch(
 
     isAutoSaved.value = true;
     isSavingProject.value = true;
+    hasUnsavedChanges.value = true;
     // Trigger the debounced save function
     // This ensures we wait for 10 seconds of no changes before saving
     debouncedSubmitProject(); // Watch nested properties inside the project object
