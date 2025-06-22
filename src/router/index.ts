@@ -13,6 +13,7 @@ import ResetPassword from "@/components/auth/ResetPassword.vue";
 import ProjectView from "@/views/ProjectView.vue";
 import ProjectList from "@/components/projects/ProjectList.vue";
 import AddProject from "@/components/projects/AddProject.vue";
+import EditProject from "@/components/projects/EditProject.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -48,6 +49,11 @@ const router = createRouter({
           path: "add",
           name: "AddProject",
           component: AddProject,
+        },
+        {
+          path: ":id/edit",
+          name: "EditProject",
+          component: EditProject,
         },
       ],
     },
