@@ -1,12 +1,12 @@
 <template>
   <div>
-    <TitleSection title="Tell the story behind your project" subtitle="New Project" />
+    <TitleSection title="Edit your project details" subtitle="Edit Project" />
 
     <div class="row mb-2">
       <p class="col-md-6">
-        Let the world see what you’ve been working on. Add a title, description, image, and any
-        links that showcase your project. You can save it as a draft or publish it when you’re
-        ready.
+        Continue editing your project. If it hasn't been published yet, you can publish it when
+        you're ready. For published projects, changes are saved automatically and take effect
+        immediately.
       </p>
     </div>
     <!-- Save and Publish buttons start-->
@@ -298,13 +298,14 @@ const projectStore = useProjectStore();
 const toast = useToast();
 const router = useRouter();
 
-onMounted(() => {
+onMounted(async () => {
   v$.value.$touch();
   //get project ID from URL params
   const projectId = router.currentRoute.value.params["id"];
-
-  alert(projectId);
   //fetching project with given ID
+  if (projectId) {
+    getProjectById(Number(projectId));
+  }
 });
 
 // The new project being created
@@ -368,6 +369,21 @@ const rules = {
 };
 const v$ = useVuelidate(rules, form);
 //form validation end
+
+const getProjectById = (id: number) => {
+  projectStore
+    .getProjectById(id)
+    .then((data) => (project.value = data))
+    .catch((message) => {
+      // Show error toast if the project fetching fails
+      toast.add({
+        severity: "error",
+        summary: "Failed to Fetch Project Details",
+        detail: message,
+        life: 10000,
+      });
+    });
+};
 
 //Change the project status to Draft if user has clicked the "Save" button
 const saveProjectAsDraft = async () => {
