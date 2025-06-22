@@ -477,7 +477,12 @@ const submitProject = async () => {
 // Debounced version of the submitProject function
 // This ensures that the function will only be called after 10 seconds of inactivity.
 // If the user makes another change before 10 seconds pass, the timer is reset.
-const debouncedSubmitProject = debounce(submitProject, 10000);
+const debouncedSubmitProject = debounce(() => {
+  isAutoSaved.value = true;
+  isSavingProject.value = true;
+  hasUnsavedChanges.value = true;
+  alert("hey");
+}, 10000);
 // Flag to determine if the current change to the project object is the initial load.
 // This is used to prevent triggering auto-save when the project is first loaded from the backend.
 const isInitialLoad = ref(true);
@@ -496,9 +501,6 @@ watch(
       return;
     }
 
-    isAutoSaved.value = true;
-    isSavingProject.value = true;
-    hasUnsavedChanges.value = true;
     // Trigger the debounced save function
     // This ensures we wait for 10 seconds of no changes before saving
     debouncedSubmitProject(); // Watch nested properties inside the project object
