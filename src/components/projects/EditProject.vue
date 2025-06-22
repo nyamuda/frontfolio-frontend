@@ -22,18 +22,18 @@
         :icon="isPublishingProject || isSavingProject ? 'pi pi-spin pi-refresh' : 'pi pi-refresh'"
         :label="
           isSavingProject
-            ? 'Saving as draft...'
+            ? 'Saving changes...'
             : isPublishingProject
               ? 'Publishing project...'
-              : 'Not saved'
+              : 'Saved'
         "
         variant="text"
         severity="secondary"
         size="small"
       />
       <Button
-        @click="saveProjectAsDraft"
-        label="Save draft"
+        @click="saveProject"
+        label="Save changes"
         severity="contrast"
         variant="outlined"
         size="small"
@@ -400,6 +400,8 @@ const saveProject = async () => {
   isSavingProject.value = true;
   //change the status to Draft
   project.value.status = ProjectStatus.Draft;
+  //cancel the pending auto-save if there is one in progress
+  debouncedSubmitProject.cancel();
   //then submit the project
   await submitProject();
 };
@@ -411,6 +413,8 @@ const publishProject = async () => {
   isPublishingProject.value = true;
   //change the status to Published
   project.value.status = ProjectStatus.Published;
+  //cancel the pending auto-save if there is one in progress
+  debouncedSubmitProject.cancel();
   //then submit the project
   await submitProject();
 };
@@ -448,7 +452,7 @@ const submitProject = async () => {
         // Show error toast if the project creation fails
         toast.add({
           severity: "error",
-          summary: "Failed to Create Project",
+          summary: "Update Failed",
           detail: message,
           life: 10000,
         });
@@ -483,6 +487,7 @@ watch(
     }
 
     isAutoSaved.value = true;
+    isSavingProject.value = true;
     // Trigger the debounced save function
     // This ensures we wait for 10 seconds of no changes before saving
     debouncedSubmitProject(); // Watch nested properties inside the project object
