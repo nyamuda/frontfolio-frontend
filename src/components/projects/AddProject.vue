@@ -26,10 +26,7 @@
       />
       <Button
         @click="saveProjectAsDraft"
-       :label="
-          isSavingProject
-            ? 'Saving...'
-              : 'Save as draft'"
+        :label="isSavingProject ? 'Saving...' : 'Save as draft'"
         severity="contrast"
         variant="outlined"
         size="small"
@@ -40,12 +37,7 @@
       <Button
         v-if="project.status != ProjectStatus.Published"
         @click="publishProject"
-        :label="
-          isSavingProject
-            ? 'Saving as draft...'
-            : isPublishingProject
-              ? 'Publishing project...'
-              : 'Not sav'"
+        :label="isPublishingProject ? 'Publishing project...' : 'Publish'"
         size="small"
         :disabled="
           isPublishingProject || isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms
