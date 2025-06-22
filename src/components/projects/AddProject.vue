@@ -398,8 +398,8 @@ const submitProject = async () => {
 
     projectStore
       .addNewProject(project.value)
-      .then((response) => {
-        console.log(response);
+      .then(({ id }) => {
+        console.log(`id is: ${id}`);
         // Show success toast notification
         toast.add({
           severity: "success",

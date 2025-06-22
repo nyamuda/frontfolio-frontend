@@ -9,23 +9,42 @@
         ready.
       </p>
     </div>
+    <!-- Save and Publish buttons start-->
     <div class="d-flex justify-content-end gap-3 align-items-center mb-5">
       <Button
-        icon="pi pi-spin pi-refresh"
-        label="Saving as draft..."
+        :icon="isPublishingProject || isSavingProject ? 'pi pi-spin pi-refresh' : 'pi pi-refresh'"
+        :label="
+          isSavingProject
+            ? 'Saving as draft...'
+            : isPublishingProject
+              ? 'Publishing project...'
+              : 'Not saved'
+        "
         variant="text"
         severity="secondary"
         size="small"
       />
       <Button
-        @click="submitForm"
+        @click="saveProjectAsDraft"
         label="Save draft"
         severity="contrast"
         variant="outlined"
         size="small"
+        :disabled="
+          isPublishingProject || isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms
+        "
       />
-      <Button label="Publish project" size="small" />
+      <Button
+        v-if="project.status != ProjectStatus.Published"
+        @click="publishProject"
+        label="Publish project"
+        size="small"
+        :disabled="
+          isPublishingProject || isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms
+        "
+      />
     </div>
+    <!-- Save and Publish buttons end-->
     <form class="">
       <!-- Project main details start -->
       <Panel class="mb-3" toggleable>
@@ -247,7 +266,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, type Ref } from "vue";
+import { computed, onMounted, ref, type Ref } from "vue";
 import { useProjectStore } from "@/stores/project";
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers, url } from "@vuelidate/validators";
@@ -272,6 +291,7 @@ import type { Paragraph } from "@/models/paragraph";
 import type { Challenge } from "@/models/challenge";
 import type { Achievement } from "@/models/achievement";
 import type { Feedback } from "@/models/feedback";
+import { ProjectStatus } from "@/enums/projectStatus";
 
 // Access the store
 const projectStore = useProjectStore();
@@ -280,6 +300,11 @@ const router = useRouter();
 
 onMounted(() => {
   v$.value.$touch();
+  //get project ID from URL params
+  const projectId = router.currentRoute.value.params["id"];
+
+  alert(projectId);
+  //fetching project with given ID
 });
 
 // The new project being created
@@ -297,30 +322,34 @@ const hasInvalidAchievementForms: Ref<boolean> = ref(false);
 // Track whether any feedback form is invalid
 const hasInvalidFeedbackForms: Ref<boolean> = ref(false);
 
+// Check whether any of the project’s sub-sections (e.g. background, challenges,
+// achievements, or feedback) contain invalid forms. Returns true if at least one
+// sub-form is invalid
+const hasInvalidSubForms = computed(
+  () =>
+    hasInvalidBackgroundForms.value ||
+    hasInvalidChallengeForms.value ||
+    hasInvalidAchievementForms.value ||
+    hasInvalidFeedbackForms.value,
+);
 // Check the validity of the entire form
 const isEntireFormInvalid = async (): Promise<boolean> => {
   // Validate the main form fields
   const areMainFieldsValid = await v$.value.$validate();
-
   // Return true if any section (main or sub-forms) is invalid
-  return (
-    !areMainFieldsValid ||
-    hasInvalidBackgroundForms.value ||
-    hasInvalidChallengeForms.value ||
-    hasInvalidAchievementForms.value ||
-    hasInvalidFeedbackForms.value
-  );
+  return !areMainFieldsValid || hasInvalidSubForms.value;
 };
 
-const isAddingProject = ref(false);
+const isSavingProject = ref(false);
+const isPublishingProject = ref(false);
 
 //form validation start
 const form = ref({
   title: "",
   summary: "",
-  imageUrl: "",
-  githubUrl: "",
-  liveUrl: "",
+  imageUrl: null,
+  githubUrl: null,
+  liveUrl: null,
   techStack: [],
 });
 
@@ -340,16 +369,42 @@ const rules = {
 const v$ = useVuelidate(rules, form);
 //form validation end
 
-const submitForm = async () => {
+//Change the project status to Draft if user has clicked the "Save" button
+const saveProjectAsDraft = async () => {
+  isSavingProject.value = true;
+  //change the status to Draft
+  project.value.status = ProjectStatus.Draft;
+  //then submit the project
+  await submitProject();
+};
+
+//Change the project status to Published if user has clicked the "Publish" button
+const publishProject = async () => {
+  isPublishingProject.value = true;
+  //change the status to Published
+  project.value.status = ProjectStatus.Published;
+  //then submit the project
+  await submitProject();
+};
+
+const submitProject = async () => {
   // Validate the entire form (main fields + paragraph + challenge + achievement + feedback sections)
   const isInvalid = await isEntireFormInvalid();
 
   // Only proceed if form is valid
   if (!isInvalid) {
-    isAddingProject.value = true;
+    //add main project details
+    project.value.title = form.value.title;
+    project.value.summary = form.value.summary;
+    project.value.techStack = form.value.techStack;
+    project.value.imageUrl = form.value.imageUrl;
+    project.value.githubUrl = form.value.githubUrl;
+    project.value.liveUrl = form.value.liveUrl;
+
     projectStore
       .addNewProject(project.value)
-      .then(() => {
+      .then(({ id }) => {
+        console.log(`id is: ${id}`);
         // Show success toast notification
         toast.add({
           severity: "success",
@@ -358,8 +413,8 @@ const submitForm = async () => {
           life: 5000,
         });
 
-        // Redirect to the project list page
-        router.push("/projects");
+        // Redirect to the project list page if the project was published
+        if (project.value.status == ProjectStatus.Published) router.push("/projects");
       })
       .catch((message) => {
         // Show error toast if the project creation fails
@@ -371,7 +426,8 @@ const submitForm = async () => {
         });
       })
       .finally(() => {
-        isAddingProject.value = false;
+        isSavingProject.value = false;
+        isPublishingProject.value = false;
       });
   }
 };

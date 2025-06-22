@@ -135,7 +135,7 @@ export const useAuthStore = defineStore("auth", () => {
   //Verify email using a one-time password (OTP)
   const verifyEmail = (verifyDetails: { email: string; otpCode: string }) => {
     return new Promise((resolve, reject) => {
-      console.log("dude");
+     
       isVerifyingEmailOtp.value = true;
       axios
         .post(`${apiUrl}/auth/email-verification/verify`, verifyDetails)

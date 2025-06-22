@@ -6,9 +6,29 @@ import axios from "axios";
 
 export const useProjectStore = defineStore("project", () => {
   const projects: Ref<Project[]> = ref([]);
+  //const project: Ref<Project> = ref(new Project());
+
+  //get a project by ID
+  const getProjectById = (id: number): Promise<Project> => {
+    return new Promise((resolve, reject) => {
+      const url = `${apiUrl}/projects/${id}`;
+      //add an access token to the request to access the protected route
+      setAuthToken();
+      //make the request
+      axios
+        .get<Project>(url)
+        .then((response) => resolve(response.data))
+        .catch((error) => {
+          const message =
+            error.response?.data?.message ||
+            "An unexpected error occurred while fetching your project.";
+          reject(message);
+        });
+    });
+  };
 
   //submit a new portfolio project
-  const addNewProject = (project: Project) => {
+  const addNewProject = (project: Project): Promise<{ id: number | null }> => {
     return new Promise((resolve, reject) => {
       const url = `${apiUrl}/projects`;
       //add an access token to the request to access the protected route
@@ -21,10 +41,28 @@ export const useProjectStore = defineStore("project", () => {
           resolve({ id: response?.data?.id });
         })
         .catch((error) => {
-          console.log(error);
           const message =
             error.response?.data?.message ||
             "An unexpected error occurred while saving your project.";
+          reject(message);
+        });
+    });
+  };
+
+  //edit a portfolio project
+  const editProject = (id: number, updatedProject: Project) => {
+    return new Promise((resolve, reject) => {
+      const url = `${apiUrl}/projects/${id}`;
+      //add an access token to the request to access the protected route
+      setAuthToken();
+      //make the request
+      axios
+        .put(url, updatedProject)
+        .then(() => resolve({}))
+        .catch((error) => {
+          const message =
+            error.response?.data?.message ||
+            "An unexpected error occurred while updating your project.";
           reject(message);
         });
     });
@@ -41,5 +79,5 @@ export const useProjectStore = defineStore("project", () => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   };
 
-  return { projects, addNewProject };
+  return { projects, addNewProject, editProject, getProjectById };
 });
