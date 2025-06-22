@@ -16,7 +16,6 @@
         :label="isSavingProject ? 'Saving...' : 'Save as draft'"
         severity="contrast"
         variant="outlined"
-        size="small"
         :loading="isSavingProject"
         :disabled="
           isPublishingProject || isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms
@@ -26,7 +25,6 @@
         v-if="project.status != ProjectStatus.Published"
         @click="publishProject"
         :label="isPublishingProject ? 'Publishing project...' : 'Publish'"
-        size="small"
         :loading="isPublishingProject"
         :disabled="
           isPublishingProject || isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms
@@ -388,16 +386,24 @@ const submitProject = async () => {
     projectStore
       .addNewProject(project.value)
       .then(({ id }) => {
+        //project status
+        const status: ProjectStatus = project.value.status;
         // Show success toast notification
+        const toastSummary =
+          status == ProjectStatus.Published ? "Project Published" : "Project Saved as Draft";
+        const toastDetail =
+          status == ProjectStatus.Published
+            ? "Your project has been successfully published and is now visible."
+            : "You can continue editing and publish it when you're ready.";
         toast.add({
           severity: "success",
-          summary: "Project Created",
-          detail: "Your project has been successfully created.",
+          summary: toastSummary,
+          detail: toastDetail,
           life: 5000,
         });
 
         // Navigate to the project list page if the project was published
-        if (project.value.status == ProjectStatus.Published) router.push("/projects");
+        if (status == ProjectStatus.Published) router.push("/projects");
         //if its a draft, navigate to the edit project page
         else {
           router.push(`/projects/${id}/edit`);
