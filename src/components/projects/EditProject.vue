@@ -38,7 +38,11 @@
         variant="outlined"
         size="small"
         :disabled="
-          isPublishingProject || isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms
+          isPublishingProject ||
+          isSavingProject ||
+          v$.$errors.length > 0 ||
+          hasInvalidSubForms ||
+          !hasUnsavedChanges
         "
       />
       <Button
