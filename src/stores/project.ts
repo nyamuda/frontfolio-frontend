@@ -59,10 +59,8 @@ export const useProjectStore = defineStore("project", () => {
       axios
         .put(url, updatedProject)
         .then(() => resolve({}))
-        .catch((error) => {
-          const message =
-            error.response?.data?.message ||
-            "An unexpected error occurred while updating your project.";
+        .catch(() => {
+          const message = "An unexpected error occurred while updating your project.";
           reject(message);
         });
     });
