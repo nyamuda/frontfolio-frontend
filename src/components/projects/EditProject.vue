@@ -27,8 +27,7 @@
               ? 'Publishing project...'
               : 'Save changes'
         "
-        variant="text"
-        severity="secondary"
+        severity="contrast"
         @click="saveProject"
         size="small"
         :disabled="
@@ -426,23 +425,18 @@ const submitProject = async () => {
 
   // Only proceed if form is valid
   if (!isInvalid) {
-    //project status
-    const status: ProjectStatus = project.value.status;
     projectStore
       .editProject(project.value.id, project.value)
       .then(() => {
         hasUnsavedChanges.value = false;
         //Don't show toast if the project was autosaved
         if (isAutoSaved.value) return;
-
         //show success toast notification after editing a project
-        const toastSummary =
-          status === ProjectStatus.Published ? "Project Updated" : "Draft Updated";
+        const toastSummary = isPublishingProject.value ? "Project Published" : "Project Updated";
 
-        const toastDetail =
-          status === ProjectStatus.Published
-            ? "Your project has been published and is now live in your portfolio."
-            : "Your draft has been updated. You can continue editing and publish it when you're ready.";
+        const toastDetail = isPublishingProject.value
+          ? "Your project has been published and is now live in your portfolio."
+          : "Your draft has been updated. You can continue editing and publish it when you're ready.";
         toast.add({
           severity: "success",
           summary: toastSummary,
