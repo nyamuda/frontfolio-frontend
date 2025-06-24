@@ -78,7 +78,7 @@
         <!-- Image URL, video URL, GitHub URL & Live URL -->
         <div class="row mb-3">
           <!-- Image URL -->
-          <div class="form-group col-md-4 g-3">
+          <div class="form-group col-md-6 g-3">
             <FloatLabel variant="on">
               <IconField>
                 <InputIcon class="pi pi-image" />
@@ -99,7 +99,7 @@
             </Message>
           </div>
           <!-- Video URL -->
-          <div class="form-group col-md-4 g-3">
+          <div class="form-group col-md-6 g-3">
             <FloatLabel variant="on">
               <IconField>
                 <InputIcon class="pi pi-image" />
@@ -111,7 +111,7 @@
                   type="url"
                 />
               </IconField>
-              <label for="videoUrl">Image URL</label>
+              <label for="videoUrl">Video URL</label>
             </FloatLabel>
             <Message size="small" severity="error" v-if="v$.videoUrl.$error" variant="simple">
               <div v-for="error of v$.videoUrl.$errors" :key="error.$uid">
@@ -120,7 +120,7 @@
             </Message>
           </div>
           <!-- GitHub URL -->
-          <div class="form-group col-md-4 g-3">
+          <div class="form-group col-md-6 g-3">
             <FloatLabel variant="on">
               <IconField>
                 <InputIcon class="pi pi-github" />
@@ -141,7 +141,7 @@
             </Message>
           </div>
           <!-- Live URL -->
-          <div class="form-group col-md-4 g-3">
+          <div class="form-group col-md-6 g-3">
             <FloatLabel variant="on">
               <IconField>
                 <InputIcon class="pi pi-globe" />
