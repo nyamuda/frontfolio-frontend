@@ -14,7 +14,8 @@
         <!-- Project Dates -->
         <div class="card-text d-flex align-items-center text-muted mb-1" style="font-size: 0.9rem">
           <i class="pi pi-calendar me-2" />
-          {{ project.startDate }} - {{ project.endDate || "Ongoing" }}
+          {{ DateHelper.ConvertTimeFromUTCToLocal(project.startDate.toDateString()) }} -
+          {{ DateHelper.ConvertTimeFromUTCToLocal(project.endDate?.toDateString()) || "Ongoing" }}
         </div>
 
         <!-- Tech Stack -->
@@ -50,7 +51,7 @@
 import Tag from "primevue/tag";
 import Button from "primevue/button";
 import { Project } from "@/models/project";
-
+import { DateHelper } from "@/helpers/dateHelper";
 
 defineProps({
   project: {

@@ -8,8 +8,8 @@ export class Project {
   public constructor(
     public id: number = 0,
     public title: string = "",
-    public startDate: Date | null = null,
-    public endDate: Date | null = null,
+    public startDate: Date = new Date(),
+    public endDate: Date = new Date(),
     public summary: string = "",
     public techStack: string[] = [],
     public githubUrl: string | null = "",
