@@ -9,6 +9,20 @@ import "./assets/scss/styles.scss";
 //Bootstrap
 import "bootstrap";
 
+//Day.js date formatter start
+import dayjs from "dayjs";
+
+// Plugins
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+
+// Extend dayjs with the plugins
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(advancedFormat);
+//Day.js date formatter end
+
 //PrimeVue
 import PrimeVue from "primevue/config";
 import Aura from "@primeuix/themes/aura";

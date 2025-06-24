@@ -437,8 +437,8 @@ const hasUnsavedChanges = ref(false);
 //Form validation start
 const rules = {
   title: { required },
-  startDate: {},
-  endDate: {},
+  startDate: { required },
+  endDate: { required },
   summary: { required },
   imageUrl: { url },
   videoUrl: { url },

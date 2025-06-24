@@ -19,6 +19,7 @@
     "@vuelidate/validators": "^2.0.4",
     "axios": "^1.9.0",
     "bootstrap": "^5.3.6",
+    "dayjs": "^1.11.13",
     "frontfolio-frontend": "file:",
     "jwt-decode": "^4.0.0",
     "lodash.debounce": "^4.0.8",
