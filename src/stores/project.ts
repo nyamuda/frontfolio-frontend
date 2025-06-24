@@ -3,10 +3,11 @@ import { defineStore } from "pinia";
 import { Project } from "@/models/project";
 import { apiUrl } from "@/helpers/urlHelper";
 import axios from "axios";
+import type { PageInfo } from "@/interfaces/shared/pageInfo";
 
 export const useProjectStore = defineStore("project", () => {
   const projects: Ref<Project[]> = ref([]);
-  //const project: Ref<Project> = ref(new Project());
+  const pageInfo: Ref<PageInfo<Project>> = ref({ page: 1, pageSize: 5, hasMore: false, items: [] });
 
   //get a project by ID
   const getProjectById = (id: number): Promise<Project> => {
@@ -58,6 +59,26 @@ export const useProjectStore = defineStore("project", () => {
       //make the request
       axios
         .put(url, updatedProject)
+        .then(() => resolve({}))
+        .catch((ex) => {
+          console.log(ex);
+          const message = "An unexpected error occurred while saving your changes.";
+          reject(message);
+        });
+    });
+  };
+
+  //get projects
+  const getProjects = () => {
+    return new Promise((resolve, reject) => {
+      const url = `${apiUrl}/projects`;
+      //add an access token to the request to access the protected route
+      setAuthToken();
+      //make the request
+      axios
+        .put(url, {
+          params: {},
+        })
         .then(() => resolve({}))
         .catch((ex) => {
           console.log(ex);
