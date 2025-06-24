@@ -12,15 +12,19 @@
 
         <!-- Project Duration -->
         <!-- Project Dates -->
-        <div class="card-text d-flex align-items-center text-muted mb-2" style="font-size: 0.9rem">
+        <div class="card-text d-flex align-items-center text-muted mb-1" style="font-size: 0.9rem">
           <i class="pi pi-calendar me-2" />
           {{ project.startDate }} - {{ project.endDate || "Ongoing" }}
         </div>
 
         <!-- Tech Stack -->
         <div class="card-text d-flex flex-wrap align-items-center gap-1 mb-3">
-          <small v-for="(tech, index) in project.techStack" :key="index" class="text-muted">
-            {{ tech }}<span v-if="index < project.techStack.length - 1"> · </span>
+          <small
+            v-for="(tech, index) in project.techStack.slice(0, 5)"
+            :key="index"
+            class="text-muted"
+          >
+            {{ tech }}<span v-if="index < project.techStack.slice(0, 5).length - 1"> · </span>
           </small>
         </div>
 

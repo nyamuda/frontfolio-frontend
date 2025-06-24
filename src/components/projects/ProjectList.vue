@@ -41,7 +41,7 @@
       <LoadMoreItemsButton
         label="Load more projects"
         end-label="These are all your projects"
-        :is-loading="isGettingProjects"
+        :is-loading="isLoadingMoreProjects"
         :has-more="projectStore.pageInfo.hasMore"
         :is-disabled="isGettingProjects || isLoadingMoreProjects || !projectStore.pageInfo.hasMore"
         :onClick="loadMoreProjects"
@@ -96,7 +96,7 @@ const loadMoreProjects = () => {
   //move the next pagination page
   projectStore.pageInfo.page = projectStore.pageInfo.page + 1;
   projectStore
-    .getProjects()
+    .loadMoreProjects()
     .then(() => {})
     .catch((message) => {
       toast.add({
