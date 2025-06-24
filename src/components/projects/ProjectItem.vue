@@ -6,14 +6,14 @@
           <h5 class="card-title mb-0 text-secondary">{{ project.title }}</h5>
           <Tag
             :severity="project.status == 'published' ? 'primary' : 'secondary'"
-            :value="project.status == 'published' ? 'Primary' : 'Draft'"
+            :value="project.status == 'published' ? 'Published' : 'Draft'"
           ></Tag>
         </div>
-        <p class="card-text">
-          {{ project.summary }}
-        </p>
+        <div class="card-text d-flex flex-column align-items-start">
+          <span><i class="pi pi-clock" style="font-size: 1rem"></i></span>
+        </div>
         <div class="">
-          <router-link :to="'/projects/' + project.id"
+          <router-link :to="'/projects/' + project.id + '/edit'"
             ><Button label="View more" severity="contrast" size="small"
           /></router-link>
         </div>

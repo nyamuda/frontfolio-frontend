@@ -43,7 +43,7 @@
         end-label="These are all your projects"
         :is-loading="isGettingProjects"
         :has-more="projectStore.pageInfo.hasMore"
-        :is-disabled="isGettingProjects"
+        :is-disabled="isGettingProjects || isLoadingMoreProjects || !projectStore.pageInfo.hasMore"
         :onClick="loadMoreProjects"
         end-variant="text"
       />
