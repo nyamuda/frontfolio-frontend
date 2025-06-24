@@ -394,19 +394,22 @@ const submitProject = async () => {
       })
       .catch(() => {
         // Show error toast notification
-        const toastSummary =
-          status == ProjectStatus.Published ? "Failed to Publish Project" : "Failed to Save Draft";
+        const toastSummary = isPublishingProject.value
+          ? "Failed to Publish Project"
+          : "Failed to Save Draft";
 
-        const toastDetail =
-          status == ProjectStatus.Published
-            ? "Something went wrong while publishing your project. Please try again."
-            : "We couldn’t save your draft. Make sure you're connected and try again.";
+        const toastDetail = isPublishingProject.value
+          ? "Something went wrong while publishing your project. Please try again."
+          : "We couldn’t save your draft. Make sure you're connected and try again.";
         toast.add({
           severity: "error",
           summary: toastSummary,
           detail: toastDetail,
           life: 10000,
         });
+        //if project was being published, change it back to draft
+        //this will allow the "Publish" button to be displayed again
+        if (isPublishingProject.value) project.value.status = ProjectStatus.Draft;
       })
       .finally(() => {
         isSavingProject.value = false;
