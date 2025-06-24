@@ -25,7 +25,9 @@
             ? 'Saving changes...'
             : isPublishingProject
               ? 'Publishing project...'
-              : 'Save changes'
+              : !hasUnsavedChanges && isInitialLoad
+                ? 'Saved'
+                : 'Save changes'
         "
         severity="contrast"
         @click="saveProject"
@@ -495,9 +497,9 @@ watch(
     hasUnsavedChanges.value = true;
     // Trigger the debounced save function
     // This ensures we wait for 10 seconds of no changes before saving
-    debouncedSubmitProject(); // Watch nested properties inside the project object
+    debouncedSubmitProject();
   },
-  { deep: true },
+  { deep: true }, // Watch nested properties inside the project object
 );
 </script>
 
