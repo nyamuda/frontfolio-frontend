@@ -80,9 +80,36 @@ export const useProjectStore = defineStore("project", () => {
         .get<PageInfo<Project>>(url, {
           params: { page, pageSize },
         })
-        .then((response) => resolve(response.data))
+        .then((response) => {
+          pageInfo.value = response.data;
+          resolve(response.data);
+        })
         .catch(() => {
           const message = "An unexpected error occurred while fetching your projects.";
+          reject(message);
+        });
+    });
+  };
+
+  //load more projects
+  const loadMoreProjects = (): Promise<PageInfo<Project>> => {
+    return new Promise((resolve, reject) => {
+      const url = `${apiUrl}/projects`;
+      //add an access token to the request to access the protected route
+      setAuthToken();
+      //query params
+      const { page, pageSize } = pageInfo.value;
+      //make the request
+      axios
+        .get<PageInfo<Project>>(url, {
+          params: { page, pageSize },
+        })
+        .then((response) => {
+          pageInfo.value = response.data;
+          resolve(response.data);
+        })
+        .catch(() => {
+          const message = "An unexpected error occurred while loading more projects.";
           reject(message);
         });
     });
@@ -99,5 +126,5 @@ export const useProjectStore = defineStore("project", () => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   };
 
-  return { projects, addNewProject, editProject, getProjectById };
+  return { projects, addNewProject, editProject, getProjectById, getProjects };
 });
