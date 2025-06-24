@@ -7,7 +7,7 @@ export class DateHelper {
    * (e.g., project or blog timestamps) in a way that's relevant to the user's timezone.
    *
    * @param {Date} utcTime - A UTC datetime to be converted.
-   * @returns {Date} - The converted local time.
+   * @returns {Date} -  A JavaScript Date object in local time.
    */
   public static convertTimeFromUTCToLocal(utcTime: Date): Date {
     return new Date(dayjs.utc(utcTime).local().toString());

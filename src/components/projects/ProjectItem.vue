@@ -20,13 +20,10 @@
 
         <!-- Tech Stack -->
         <div class="card-text d-flex flex-wrap align-items-center gap-1 mb-3">
-          <small
-            v-for="(tech, index) in project.techStack.slice(0, 5)"
-            :key="index"
-            class="text-muted"
-          >
-            {{ tech }}<span v-if="index < project.techStack.slice(0, 5).length - 1"> · </span>
+          <small v-for="(tech, index) in visibleTechStack" :key="index" class="text-muted">
+            {{ tech }}<span v-if="index < visibleTechStack.length - 1"> · </span>
           </small>
+          <span v-if="hasHiddenTechItems">...</span>
         </div>
 
         <!-- Action Button -->
@@ -52,11 +49,22 @@ import Tag from "primevue/tag";
 import Button from "primevue/button";
 import { Project } from "@/models/project";
 import { DateHelper } from "@/helpers/dateHelper";
+import { computed, ref } from "vue";
 
-defineProps({
+const props = defineProps({
   project: {
     type: Project,
     required: true,
   },
 });
+
+// Maximum number of tech stack items to display
+const maxVisibleTechCount = ref(5);
+
+// Get the visible portion of the tech stack
+const visibleTechStack = props.project.techStack.slice(0, maxVisibleTechCount.value);
+
+// Determine if there are additional tech items not shown
+// Used to display an ellipsis ("...") if the list is truncated
+const hasHiddenTechItems = computed(() => props.project.techStack.length > visibleTechStack.length);
 </script>
