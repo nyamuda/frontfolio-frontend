@@ -105,7 +105,12 @@ export const useProjectStore = defineStore("project", () => {
           params: { page, pageSize },
         })
         .then((response) => {
-          pageInfo.value = response.data;
+          //add the additional projects the the projects that are already there
+          pageInfo.value.Items = pageInfo.value.Items.concat(response.data.Items);
+          //store the new pagination info
+          pageInfo.value.page = response.data.page;
+          pageInfo.value.pageSize = response.data.pageSize;
+          pageInfo.value.hasMore = response.data.hasMore;
           resolve(response.data);
         })
         .catch(() => {
@@ -126,5 +131,13 @@ export const useProjectStore = defineStore("project", () => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   };
 
-  return { projects, addNewProject, editProject, getProjectById, getProjects, loadMoreProjects,pageInfo };
+  return {
+    projects,
+    addNewProject,
+    editProject,
+    getProjectById,
+    getProjects,
+    loadMoreProjects,
+    pageInfo,
+  };
 });

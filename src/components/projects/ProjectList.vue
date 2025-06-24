@@ -68,4 +68,23 @@ const getProjects = () => {
       isGettingProjects.value = false;
     });
 };
+
+//load more projects
+const loadMoreProjects = () => {
+  isGettingProjects.value = true;
+  projectStore
+    .getProjects()
+    .then(() => {})
+    .catch((message) => {
+      toast.add({
+        severity: "error",
+        summary: "Error",
+        detail: message,
+        life: 10000,
+      });
+    })
+    .finally(() => {
+      isGettingProjects.value = false;
+    });
+};
 </script>
