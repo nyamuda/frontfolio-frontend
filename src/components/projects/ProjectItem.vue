@@ -6,7 +6,7 @@
           <h5 class="card-title mb-0 text-secondary">{{ project.title }}</h5>
           <Tag
             :severity="project.status == 'published' ? 'primary' : 'secondary'"
-            value="Published"
+            :value="project.status == 'published' ? 'Primary' : 'Draft'"
           ></Tag>
         </div>
         <p class="card-text">
