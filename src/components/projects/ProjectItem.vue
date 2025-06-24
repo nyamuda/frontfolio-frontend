@@ -2,7 +2,7 @@
   <div>
     <div class="card">
       <div class="card-body">
-        <div class="d-flex flex-wrap justify-content-between align-items-center mb-1 gap-1">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-2 gap-1">
           <h5 class="card-title mb-0 text-secondary">{{ project.title }}</h5>
           <Tag
             :severity="project.status == 'published' ? 'primary' : 'secondary'"
@@ -14,8 +14,8 @@
         <!-- Project Dates -->
         <div class="card-text d-flex align-items-center text-muted mb-1" style="font-size: 0.9rem">
           <i class="pi pi-calendar me-2" />
-          {{ DateHelper.ConvertTimeFromUTCToLocal(project.startDate.toDateString()) }} -
-          {{ DateHelper.ConvertTimeFromUTCToLocal(project.endDate?.toDateString()) || "Ongoing" }}
+          {{ DateHelper.ConvertTimeFromUTCToLocal(project.startDate.toString()) }} -
+          {{ DateHelper.ConvertTimeFromUTCToLocal(project.endDate?.toString()) || "Ongoing" }}
         </div>
 
         <!-- Tech Stack -->

@@ -4,6 +4,7 @@ import { Project } from "@/models/project";
 import { apiUrl } from "@/helpers/urlHelper";
 import axios from "axios";
 import type { PageInfo } from "@/interfaces/shared/pageInfo";
+import { DateHelper } from "@/helpers/dateHelper";
 
 export const useProjectStore = defineStore("project", () => {
   const projects: Ref<Project[]> = ref([]);
@@ -18,7 +19,13 @@ export const useProjectStore = defineStore("project", () => {
       //make the request
       axios
         .get<Project>(url)
-        .then((response) => resolve(response.data))
+        .then((response) => {
+          //format the start & end dates from UTC to local time for better readability
+          const project: Project = response.data;
+          project.startDate = DateHelper.ConvertTimeFromUTCToLocal(project.startDate);
+          project.endDate = DateHelper.ConvertTimeFromUTCToLocal(project.endDate);
+          resolve(project);
+        })
         .catch((error) => {
           const message =
             error.response?.data?.message ||
@@ -73,12 +80,10 @@ export const useProjectStore = defineStore("project", () => {
       const url = `${apiUrl}/projects`;
       //add an access token to the request to access the protected route
       setAuthToken();
-      //query params
-      const { page, pageSize } = pageInfo.value;
       //make the request
       axios
         .get<PageInfo<Project>>(url, {
-          params: { page, pageSize },
+          params: { page: 1, pageSize: 5 },
         })
         .then((response) => {
           pageInfo.value = response.data;
