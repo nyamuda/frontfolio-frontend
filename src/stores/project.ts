@@ -126,5 +126,5 @@ export const useProjectStore = defineStore("project", () => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   };
 
-  return { projects, addNewProject, editProject, getProjectById, getProjects };
+  return { projects, addNewProject, editProject, getProjectById, getProjects, loadMoreProjects,pageInfo };
 });

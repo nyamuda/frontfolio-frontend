@@ -20,14 +20,10 @@
         alt="Camera"
       />
     </div>
-    <div class="m-auto">
-      <LoadMoreItemsButton label="Load more projects" end-label="These are all your projects" />
-    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import Tag from "primevue/tag";
 import Button from "primevue/button";
-import LoadMoreItemsButton from "../shared/LoadMoreItemsButton.vue";
 </script>

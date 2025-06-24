@@ -24,6 +24,15 @@
         <ProjectItem />
       </div>
     </div>
+    <div class="m-auto">
+      <LoadMoreItemsButton
+        label="Load more projects"
+        end-label="These are all your projects"
+        :is-loading="isGettingProjects"
+        :has-more="projectStore.pageInfo.hasMore"
+        :is-disabled="isGettingProjects"
+      />
+    </div>
   </div>
 </template>
 
@@ -31,4 +40,32 @@
 import TitleSection from "../shared/TitleSection.vue";
 import ProjectItem from "./ProjectItem.vue";
 import Button from "primevue/button";
+import LoadMoreItemsButton from "../shared/LoadMoreItemsButton.vue";
+import { useProjectStore } from "@/stores/project";
+import { useToast } from "primevue/usetoast";
+import { ref } from "vue";
+
+const projectStore = useProjectStore();
+const toast = useToast();
+
+const isGettingProjects = ref(false);
+const isLoadingMoreProjects =ref(false);
+//get projects
+const getProjects = () => {
+  isGettingProjects.value = true;
+  projectStore
+    .getProjects()
+    .then(() => {})
+    .catch((message) => {
+      toast.add({
+        severity: "error",
+        summary: "Error",
+        detail: message,
+        life: 10000,
+      });
+    })
+    .finally(() => {
+      isGettingProjects.value = false;
+    });
+};
 </script>
