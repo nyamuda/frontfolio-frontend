@@ -89,7 +89,7 @@ import { onMounted, ref } from "vue";
 import Button from "primevue/button";
 import Divider from "primevue/divider";
 import { Challenge } from "@/models/challenge";
-import type { ValidatedItem } from "@/interfaces/projects/validatedItem";
+import type { ValidatedItem } from "@/interfaces/shared/validatedItem";
 import { required } from "@vuelidate/validators";
 
 const props = defineProps({

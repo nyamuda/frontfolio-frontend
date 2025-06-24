@@ -104,7 +104,7 @@ import Button from "primevue/button";
 import { Paragraph } from "@/models/paragraph";
 import Divider from "primevue/divider";
 import { required, url } from "@vuelidate/validators";
-import type { ValidatedItem } from "@/interfaces/projects/validatedItem";
+import type { ValidatedItem } from "@/interfaces/shared/validatedItem";
 
 const props = defineProps({
   paragraph: {

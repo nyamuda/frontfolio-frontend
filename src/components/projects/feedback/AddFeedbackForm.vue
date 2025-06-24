@@ -111,7 +111,7 @@ import Button from "primevue/button";
 import Divider from "primevue/divider";
 import { Feedback } from "@/models/feedback";
 import DatePicker from "primevue/datepicker";
-import type { ValidatedItem } from "@/interfaces/projects/validatedItem";
+import type { ValidatedItem } from "@/interfaces/shared/validatedItem";
 import { required } from "@vuelidate/validators";
 
 const props = defineProps({

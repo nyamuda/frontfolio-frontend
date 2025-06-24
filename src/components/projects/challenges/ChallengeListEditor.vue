@@ -30,7 +30,7 @@ import { computed, ref, watch, type Ref } from "vue";
 
 import Button from "primevue/button";
 import AddChallengeForm from "./AddChallengeForm.vue";
-import type { ValidatedItem } from "@/interfaces/projects/validatedItem";
+import type { ValidatedItem } from "@/interfaces/shared/validatedItem";
 
 defineProps({
   buttonLabel: {
