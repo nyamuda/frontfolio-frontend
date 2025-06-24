@@ -12,6 +12,7 @@ export class Project {
     public techStack: string[] = [],
     public githubUrl: string | null = "",
     public imageUrl: string | null = "",
+    public videoUrl: string | null = "",
     public liveUrl: string | null = "",
     public status: ProjectStatus = ProjectStatus.Draft,
     public background: Paragraph[] = [],

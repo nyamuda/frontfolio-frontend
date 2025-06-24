@@ -332,6 +332,7 @@ const rules = {
   title: { required },
   summary: { required },
   imageUrl: { url },
+  videoUrl: { url },
   githubUrl: { url },
   liveUrl: { url },
   techStack: {
@@ -386,7 +387,7 @@ const submitProject = async () => {
         });
 
         // Navigate to the project list page if the project was published
-        if (status == ProjectStatus.Published) router.push("/projects");
+        if (isPublishingProject.value) router.push("/projects");
         //if its a draft, navigate to the edit project page
         else {
           router.push(`/projects/${id}/edit`);
