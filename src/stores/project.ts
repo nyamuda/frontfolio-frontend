@@ -61,7 +61,6 @@ export const useProjectStore = defineStore("project", () => {
         .put(url, updatedProject)
         .then(() => resolve({}))
         .catch((ex) => {
-          console.log(ex);
           const message = "An unexpected error occurred while saving your changes.";
           reject(message);
         });
@@ -69,20 +68,21 @@ export const useProjectStore = defineStore("project", () => {
   };
 
   //get projects
-  const getProjects = () => {
+  const getProjects = (): Promise<PageInfo<Project>> => {
     return new Promise((resolve, reject) => {
       const url = `${apiUrl}/projects`;
       //add an access token to the request to access the protected route
       setAuthToken();
+      //query params
+      const { page, pageSize } = pageInfo.value;
       //make the request
       axios
-        .put(url, {
-          params: {},
+        .get<PageInfo<Project>>(url, {
+          params: { page, pageSize },
         })
-        .then(() => resolve({}))
-        .catch((ex) => {
-          console.log(ex);
-          const message = "An unexpected error occurred while saving your changes.";
+        .then((response) => resolve(response.data))
+        .catch(() => {
+          const message = "An unexpected error occurred while fetching your projects.";
           reject(message);
         });
     });
