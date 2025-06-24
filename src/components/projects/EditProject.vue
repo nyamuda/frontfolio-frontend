@@ -19,15 +19,25 @@
     <!-- Save and Publish buttons start-->
     <div v-else class="d-flex justify-content-end gap-3 align-items-center mb-5">
       <Button
-        :icon="isPublishingProject || isSavingProject ? 'pi pi-spin pi-refresh' : 'pi pi-refresh'"
+        :icon="
+          isPublishingProject || isSavingProject
+            ? 'pi pi-spin pi-refresh'
+            : !hasUnsavedChanges && !isInitialLoad
+              ? 'pi pi pi-check'
+              : hasUnsavedChanges
+                ? 'pi pi-save'
+                : 'pi pi-pencil'
+        "
         :label="
           isSavingProject
             ? 'Saving changes...'
             : isPublishingProject
               ? 'Publishing project...'
-              : !hasUnsavedChanges && isInitialLoad
-                ? 'Saved'
-                : 'Save changes'
+              : !hasUnsavedChanges && !isInitialLoad
+                ? 'All changes saved'
+                : hasUnsavedChanges
+                  ? 'Save changes'
+                  : 'No changes yet'
         "
         severity="contrast"
         @click="saveProject"
