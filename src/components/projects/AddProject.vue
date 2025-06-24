@@ -368,18 +368,16 @@ const submitProject = async () => {
 
   // Only proceed if form is valid
   if (!isInvalid) {
-    //project status
-    const status: ProjectStatus = project.value.status;
     projectStore
       .addNewProject(project.value)
       .then(({ id }) => {
         // Show success toast notification
-        const toastSummary =
-          status == ProjectStatus.Published ? "Project Published" : "Project Saved as Draft";
-        const toastDetail =
-          status == ProjectStatus.Published
-            ? "Your project has been successfully published."
-            : "You can continue editing and publish it when you're ready.";
+        const toastSummary = isPublishingProject.value
+          ? "Project Published"
+          : "Project Saved as Draft";
+        const toastDetail = isPublishingProject.value
+          ? "Your project has been successfully published."
+          : "You can continue editing and publish it when you're ready.";
         toast.add({
           severity: "success",
           summary: toastSummary,

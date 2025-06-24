@@ -436,7 +436,7 @@ const submitProject = async () => {
 
         const toastDetail = isPublishingProject.value
           ? "Your project has been published and is now live in your portfolio."
-          : "Your draft has been updated. You can continue editing and publish it when you're ready.";
+          : "Your draft has been updated.";
         toast.add({
           severity: "success",
           summary: toastSummary,
@@ -452,6 +452,9 @@ const submitProject = async () => {
           detail: message,
           life: 10000,
         });
+        //if project was being published, change it back to draft
+        //this will allow the "Publish" button to be displayed again
+        if (isPublishingProject.value) project.value.status = ProjectStatus.Draft;
       })
       .finally(() => {
         isSavingProject.value = false;
