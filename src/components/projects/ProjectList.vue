@@ -49,7 +49,7 @@ const projectStore = useProjectStore();
 const toast = useToast();
 
 const isGettingProjects = ref(false);
-const isLoadingMoreProjects =ref(false);
+const isLoadingMoreProjects = ref(false);
 //get projects
 const getProjects = () => {
   isGettingProjects.value = true;
@@ -71,7 +71,9 @@ const getProjects = () => {
 
 //load more projects
 const loadMoreProjects = () => {
-  isGettingProjects.value = true;
+  isLoadingMoreProjects.value = true;
+  //move the next pagination page
+  projectStore.pageInfo.page = projectStore.pageInfo.page + 1;
   projectStore
     .getProjects()
     .then(() => {})
@@ -84,7 +86,7 @@ const loadMoreProjects = () => {
       });
     })
     .finally(() => {
-      isGettingProjects.value = false;
+      isLoadingMoreProjects.value = false;
     });
 };
 </script>
