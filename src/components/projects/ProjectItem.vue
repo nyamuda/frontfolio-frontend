@@ -14,8 +14,8 @@
         <!-- Project Dates -->
         <div class="card-text d-flex align-items-center text-muted mb-1" style="font-size: 0.9rem">
           <i class="pi pi-calendar me-2" />
-          {{ DateHelper.ConvertTimeFromUTCToLocal(project.startDate.toString()) }} -
-          {{ DateHelper.ConvertTimeFromUTCToLocal(project.endDate?.toString()) || "Ongoing" }}
+          {{ DateHelper.formatDateToMonthYear(project.startDate) }} -
+          {{ DateHelper.formatDateToMonthYear(project.endDate) || "Ongoing" }}
         </div>
 
         <!-- Tech Stack -->

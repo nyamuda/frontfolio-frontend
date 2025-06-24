@@ -22,8 +22,8 @@ export const useProjectStore = defineStore("project", () => {
         .then((response) => {
           //format the start & end dates from UTC to local time for better readability
           const project: Project = response.data;
-          project.startDate = DateHelper.ConvertTimeFromUTCToLocal(project.startDate);
-          project.endDate = DateHelper.ConvertTimeFromUTCToLocal(project.endDate);
+          project.startDate = DateHelper.convertTimeFromUTCToLocal(project.startDate);
+          project.endDate = DateHelper.convertTimeFromUTCToLocal(project.endDate);
           resolve(project);
         })
         .catch((error) => {
