@@ -19,11 +19,24 @@
         />
       </router-link>
     </div>
-    <div class="row">
+    <!-- Skeleton list start -->
+    <div v-if="isGettingProjects" class="row">
       <div class="col-sm-6 col-lg-4 g-3" v-for="i in 8" :key="i">
-        <ProjectItem />
+        <ProjectItemSkeleton />
       </div>
     </div>
+    <!-- Skeleton list end -->
+    <!-- Project list start -->
+    <div v-else class="row">
+      <div
+        class="col-sm-6 col-lg-4 g-3"
+        v-for="project in projectStore.pageInfo.items"
+        :key="project.id"
+      >
+        <ProjectItem :project="project" />
+      </div>
+    </div>
+    <!-- Project list end -->
     <div class="m-auto">
       <LoadMoreItemsButton
         label="Load more projects"
@@ -31,6 +44,8 @@
         :is-loading="isGettingProjects"
         :has-more="projectStore.pageInfo.hasMore"
         :is-disabled="isGettingProjects"
+        :onClick="loadMoreProjects"
+        end-variant="text"
       />
     </div>
   </div>
@@ -43,13 +58,19 @@ import Button from "primevue/button";
 import LoadMoreItemsButton from "../shared/LoadMoreItemsButton.vue";
 import { useProjectStore } from "@/stores/project";
 import { useToast } from "primevue/usetoast";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import ProjectItemSkeleton from "./skeletons/ProjectItemSkeleton.vue";
 
 const projectStore = useProjectStore();
 const toast = useToast();
 
 const isGettingProjects = ref(false);
 const isLoadingMoreProjects = ref(false);
+
+onMounted(() => {
+  getProjects();
+});
+
 //get projects
 const getProjects = () => {
   isGettingProjects.value = true;

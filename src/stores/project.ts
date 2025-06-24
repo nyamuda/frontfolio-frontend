@@ -60,7 +60,7 @@ export const useProjectStore = defineStore("project", () => {
       axios
         .put(url, updatedProject)
         .then(() => resolve({}))
-        .catch((ex) => {
+        .catch(() => {
           const message = "An unexpected error occurred while saving your changes.";
           reject(message);
         });
@@ -106,7 +106,7 @@ export const useProjectStore = defineStore("project", () => {
         })
         .then((response) => {
           //add the additional projects the the projects that are already there
-          pageInfo.value.Items = pageInfo.value.Items.concat(response.data.Items);
+          pageInfo.value.items = pageInfo.value.items.concat(response.data.items);
           //store the new pagination info
           pageInfo.value.page = response.data.page;
           pageInfo.value.pageSize = response.data.pageSize;
