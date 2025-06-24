@@ -83,6 +83,46 @@
             </div>
           </Message>
         </div>
+        <!-- Start and end date inputs -->
+        <div class="row mb-3">
+          <div class="col-md-6 form-group">
+            <FloatLabel variant="on">
+              <DatePicker
+                fluid
+                inputId="startDate"
+                v-model="v$.startDate.$model"
+                view="month"
+                dateFormat="M/yy"
+                :invalid="v$.startDate.$error"
+              />
+              <label for="startDate">Start Date</label>
+            </FloatLabel>
+            <Message size="small" severity="error" v-if="v$.startDate.$error" variant="simple">
+              <div v-for="error of v$.startDate.$errors" :key="error.$uid">
+                <div>{{ error.$message }}</div>
+              </div>
+            </Message>
+          </div>
+
+          <div class="col-md-6 form-group">
+            <FloatLabel variant="on">
+              <DatePicker
+                fluid
+                inputId="endDate"
+                v-model="v$.endDate.$model"
+                view="month"
+                dateFormat="M/yy"
+                :invalid="v$.endDate.$error"
+              />
+              <label for="endDate">End Date</label>
+            </FloatLabel>
+            <Message size="small" severity="error" v-if="v$.endDate.$error" variant="simple">
+              <div v-for="error of v$.endDate.$errors" :key="error.$uid">
+                <div>{{ error.$message }}</div>
+              </div>
+            </Message>
+          </div>
+        </div>
         <!-- Summary input -->
         <div class="form-group">
           <FloatLabel variant="on">
@@ -333,6 +373,7 @@ import type { Feedback } from "@/models/feedback";
 import { ProjectStatus } from "@/enums/projectStatus";
 import ProgressBar from "primevue/progressbar";
 import debounce from "lodash.debounce";
+import DatePicker from "primevue/datepicker";
 
 // Access the store
 const projectStore = useProjectStore();
@@ -396,6 +437,8 @@ const hasUnsavedChanges = ref(false);
 //Form validation start
 const rules = {
   title: { required },
+  startDate: {},
+  endDate: {},
   summary: { required },
   imageUrl: { url },
   videoUrl: { url },
