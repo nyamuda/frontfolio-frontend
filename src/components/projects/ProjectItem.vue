@@ -4,7 +4,10 @@
       <div class="card-body">
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-1 gap-1">
           <h5 class="card-title mb-0 text-secondary">{{ project.title }}</h5>
-          <Tag severity="primary" value="Published"></Tag>
+          <Tag
+            :severity="project.status == 'published' ? 'primary' : 'secondary'"
+            value="Published"
+          ></Tag>
         </div>
         <p class="card-text">
           {{ project.summary }}

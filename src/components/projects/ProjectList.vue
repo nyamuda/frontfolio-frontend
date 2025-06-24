@@ -20,14 +20,14 @@
       </router-link>
     </div>
     <!-- Skeleton list start -->
-    <div v-if="isGettingProjects" class="row">
+    <div v-if="isGettingProjects" class="row mb-3">
       <div class="col-sm-6 col-lg-4 g-3" v-for="i in 8" :key="i">
         <ProjectItemSkeleton />
       </div>
     </div>
     <!-- Skeleton list end -->
     <!-- Project list start -->
-    <div v-else class="row">
+    <div v-else class="row mb-3">
       <div
         class="col-sm-6 col-lg-4 g-3"
         v-for="project in projectStore.pageInfo.items"
@@ -37,7 +37,7 @@
       </div>
     </div>
     <!-- Project list end -->
-    <div class="m-auto">
+    <div class="d-flex justify-content-center mt-5">
       <LoadMoreItemsButton
         label="Load more projects"
         end-label="These are all your projects"
