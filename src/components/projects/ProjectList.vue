@@ -13,8 +13,9 @@
         <Button
           icon="pi pi-plus"
           label="New project"
-          variant="outlined"
+          severity="contrast"
           aria-label="Add new project"
+          size="small"
         />
       </router-link>
     </div>

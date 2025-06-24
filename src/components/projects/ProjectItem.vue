@@ -11,7 +11,7 @@
           content. This content is a little bit longer.
         </p>
         <div class="">
-          <Button label="View more" severity="primary" size="small" />
+          <Button label="View more" severity="contrast" size="small" />
         </div>
       </div>
       <img
@@ -20,10 +20,14 @@
         alt="Camera"
       />
     </div>
+    <div class="m-auto">
+      <LoadMoreItemsButton label="Load more projects" end-label="These are all your projects" />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import Tag from "primevue/tag";
 import Button from "primevue/button";
+import LoadMoreItemsButton from "../shared/LoadMoreItemsButton.vue";
 </script>
