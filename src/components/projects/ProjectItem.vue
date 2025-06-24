@@ -9,15 +9,30 @@
             :value="project.status == 'published' ? 'Published' : 'Draft'"
           ></Tag>
         </div>
-        <div class="card-text d-flex flex-column align-items-start">
-          <span><i class="pi pi-clock" style="font-size: 1rem"></i></span>
+
+        <!-- Project Duration -->
+        <!-- Project Dates -->
+        <div class="card-text d-flex align-items-center text-muted mb-2" style="font-size: 0.9rem">
+          <i class="pi pi-calendar me-2" />
+          {{ project.startDate }} - {{ project.endDate || "Ongoing" }}
         </div>
-        <div class="">
-          <router-link :to="'/projects/' + project.id + '/edit'"
-            ><Button label="View more" severity="contrast" size="small"
-          /></router-link>
+
+        <!-- Tech Stack -->
+        <div class="card-text d-flex flex-wrap align-items-center gap-1 mb-3">
+          <small v-for="(tech, index) in project.techStack" :key="index" class="text-muted">
+            {{ tech }}<span v-if="index < project.techStack.length - 1"> · </span>
+          </small>
+        </div>
+
+        <!-- Action Button -->
+        <div>
+          <router-link :to="'/projects/' + project.id + '/edit'">
+            <Button label="View more" severity="contrast" size="small" />
+          </router-link>
         </div>
       </div>
+
+      <!-- Image -->
       <img
         src="https://mdbcdn.b-cdn.net/img/new/slides/042.webp"
         class="card-img-bottom"
