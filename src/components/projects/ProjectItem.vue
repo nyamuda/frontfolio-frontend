@@ -13,7 +13,9 @@
           {{ project.summary }}
         </p>
         <div class="">
-          <Button label="View more" severity="contrast" size="small" />
+          <router-link :to="'/projects/' + project.id"
+            ><Button label="View more" severity="contrast" size="small"
+          /></router-link>
         </div>
       </div>
       <img
