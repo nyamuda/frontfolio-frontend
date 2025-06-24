@@ -75,7 +75,7 @@
           </Message>
         </div>
 
-        <!-- Image URL, GitHub URL & Live URL -->
+        <!-- Image URL, video URL, GitHub URL & Live URL -->
         <div class="row mb-3">
           <!-- Image URL -->
           <div class="form-group col-md-4 g-3">
@@ -94,6 +94,27 @@
             </FloatLabel>
             <Message size="small" severity="error" v-if="v$.imageUrl.$error" variant="simple">
               <div v-for="error of v$.imageUrl.$errors" :key="error.$uid">
+                <div>{{ error.$message }}</div>
+              </div>
+            </Message>
+          </div>
+          <!-- Video URL -->
+          <div class="form-group col-md-4 g-3">
+            <FloatLabel variant="on">
+              <IconField>
+                <InputIcon class="pi pi-image" />
+                <InputText
+                  fluid
+                  id="videoUrl"
+                  v-model="v$.videoUrl.$model"
+                  :invalid="v$.videoUrl.$error"
+                  type="url"
+                />
+              </IconField>
+              <label for="videoUrl">Image URL</label>
+            </FloatLabel>
+            <Message size="small" severity="error" v-if="v$.videoUrl.$error" variant="simple">
+              <div v-for="error of v$.videoUrl.$errors" :key="error.$uid">
                 <div>{{ error.$message }}</div>
               </div>
             </Message>
