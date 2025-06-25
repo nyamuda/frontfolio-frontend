@@ -123,6 +123,62 @@
             </Message>
           </div>
         </div>
+
+        <!-- Sort order & difficulty level inputs -->
+        <div class="row mb-3">
+          <!-- Difficulty level input -->
+          <div class="form-group col-md-6">
+            <FloatLabel variant="on">
+              <Select
+                fluid
+                id="difficultyLevel"
+                :options="difficultyLevels"
+                v-model="v$.difficultyLevel.$model"
+                :invalid="v$.difficultyLevel.$error"
+              />
+              <label for="difficultyLevel">Difficulty Level</label>
+            </FloatLabel>
+            <Message
+              size="small"
+              severity="error"
+              v-if="v$.difficultyLevel.$error"
+              variant="simple"
+            >
+              <div v-for="error of v$.difficultyLevel.$errors" :key="error.$uid">
+                <div>{{ error.$message }}</div>
+              </div>
+            </Message>
+            <Message v-else size="small" severity="secondary" variant="simple"
+              >How technically challenging was this project? Choose a level based on the complexity
+              of the problem and the tools you used.</Message
+            >
+          </div>
+          <!-- Sort order input -->
+          <div class="form-group col-md-6">
+            <FloatLabel variant="on">
+              <InputNumber
+                v-model="v$.sortOrder.$model"
+                inputId="sortOrder"
+                showButtons
+                :min="1"
+                :invalid="v$.sortOrder.$error"
+                buttonLayout="horizontal"
+                fluid
+              >
+              </InputNumber>
+              <label for="sortOrder">Sort Order</label>
+            </FloatLabel>
+            <Message size="small" severity="error" v-if="v$.sortOrder.$error" variant="simple">
+              <div v-for="error of v$.sortOrder.$errors" :key="error.$uid">
+                <div>{{ error.$message }}</div>
+              </div>
+            </Message>
+            <Message v-else size="small" severity="secondary" variant="simple"
+              >Controls the position of this project in your portfolio. Lower numbers appear
+              first.</Message
+            >
+          </div>
+        </div>
         <!-- Summary input -->
         <div class="form-group">
           <FloatLabel variant="on">
@@ -374,6 +430,9 @@ import { ProjectStatus } from "@/enums/projectStatus";
 import ProgressBar from "primevue/progressbar";
 import debounce from "lodash.debounce";
 import DatePicker from "primevue/datepicker";
+import InputNumber from "primevue/inputnumber";
+import Select from "primevue/select";
+import { ProjectDifficultyLevel } from "@/enums/projectDifficultyLevel";
 
 // Access the store
 const projectStore = useProjectStore();
@@ -433,6 +492,11 @@ const isAutoSaved = ref(true);
 // Tracks whether the user has made any changes to the project since the last save.
 // This is used to enable or disable the "Save Changes" button and prevent unnecessary saves.
 const hasUnsavedChanges = ref(false);
+const difficultyLevels: Ref<ProjectDifficultyLevel[]> = ref([
+  ProjectDifficultyLevel.Beginner,
+  ProjectDifficultyLevel.Intermediate,
+  ProjectDifficultyLevel.Advanced,
+]);
 
 //Form validation start
 const rules = {
