@@ -8,6 +8,7 @@
           <Tag
             :severity="project.status === 'published' ? 'primary' : 'secondary'"
             :value="project.status === 'published' ? 'Published' : 'Draft'"
+            rounded
           />
         </div>
 
@@ -17,16 +18,16 @@
           style="font-size: 0.85rem"
         >
           <div class="d-flex align-items-center gap-1" style="text-transform: capitalize">
-            <i class="pi pi-bolt" /> {{ project.difficultyLevel }}
+            <i class="pi pi-bolt text-primary" /> {{ project.difficultyLevel }}
           </div>
           <div class="d-flex align-items-center gap-1">
-            <i class="pi pi-sort-amount-down-alt" /> Order: {{ project.sortOrder }}
+            <i class="pi pi-sort-amount-down-alt text-primary" /> Order: {{ project.sortOrder }}
           </div>
         </div>
 
         <!-- Project Dates -->
         <div class="card-text d-flex align-items-center text-muted mb-1" style="font-size: 0.9rem">
-          <i class="pi pi-calendar me-2" />
+          <i class="pi pi-calendar me-2 text-primary" />
           {{ DateHelper.formatDateToMonthYear(project.startDate) }} -
           {{ DateHelper.formatDateToMonthYear(project.endDate) || "Ongoing" }}
         </div>

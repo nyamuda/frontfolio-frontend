@@ -3,7 +3,7 @@
     <div class="card">
       <div class="card-body">
         <!-- title and tag -->
-        <div class="d-flex flex-wrap justify-content-between align-items-center mb-1 gap-1">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-2 gap-1">
           <Skeleton width="10rem" height="1.5rem" borderRadius="4px" />
           <Skeleton width="5rem" height="1.5rem" borderRadius="20px" />
         </div>
