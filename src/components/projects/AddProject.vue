@@ -43,19 +43,41 @@
             <span class="fs-4">Main Details</span>
           </div>
         </template>
-        <!-- Title input -->
-        <div class="form-group mb-3">
-          <FloatLabel variant="on">
-            <InputText fluid id="title" v-model="v$.title.$model" :invalid="v$.title.$error" />
-            <label for="title">Title</label>
-          </FloatLabel>
-          <Message size="small" severity="error" v-if="v$.title.$error" variant="simple">
-            <div v-for="error of v$.title.$errors" :key="error.$uid">
-              <div>{{ error.$message }}</div>
-            </div>
-          </Message>
+        <div class="row mb-3">
+          <!-- Title input -->
+          <div class="form-group col-md-9">
+            <FloatLabel variant="on">
+              <InputText fluid id="title" v-model="v$.title.$model" :invalid="v$.title.$error" />
+              <label for="title">Title</label>
+            </FloatLabel>
+            <Message size="small" severity="error" v-if="v$.title.$error" variant="simple">
+              <div v-for="error of v$.title.$errors" :key="error.$uid">
+                <div>{{ error.$message }}</div>
+              </div>
+            </Message>
+          </div>
+          <!-- Sort order input -->
+          <div class="form-group col-md-3">
+            <FloatLabel variant="on">
+              <InputNumber
+                v-model="v$.sortOrder.$model"
+                inputId="sortOrder"
+                showButtons
+                :min="1"
+                :invalid="v$.sortOrder.$error"
+                buttonLayout="horizontal"
+                fluid
+              >
+              </InputNumber>
+              <label for="sortOrder">Sort Order</label>
+            </FloatLabel>
+            <Message size="small" severity="error" v-if="v$.sortOrder.$error" variant="simple">
+              <div v-for="error of v$.sortOrder.$errors" :key="error.$uid">
+                <div>{{ error.$message }}</div>
+              </div>
+            </Message>
+          </div>
         </div>
-
         <!-- Start and end date inputs -->
         <div class="row mb-3">
           <div class="col-md-6 form-group">
@@ -320,7 +342,7 @@
 import { computed, onMounted, ref, type Ref } from "vue";
 import { useProjectStore } from "@/stores/project";
 import { useVuelidate } from "@vuelidate/core";
-import { required, helpers, url } from "@vuelidate/validators";
+import { required, helpers, url, numeric } from "@vuelidate/validators";
 import { Message } from "primevue";
 import InputText from "primevue/inputtext";
 import FloatLabel from "primevue/floatlabel";
@@ -343,6 +365,8 @@ import type { Challenge } from "@/models/challenge";
 import type { Achievement } from "@/models/achievement";
 import type { Feedback } from "@/models/feedback";
 import { ProjectStatus } from "@/enums/projectStatus";
+import DatePicker from "primevue/datepicker";
+import InputNumber from "primevue/inputnumber";
 
 // Access the store
 const projectStore = useProjectStore();
@@ -392,6 +416,7 @@ const isPublishingProject = ref(false);
 //form validation start
 const rules = {
   title: { required },
+  sortOrder: { required, numeric },
   summary: { required },
   startDate: { required },
   endDate: { required },
