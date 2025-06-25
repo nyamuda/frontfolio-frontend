@@ -2,15 +2,28 @@
   <div>
     <div class="card">
       <div class="card-body">
+        <!-- Title and Status Tag -->
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-2 gap-1">
           <h5 class="card-title mb-0 text-secondary">{{ project.title }}</h5>
           <Tag
-            :severity="project.status == 'published' ? 'primary' : 'secondary'"
-            :value="project.status == 'published' ? 'Published' : 'Draft'"
-          ></Tag>
+            :severity="project.status === 'published' ? 'primary' : 'secondary'"
+            :value="project.status === 'published' ? 'Published' : 'Draft'"
+          />
         </div>
 
-        <!-- Project Duration -->
+        <!-- Difficulty and Sort Order -->
+        <div
+          class="d-flex flex-wrap align-items-center gap-3 mb-2 text-muted"
+          style="font-size: 0.85rem"
+        >
+          <div class="d-flex align-items-center gap-1">
+            <i class="pi pi-signal" /> {{ project.difficultyLevel }}
+          </div>
+          <div class="d-flex align-items-center gap-1">
+            <i class="pi pi-sort-amount-down-alt" /> Order: {{ project.sortOrder }}
+          </div>
+        </div>
+
         <!-- Project Dates -->
         <div class="card-text d-flex align-items-center text-muted mb-1" style="font-size: 0.9rem">
           <i class="pi pi-calendar me-2" />
@@ -36,9 +49,9 @@
 
       <!-- Image -->
       <img
-        src="https://mdbcdn.b-cdn.net/img/new/slides/042.webp"
+        :src="project.imageUrl || 'https://mdbcdn.b-cdn.net/img/new/slides/042.webp'"
         class="card-img-bottom"
-        alt="Camera"
+        alt="Project Image"
       />
     </div>
   </div>

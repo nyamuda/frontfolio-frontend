@@ -16,7 +16,6 @@
         @click="saveProjectAsDraft"
         :label="isSavingProject ? 'Saving...' : 'Save as draft'"
         severity="contrast"
-        variant="outlined"
         :loading="isSavingProject"
         :disabled="
           isPublishingProject || isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms
@@ -54,6 +53,47 @@
               <div>{{ error.$message }}</div>
             </div>
           </Message>
+        </div>
+
+        <!-- Start and end date inputs -->
+        <div class="row mb-3">
+          <div class="col-md-6 form-group">
+            <FloatLabel variant="on">
+              <DatePicker
+                fluid
+                inputId="startDate"
+                v-model="v$.startDate.$model"
+                view="month"
+                dateFormat="M/yy"
+                :invalid="v$.startDate.$error"
+              />
+              <label for="startDate">Start Date</label>
+            </FloatLabel>
+            <Message size="small" severity="error" v-if="v$.startDate.$error" variant="simple">
+              <div v-for="error of v$.startDate.$errors" :key="error.$uid">
+                <div>{{ error.$message }}</div>
+              </div>
+            </Message>
+          </div>
+
+          <div class="col-md-6 form-group">
+            <FloatLabel variant="on">
+              <DatePicker
+                fluid
+                inputId="endDate"
+                v-model="v$.endDate.$model"
+                view="month"
+                dateFormat="M/yy"
+                :invalid="v$.endDate.$error"
+              />
+              <label for="endDate">End Date</label>
+            </FloatLabel>
+            <Message size="small" severity="error" v-if="v$.endDate.$error" variant="simple">
+              <div v-for="error of v$.endDate.$errors" :key="error.$uid">
+                <div>{{ error.$message }}</div>
+              </div>
+            </Message>
+          </div>
         </div>
         <!-- Sort order & difficulty level inputs -->
         <div class="row mb-3">
@@ -108,46 +148,6 @@
               >Controls the position of this project in your portfolio. Lower numbers appear
               first.</Message
             >
-          </div>
-        </div>
-        <!-- Start and end date inputs -->
-        <div class="row mb-3">
-          <div class="col-md-6 form-group">
-            <FloatLabel variant="on">
-              <DatePicker
-                fluid
-                inputId="startDate"
-                v-model="v$.startDate.$model"
-                view="month"
-                dateFormat="M/yy"
-                :invalid="v$.startDate.$error"
-              />
-              <label for="startDate">Start Date</label>
-            </FloatLabel>
-            <Message size="small" severity="error" v-if="v$.startDate.$error" variant="simple">
-              <div v-for="error of v$.startDate.$errors" :key="error.$uid">
-                <div>{{ error.$message }}</div>
-              </div>
-            </Message>
-          </div>
-
-          <div class="col-md-6 form-group">
-            <FloatLabel variant="on">
-              <DatePicker
-                fluid
-                inputId="endDate"
-                v-model="v$.endDate.$model"
-                view="month"
-                dateFormat="M/yy"
-                :invalid="v$.endDate.$error"
-              />
-              <label for="endDate">End Date</label>
-            </FloatLabel>
-            <Message size="small" severity="error" v-if="v$.endDate.$error" variant="simple">
-              <div v-for="error of v$.endDate.$errors" :key="error.$uid">
-                <div>{{ error.$message }}</div>
-              </div>
-            </Message>
           </div>
         </div>
         <!-- Summary input -->
