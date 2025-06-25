@@ -27,8 +27,8 @@ import { Paragraph } from "@/models/paragraph";
 import { computed, ref, watch, type PropType, type Ref } from "vue";
 import AddParagraphForm from "./AddParagraphForm.vue";
 import Button from "primevue/button";
-import type { ParagraphType } from "@/types/paragraphType";
 import type { ValidatedItem } from "@/interfaces/shared/validatedItem";
+import type { ParagraphType } from "@/enums/paragraphType";
 
 const emit = defineEmits(["paragraphs", "isAnyParagraphInvalid"]);
 const props = defineProps({

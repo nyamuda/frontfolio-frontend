@@ -323,7 +323,7 @@
         </p>
 
         <ParagraphList
-          paragraphType="ProjectBackground"
+          :paragraphType="ParagraphType.ProjectBackground"
           @paragraphs="(paragraphs: Paragraph[]) => (project.background = paragraphs)"
           @is-any-paragraph-invalid="
             (isAnyInvalid: boolean) => (hasInvalidBackgroundForms = isAnyInvalid)
@@ -433,6 +433,7 @@ import DatePicker from "primevue/datepicker";
 import InputNumber from "primevue/inputnumber";
 import Select from "primevue/select";
 import { ProjectDifficultyLevel } from "@/enums/projectDifficultyLevel";
+import { ParagraphType } from "@/enums/paragraphType";
 
 // Access the store
 const projectStore = useProjectStore();
