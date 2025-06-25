@@ -513,7 +513,7 @@ const submitProject = async () => {
 
         const toastDetail = isPublishingProject.value
           ? "Your project has been published and is now live in your portfolio."
-          : "Your draft has been updated.";
+          : "Your project has been updated.";
         toast.add({
           severity: "success",
           summary: toastSummary,

@@ -13,23 +13,23 @@
         <Button
           icon="pi pi-plus"
           label="New project"
-          severity="contrast"
+          severity="primary"
           aria-label="Add new project"
           size="small"
         />
       </router-link>
     </div>
     <!-- Skeleton list start -->
-    <div v-if="isGettingProjects" class="row mb-3">
-      <div class="col-sm-6 col-lg-4 g-3" v-for="i in 8" :key="i">
+    <div v-if="isGettingProjects" class="row">
+      <div class="col-md-6 col-lg-4 g-3" v-for="i in 8" :key="i">
         <ProjectItemSkeleton />
       </div>
     </div>
     <!-- Skeleton list end -->
     <!-- Project list start -->
-    <div v-else class="row mb-3">
+    <div v-else class="row">
       <div
-        class="col-sm-6 col-lg-4 g-3"
+        class="col-md-6 col-lg-4 g-3"
         v-for="project in projectStore.pageInfo.items"
         :key="project.id"
       >
@@ -46,6 +46,7 @@
         :is-disabled="isGettingProjects || isLoadingMoreProjects || !projectStore.pageInfo.hasMore"
         :onClick="loadMoreProjects"
         end-variant="text"
+        variant="outlined"
       />
     </div>
   </div>
