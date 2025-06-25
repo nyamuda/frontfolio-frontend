@@ -79,7 +79,10 @@
                 <div>{{ error.$message }}</div>
               </div>
             </Message>
-
+            <Message v-else size="small" severity="secondary" variant="simple"
+              >How technically challenging was this project? Choose a level based on the complexity
+              of the problem and the tools you used.</Message
+            >
           </div>
           <!-- Sort order input -->
           <div class="form-group col-md-6">
