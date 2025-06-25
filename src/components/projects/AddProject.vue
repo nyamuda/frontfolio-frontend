@@ -359,6 +359,7 @@
       </Panel>
       <!-- Project feedback end  -->
     </form>
+    {{ project }}
   </div>
 </template>
 
@@ -392,7 +393,7 @@ import { ProjectStatus } from "@/enums/projectStatus";
 import DatePicker from "primevue/datepicker";
 import InputNumber from "primevue/inputnumber";
 import Select from "primevue/select";
-import type { ProjectDifficultyLevel } from "@/enums/projectDifficultyLevel";
+import { ProjectDifficultyLevel } from "@/enums/projectDifficultyLevel";
 
 // Access the store
 const projectStore = useProjectStore();
@@ -438,11 +439,16 @@ const isEntireFormInvalid = async (): Promise<boolean> => {
 
 const isSavingProject = ref(false);
 const isPublishingProject = ref(false);
-const difficultyLevels: Ref<ProjectDifficultyLevel[]> = ref([]);
+const difficultyLevels: Ref<ProjectDifficultyLevel[]> = ref([
+  ProjectDifficultyLevel.Beginner,
+  ProjectDifficultyLevel.Intermediate,
+  ProjectDifficultyLevel.Advanced,
+]);
 
 //form validation start
 const rules = {
   title: { required },
+  difficultyLevel: { required },
   sortOrder: { required, numeric },
   summary: { required },
   startDate: { required },
