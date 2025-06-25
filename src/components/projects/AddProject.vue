@@ -79,6 +79,7 @@
                 <div>{{ error.$message }}</div>
               </div>
             </Message>
+
           </div>
           <!-- Sort order input -->
           <div class="form-group col-md-6">
@@ -100,6 +101,10 @@
                 <div>{{ error.$message }}</div>
               </div>
             </Message>
+            <Message v-else size="small" severity="secondary" variant="simple"
+              >Controls the position of this project in your portfolio. Lower numbers appear
+              first.</Message
+            >
           </div>
         </div>
         <!-- Start and end date inputs -->
