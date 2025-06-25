@@ -404,7 +404,7 @@
 import { computed, onMounted, ref, watch, type Ref } from "vue";
 import { useProjectStore } from "@/stores/project";
 import { useVuelidate } from "@vuelidate/core";
-import { required, helpers, url } from "@vuelidate/validators";
+import { required, helpers, url, numeric } from "@vuelidate/validators";
 import { Message } from "primevue";
 import InputText from "primevue/inputtext";
 import FloatLabel from "primevue/floatlabel";
@@ -501,6 +501,8 @@ const difficultyLevels: Ref<ProjectDifficultyLevel[]> = ref([
 //Form validation start
 const rules = {
   title: { required },
+  difficultyLevel: { required },
+  sortOrder: { required, numeric },
   startDate: { required },
   endDate: { required },
   summary: { required },

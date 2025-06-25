@@ -16,8 +16,8 @@
           class="d-flex flex-wrap align-items-center gap-3 mb-2 text-muted"
           style="font-size: 0.85rem"
         >
-          <div class="d-flex align-items-center gap-1">
-            <i class="pi pi-signal" /> {{ project.difficultyLevel }}
+          <div class="d-flex align-items-center gap-1" style="text-transform: capitalize">
+            <i class="pi pi-bolt" /> {{ project.difficultyLevel }}
           </div>
           <div class="d-flex align-items-center gap-1">
             <i class="pi pi-sort-amount-down-alt" /> Order: {{ project.sortOrder }}
