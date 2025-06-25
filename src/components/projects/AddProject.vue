@@ -43,21 +43,45 @@
             <span class="fs-4">Main Details</span>
           </div>
         </template>
+        <!-- Title input -->
+        <div class="form-group mb-3">
+          <FloatLabel variant="on">
+            <InputText fluid id="title" v-model="v$.title.$model" :invalid="v$.title.$error" />
+            <label for="title">Title</label>
+          </FloatLabel>
+          <Message size="small" severity="error" v-if="v$.title.$error" variant="simple">
+            <div v-for="error of v$.title.$errors" :key="error.$uid">
+              <div>{{ error.$message }}</div>
+            </div>
+          </Message>
+        </div>
+        <!-- Sort order & difficulty level inputs -->
         <div class="row mb-3">
-          <!-- Title input -->
-          <div class="form-group col-md-9">
+          <!-- Difficulty level input -->
+          <div class="form-group col-md-6">
             <FloatLabel variant="on">
-              <InputText fluid id="title" v-model="v$.title.$model" :invalid="v$.title.$error" />
-              <label for="title">Title</label>
+              <Select
+                fluid
+                id="difficultyLevel"
+                :options="difficultyLevels"
+                v-model="v$.difficultyLevel.$model"
+                :invalid="v$.difficultyLevel.$error"
+              />
+              <label for="difficultyLevel">Difficulty Level</label>
             </FloatLabel>
-            <Message size="small" severity="error" v-if="v$.title.$error" variant="simple">
-              <div v-for="error of v$.title.$errors" :key="error.$uid">
+            <Message
+              size="small"
+              severity="error"
+              v-if="v$.difficultyLevel.$error"
+              variant="simple"
+            >
+              <div v-for="error of v$.difficultyLevel.$errors" :key="error.$uid">
                 <div>{{ error.$message }}</div>
               </div>
             </Message>
           </div>
           <!-- Sort order input -->
-          <div class="form-group col-md-3">
+          <div class="form-group col-md-6">
             <FloatLabel variant="on">
               <InputNumber
                 v-model="v$.sortOrder.$model"
@@ -367,6 +391,8 @@ import type { Feedback } from "@/models/feedback";
 import { ProjectStatus } from "@/enums/projectStatus";
 import DatePicker from "primevue/datepicker";
 import InputNumber from "primevue/inputnumber";
+import Select from "primevue/select";
+import type { ProjectDifficultyLevel } from "@/enums/projectDifficultyLevel";
 
 // Access the store
 const projectStore = useProjectStore();
@@ -412,6 +438,7 @@ const isEntireFormInvalid = async (): Promise<boolean> => {
 
 const isSavingProject = ref(false);
 const isPublishingProject = ref(false);
+const difficultyLevels: Ref<ProjectDifficultyLevel[]> = ref([]);
 
 //form validation start
 const rules = {
