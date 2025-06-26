@@ -24,14 +24,15 @@
 
 <script setup lang="ts">
 import { Paragraph } from "@/models/paragraph";
-import { type PropType} from "vue";
+import { computed, type PropType} from "vue";
 import AddParagraphForm from "./AddParagraphForm.vue";
 import Button from "primevue/button";
 import type { ValidatedItem } from "@/interfaces/shared/validatedItem";
 import type { ParagraphType } from "@/enums/paragraphType";
 import { useParagraphStore } from "@/stores/paragraph";
+import { watch } from "vue";
 
-// const emit = defineEmits(["paragraphs", "isAnyParagraphInvalid"]);
+const emit = defineEmits(["paragraphs", "hasInvalidParagraphs"]);
 const props = defineProps({
   paragraphType: {
     type: String as PropType<ParagraphType>,
@@ -42,12 +43,12 @@ const props = defineProps({
     required: false,
     default: () => "New paragraph",
   },
-
 });
 
-const store=useParagraphStore();
+const store = useParagraphStore();
 
-
+const paragraphs = computed(() => store.paragraphs);
+const hasInvalidParagraphs = computed(() => store.hasInvalidParagraphs);
 //Add a new paragraph to the list of paragraphs when the Add button is clicked
 const addNewParagraph = () => {
   const newParagraph = new Paragraph();
@@ -75,20 +76,15 @@ const deleteParagraphById = (targetId: string | number) => {
 // Whenever any paragraph's content or validation state updates,
 // extract the paragraph data and emit both the updated list
 // and the combined validation status to keep the parent component in sync.
-// watch(
-//   validatedParagraphs,
-//   (newValidatedParagraphs) => {
-//     // Extract the Paragraph objects from the validatedParagraphs array
-//     const paragraphs: Paragraph[] = newValidatedParagraphs.map(
-//       (validatedParagraph) => validatedParagraph.item,
-//     );
+watch(
+  paragraphs,
+  (newParagraphs) => {
+    // Emit the updated list of paragraphs to the parent component
+    emit("paragraphs", newParagraphs);
 
-//     // Emit the updated list of paragraphs to the parent component
-//     emit("paragraphs", paragraphs);
-
-//     // Emit the current overall validation status indicating if any paragraph is invalid
-//     emit("isAnyParagraphInvalid", isAnyParagraphInvalid.value);
-//   },
-//   { deep: true },
-// );
+    // Emit the current overall validation status indicating if any paragraph is invalid
+    emit("hasInvalidParagraphs", hasInvalidParagraphs.value);
+  },
+  { deep: true },
+);
 </script>
