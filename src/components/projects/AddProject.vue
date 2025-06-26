@@ -400,19 +400,14 @@ import InputNumber from "primevue/inputnumber";
 import Select from "primevue/select";
 import { ProjectDifficultyLevel } from "@/enums/projectDifficultyLevel";
 import { ParagraphType } from "@/enums/paragraphType";
-import { useParagraphStore } from "@/stores/paragraph";
 
 // Access the store
 const projectStore = useProjectStore();
-const paragraphStore = useParagraphStore();
 const toast = useToast();
 const router = useRouter();
 
 onMounted(() => {
   v$.value.$touch();
-  //paragraphs are used for the project's background
-  //reset the paragraphs store state
-  paragraphStore.$reset();
 });
 
 // The new project being created

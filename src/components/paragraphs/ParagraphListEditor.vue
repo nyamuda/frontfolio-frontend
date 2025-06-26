@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import { Paragraph } from "@/models/paragraph";
-import { computed, type PropType} from "vue";
+import { computed, onMounted, type PropType } from "vue";
 import AddParagraphForm from "./AddParagraphForm.vue";
 import Button from "primevue/button";
 import type { ValidatedItem } from "@/interfaces/shared/validatedItem";
@@ -46,9 +46,14 @@ const props = defineProps({
 });
 
 const store = useParagraphStore();
-
 const paragraphs = computed(() => store.paragraphs);
 const hasInvalidParagraphs = computed(() => store.hasInvalidParagraphs);
+
+onMounted(() => {
+  //reset the paragraphs store state
+  store.$reset();
+});
+
 //Add a new paragraph to the list of paragraphs when the Add button is clicked
 const addNewParagraph = () => {
   const newParagraph = new Paragraph();
