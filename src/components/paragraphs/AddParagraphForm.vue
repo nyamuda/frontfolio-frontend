@@ -175,9 +175,8 @@ const handleFormChange = async () => {
 const deleteParagraph = (event: MouseEvent) => {
   const target = event.currentTarget as HTMLElement;
   const paragraphId = target.id;
-
   confirm.require({
-    message: "Please confirm to proceed moving forward.",
+    message: "Are you sure you want to delete this paragraph?",
     header: "Confirmation",
     icon: "pi pi-exclamation-triangle",
     rejectProps: {
@@ -193,8 +192,8 @@ const deleteParagraph = (event: MouseEvent) => {
       emit("delete");
       toast.add({
         severity: "info",
-        summary: "Confirmed",
-        detail: "Paragraph deleted: " + paragraphId,
+        summary: "Paragraph Deleted",
+        detail: "Selected paragraph was deleted.",
         life: 3000,
       });
     },

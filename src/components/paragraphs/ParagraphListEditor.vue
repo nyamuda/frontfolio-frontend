@@ -49,9 +49,11 @@ const props = defineProps({
     required: false,
     default: () => "New paragraph",
   },
-  initialParagraphs: {
-    type: Array as PropType<Paragraph[]>,
-    default: () => [],
+
+  deleteParagraphAsyncCallback: {
+    type: Function,
+    default: null,
+    required: false,
   },
 });
 
