@@ -50,7 +50,7 @@ const props = defineProps({
     default: () => "New paragraph",
   },
 
-  deleteParagraphAsyncCallback: {
+  isE: {
     type: Function,
     default: null,
     required: false,
