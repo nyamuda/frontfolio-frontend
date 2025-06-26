@@ -59,8 +59,6 @@ const hasInitializedParagraphs = ref(false);
 // Flag to suppress emitting during the initial paragraph load
 const shouldEmitParagraphs = ref(false);
 
-const ppp = computed(() => props.initialParagraphs);
-
 // Extracts and returns the original Paragraph objects from the validatedParagraphs array
 const paragraphs: Ref<Paragraph[]> = computed(() => {
   return validatedParagraphs.value.reduce((accumulator, currentValue) => {
@@ -123,12 +121,14 @@ watch(
 // When the data becomes available, initialize the local validatedParagraphs array.
 // This setup runs only once to prevent re-initialization if the prop changes again.
 watch(
-  ppp,
+  () => props.initialParagraphs,
   (newParagraphs) => {
     if (!hasInitializedParagraphs.value && newParagraphs.length > 0) {
       validatedParagraphs.value = store.validateGivenParagraphs(newParagraphs);
-      hasInitializedParagraphs.value = true;
     }
+
+    hasInitializedParagraphs.value = true;
+    shouldEmitParagraphs.value = true;
   },
   { immediate: true, deep: true },
 );
