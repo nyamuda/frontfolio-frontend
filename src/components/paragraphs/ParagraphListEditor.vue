@@ -24,11 +24,12 @@
 
 <script setup lang="ts">
 import { Paragraph } from "@/models/paragraph";
-import { computed, ref, watch, type PropType, type Ref } from "vue";
+import { computed,  watch, type PropType, type Ref } from "vue";
 import AddParagraphForm from "./AddParagraphForm.vue";
 import Button from "primevue/button";
 import type { ValidatedItem } from "@/interfaces/shared/validatedItem";
 import type { ParagraphType } from "@/enums/paragraphType";
+import { useParagraphStore } from "@/stores/paragraph";
 
 const emit = defineEmits(["paragraphs", "isAnyParagraphInvalid"]);
 const props = defineProps({
@@ -47,20 +48,8 @@ const props = defineProps({
   },
 });
 
+const store=useParagraphStore();
 
-
-const validatedParagraphs: Ref<ValidatedItem<Paragraph>[]> = ref(
-  validateGivenParagraphs(props.paragraphs),
-);
-
-// Determine if any paragraph in the list has failed validation
-const isAnyParagraphInvalid: Ref<boolean> = computed(() => {
-  //look for any paragraphs whose validation is invalid
-  const anyInvalid: ValidatedItem<Paragraph>[] = validatedParagraphs.value.filter(
-    (validatedParagraphs) => !validatedParagraphs.isValid,
-  );
-  return anyInvalid.length > 0;
-});
 
 //Add a new paragraph to the list of paragraphs when the Add button is clicked
 const addNewParagraph = () => {
@@ -69,18 +58,18 @@ const addNewParagraph = () => {
   newParagraph.paragraphType = props.paragraphType;
   //by default, the a new paragraph form is invalid since its fields (the required ones) will be  empty
   const isValid = false;
-  validatedParagraphs.value.push({ item: newParagraph, isValid });
+  store.validatedParagraphs.push({ item: newParagraph, isValid });
 };
 
 // Update the paragraph with the specified ID
 const updateParagraphById = (updatedParagraph: ValidatedItem<Paragraph>) => {
-  validatedParagraphs.value = validatedParagraphs.value.map((validatedParagraph) =>
+  store.validatedParagraphs = store.validatedParagraphs.map((validatedParagraph) =>
     validatedParagraph.item.id === updatedParagraph.item.id ? updatedParagraph : validatedParagraph,
   );
 };
 //delete a paragraph with the specified ID
 const deleteParagraphById = (targetId: string | number) => {
-  validatedParagraphs.value = validatedParagraphs.value.filter(
+  store.validatedParagraphs = store.validatedParagraphs.filter(
     (validatedParagraph) => validatedParagraph.item.id != targetId,
   );
 };

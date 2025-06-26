@@ -1,10 +1,19 @@
-import { ref, type Ref } from "vue";
+import { computed, ref, type Ref } from "vue";
 import { defineStore } from "pinia";
 import type { ValidatedItem } from "@/interfaces/shared/validatedItem";
 import type { Paragraph } from "@/models/paragraph";
 
 export const useParagraphStore = defineStore("paragraph", () => {
-  const validatedParagraphs: Ref<ValidatedItem<Paragraph>[]> = [];
+  const validatedParagraphs: Ref<ValidatedItem<Paragraph>[]> = ref([]);
+
+  // Determine if any paragraph in the list has failed validation
+  const hasInvalidParagraphs: Ref<boolean> = computed(() => {
+    //look for any paragraphs whose validation is invalid
+    const anyInvalid: ValidatedItem<Paragraph>[] = validatedParagraphs.value.filter(
+      (validatedParagraphs) => !validatedParagraphs.isValid,
+    );
+    return anyInvalid.length > 0;
+  });
 
   // Validates an array of Paragraph objects by checking required fields.
   // Returns an array of ValidatedItem<Paragraph> indicating whether each paragraph is valid.
@@ -25,9 +34,10 @@ export const useParagraphStore = defineStore("paragraph", () => {
     }, [] as ValidatedItem<Paragraph>[]);
   };
 
+  // Resets the validatedParagraphs array to an empty state
   const $reset = () => {
     validatedParagraphs.value = [];
   };
 
-  return { validatedParagraphs,$reset };
+  return { validatedParagraphs, $reset, validateGivenParagraphs, hasInvalidParagraphs };
 });
