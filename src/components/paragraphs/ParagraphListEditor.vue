@@ -2,7 +2,7 @@
   <section>
     <div>
       <AddParagraphForm
-        v-for="(validatedParagraph, index) in validatedParagraphs"
+        v-for="(validatedParagraph, index) in store.validatedParagraphs"
         :index="index"
         :key="validatedParagraph.item.id"
         @update="(val: ValidatedItem<Paragraph>) => updateParagraphById(val)"
@@ -24,14 +24,14 @@
 
 <script setup lang="ts">
 import { Paragraph } from "@/models/paragraph";
-import { computed,  watch, type PropType, type Ref } from "vue";
+import { type PropType} from "vue";
 import AddParagraphForm from "./AddParagraphForm.vue";
 import Button from "primevue/button";
 import type { ValidatedItem } from "@/interfaces/shared/validatedItem";
 import type { ParagraphType } from "@/enums/paragraphType";
 import { useParagraphStore } from "@/stores/paragraph";
 
-const emit = defineEmits(["paragraphs", "isAnyParagraphInvalid"]);
+// const emit = defineEmits(["paragraphs", "isAnyParagraphInvalid"]);
 const props = defineProps({
   paragraphType: {
     type: String as PropType<ParagraphType>,
@@ -42,10 +42,7 @@ const props = defineProps({
     required: false,
     default: () => "New paragraph",
   },
-  paragraphs: {
-    type: Array as PropType<Paragraph[]>,
-    default: () => [],
-  },
+
 });
 
 const store=useParagraphStore();
@@ -78,20 +75,20 @@ const deleteParagraphById = (targetId: string | number) => {
 // Whenever any paragraph's content or validation state updates,
 // extract the paragraph data and emit both the updated list
 // and the combined validation status to keep the parent component in sync.
-watch(
-  validatedParagraphs,
-  (newValidatedParagraphs) => {
-    // Extract the Paragraph objects from the validatedParagraphs array
-    const paragraphs: Paragraph[] = newValidatedParagraphs.map(
-      (validatedParagraph) => validatedParagraph.item,
-    );
+// watch(
+//   validatedParagraphs,
+//   (newValidatedParagraphs) => {
+//     // Extract the Paragraph objects from the validatedParagraphs array
+//     const paragraphs: Paragraph[] = newValidatedParagraphs.map(
+//       (validatedParagraph) => validatedParagraph.item,
+//     );
 
-    // Emit the updated list of paragraphs to the parent component
-    emit("paragraphs", paragraphs);
+//     // Emit the updated list of paragraphs to the parent component
+//     emit("paragraphs", paragraphs);
 
-    // Emit the current overall validation status indicating if any paragraph is invalid
-    emit("isAnyParagraphInvalid", isAnyParagraphInvalid.value);
-  },
-  { deep: true },
-);
+//     // Emit the current overall validation status indicating if any paragraph is invalid
+//     emit("isAnyParagraphInvalid", isAnyParagraphInvalid.value);
+//   },
+//   { deep: true },
+// );
 </script>

@@ -293,13 +293,7 @@
           wonderful way to show your thinking and help others understand your work and vision.
         </p>
 
-        <ParagraphList
-          :paragraphType="ParagraphType.ProjectBackground"
-          @paragraphs="(paragraphs: Paragraph[]) => (project.background = paragraphs)"
-          @is-any-paragraph-invalid="
-            (isAnyInvalid: boolean) => (hasInvalidBackgroundForms = isAnyInvalid)
-          "
-        />
+        <ParagraphList :paragraphType="ParagraphType.ProjectBackground" />
       </Panel>
       <!-- Project background paragraphs end  -->
 
@@ -403,21 +397,24 @@ import InputNumber from "primevue/inputnumber";
 import Select from "primevue/select";
 import { ProjectDifficultyLevel } from "@/enums/projectDifficultyLevel";
 import { ParagraphType } from "@/enums/paragraphType";
+import { useParagraphStore } from "@/stores/paragraph";
 
 // Access the store
 const projectStore = useProjectStore();
+const paragraphStore = useParagraphStore();
 const toast = useToast();
 const router = useRouter();
 
 onMounted(() => {
   v$.value.$touch();
+  //reset the paragraphs state
 });
 
 // The new project being created
 const project: Ref<Project> = ref(new Project());
 
 // Track whether any background paragraph form is invalid
-const hasInvalidBackgroundForms: Ref<boolean> = ref(false);
+const hasInvalidBackgroundForms: Ref<boolean> = computed(() => paragraphStore.hasInvalidParagraphs);
 
 // Track whether any challenge form is invalid
 const hasInvalidChallengeForms: Ref<boolean> = ref(false);

@@ -6,6 +6,13 @@ import type { Paragraph } from "@/models/paragraph";
 export const useParagraphStore = defineStore("paragraph", () => {
   const validatedParagraphs: Ref<ValidatedItem<Paragraph>[]> = ref([]);
 
+  // Extracts and returns the original Paragraph objects from the validatedParagraphs array
+  const paragraphs: Ref<Paragraph[]> = computed(() => {
+    return validatedParagraphs.value.reduce((accumulator, currentValue) => {
+      accumulator.push(currentValue.item);
+      return accumulator;
+    }, [] as Paragraph[]);
+  });
   // Determine if any paragraph in the list has failed validation
   const hasInvalidParagraphs: Ref<boolean> = computed(() => {
     //look for any paragraphs whose validation is invalid
