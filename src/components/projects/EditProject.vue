@@ -434,9 +434,10 @@ import InputNumber from "primevue/inputnumber";
 import Select from "primevue/select";
 import { ProjectDifficultyLevel } from "@/enums/projectDifficultyLevel";
 import { ParagraphType } from "@/enums/paragraphType";
+import { useParagraphStore } from "@/stores/paragraph";
 
-// Access the store
 const projectStore = useProjectStore();
+const paragraphStore = useParagraphStore();
 const toast = useToast();
 const router = useRouter();
 
@@ -526,7 +527,9 @@ const getProjectById = (id: number) => {
   isLoadingProject.value = true;
   projectStore
     .getProjectById(id)
-    .then((data) => (project.value = data))
+    .then((data) => {
+      project.value = data;
+    })
     .catch((message) => {
       // Show error toast if the project fetching fails
       toast.add({
