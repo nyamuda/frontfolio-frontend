@@ -23,9 +23,9 @@ export const useParagraphStore = defineStore("paragraph", () => {
   });
 
   // Validates an array of Paragraph objects by checking required fields.
-  // Saves an array of the ValidatedItem<Paragraph> to the state.
-  const validateGivenParagraphs = (paragraphs: Paragraph[]) => {
-    validatedParagraphs.value = paragraphs.reduce((accumulator, currentValue) => {
+  // Returns an array of ValidatedItem<Paragraph> indicating whether each paragraph is valid.
+  const validateGivenParagraphs = (paragraphs: Paragraph[]): ValidatedItem<Paragraph>[] => {
+    return paragraphs.reduce((accumulator, currentValue) => {
       // A paragraph is considered valid if both 'title' and 'content' are present and non-empty
       const isValid: boolean = !!currentValue.title && !!currentValue.content;
 

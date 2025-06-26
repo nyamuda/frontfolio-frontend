@@ -2,7 +2,7 @@
   <section>
     <div>
       <AddParagraphForm
-        v-for="(validatedParagraph, index) in store.validatedParagraphs"
+        v-for="(validatedParagraph, index) in validatedParagraphs"
         :index="index"
         :key="validatedParagraph.item.id"
         @update="(val: ValidatedItem<Paragraph>) => updateParagraphById(val)"
@@ -24,13 +24,13 @@
 
 <script setup lang="ts">
 import { Paragraph } from "@/models/paragraph";
-import { computed, onMounted, type PropType } from "vue";
+import { computed, onMounted, type PropType, type Ref } from "vue";
 import AddParagraphForm from "./AddParagraphForm.vue";
 import Button from "primevue/button";
 import type { ValidatedItem } from "@/interfaces/shared/validatedItem";
 import type { ParagraphType } from "@/enums/paragraphType";
-import { useParagraphStore } from "@/stores/paragraph";
 import { watch } from "vue";
+import { ref } from "vue";
 
 const emit = defineEmits(["paragraphs", "hasInvalidParagraphs"]);
 const props = defineProps({
@@ -43,15 +43,33 @@ const props = defineProps({
     required: false,
     default: () => "New paragraph",
   },
+  initialParagraphs: {
+    type: Array as PropType<Paragraph[]>,
+    default: () => [],
+  },
 });
 
-const store = useParagraphStore();
-const paragraphs = computed(() => store.paragraphs);
-const hasInvalidParagraphs = computed(() => store.hasInvalidParagraphs);
+onMounted(() => {});
 
-onMounted(() => {
-  //reset the paragraphs store state
-  store.$reset();
+const validatedParagraphs: Ref<ValidatedItem<Paragraph>[]> = ref([]);
+// Flag to ensure initial paragraphs are only set once
+const hasInitializedParagraphs = ref(false);
+
+// Extracts and returns the original Paragraph objects from the validatedParagraphs array
+const paragraphs: Ref<Paragraph[]> = computed(() => {
+  return validatedParagraphs.value.reduce((accumulator, currentValue) => {
+    accumulator.push(currentValue.item);
+    return accumulator;
+  }, [] as Paragraph[]);
+});
+
+// Determine if any paragraph in the list has failed validation
+const hasInvalidParagraphs: Ref<boolean> = computed(() => {
+  //look for any paragraphs whose validation is invalid
+  const anyInvalid = validatedParagraphs.value.filter(
+    (validatedParagraphs) => !validatedParagraphs.isValid,
+  );
+  return anyInvalid.length > 0;
 });
 
 //Add a new paragraph to the list of paragraphs when the Add button is clicked
@@ -61,18 +79,18 @@ const addNewParagraph = () => {
   newParagraph.paragraphType = props.paragraphType;
   //by default, the a new paragraph form is invalid since its fields (the required ones) will be  empty
   const isValid = false;
-  store.validatedParagraphs.push({ item: newParagraph, isValid });
+  validatedParagraphs.value.push({ item: newParagraph, isValid });
 };
 
 // Update the paragraph with the specified ID
 const updateParagraphById = (updatedParagraph: ValidatedItem<Paragraph>) => {
-  store.validatedParagraphs = store.validatedParagraphs.map((validatedParagraph) =>
+  validatedParagraphs.value = validatedParagraphs.value.map((validatedParagraph) =>
     validatedParagraph.item.id === updatedParagraph.item.id ? updatedParagraph : validatedParagraph,
   );
 };
 //delete a paragraph with the specified ID
 const deleteParagraphById = (targetId: string | number) => {
-  store.validatedParagraphs = store.validatedParagraphs.filter(
+  validatedParagraphs.value = validatedParagraphs.value.filter(
     (validatedParagraph) => validatedParagraph.item.id != targetId,
   );
 };
@@ -82,14 +100,19 @@ const deleteParagraphById = (targetId: string | number) => {
 // extract the paragraph data and emit both the updated list
 // and the combined validation status to keep the parent component in sync.
 watch(
-  paragraphs,
-  (newParagraphs) => {
+  validatedParagraphs,
+  () => {
     // Emit the updated list of paragraphs to the parent component
-    emit("paragraphs", newParagraphs);
+    emit("paragraphs", paragraphs.value);
 
     // Emit the current overall validation status indicating if any paragraph is invalid
     emit("hasInvalidParagraphs", hasInvalidParagraphs.value);
   },
   { deep: true },
 );
+
+// Watch the paragraphs prop (assumed to come from the parent component).
+// When the data becomes available, initialize the local validatedParagraphs array.
+// This setup runs only once to prevent re-initialization if the prop changes again.
+w
 </script>
