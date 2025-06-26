@@ -47,18 +47,7 @@ const props = defineProps({
   },
 });
 
-// Validate given paragraphs based on their fields
-const validateGivenParagraphs = (paragraphs: Paragraph[]): ValidatedItem<Paragraph>[] => {
-  return paragraphs.reduce((accumulator, currentValue) => {
-    const isValid: boolean = !!currentValue.title && !!currentValue.content;
-    const validatedParagraph: ValidatedItem<Paragraph> = {
-      item: currentValue,
-      isValid,
-    };
-    accumulator.push(validatedParagraph);
-    return accumulator;
-  }, [] as ValidatedItem<Paragraph>[]);
-};
+
 
 const validatedParagraphs: Ref<ValidatedItem<Paragraph>[]> = ref(
   validateGivenParagraphs(props.paragraphs),

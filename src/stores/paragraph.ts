@@ -1,15 +1,33 @@
-import { ref} from "vue";
+import { ref, type Ref } from "vue";
 import { defineStore } from "pinia";
 import type { ValidatedItem } from "@/interfaces/shared/validatedItem";
 import type { Paragraph } from "@/models/paragraph";
 
-
 export const useParagraphStore = defineStore("paragraph", () => {
+  const validatedParagraphs: Ref<ValidatedItem<Paragraph>[]> = [];
 
-const validatedParagraphsForAddProject = ref<ValidatedItem<Paragraph>[]>([]);
-const validatedParagraphsForEditProject = ref<ValidatedItem<Paragraph>[]>([]);
+  // Validates an array of Paragraph objects by checking required fields.
+  // Returns an array of ValidatedItem<Paragraph> indicating whether each paragraph is valid.
+  const validateGivenParagraphs = (paragraphs: Paragraph[]): ValidatedItem<Paragraph>[] => {
+    return paragraphs.reduce((accumulator, currentValue) => {
+      // A paragraph is considered valid if both 'title' and 'content' are present and non-empty
+      const isValid: boolean = !!currentValue.title && !!currentValue.content;
 
+      // Wrap the paragraph along with its validation result
+      const validatedParagraph: ValidatedItem<Paragraph> = {
+        item: currentValue,
+        isValid,
+      };
 
-return {validatedParagraphsForAddProject,validatedParagraphsForEditProject}
+      // Add the validated paragraph to the result array
+      accumulator.push(validatedParagraph);
+      return accumulator;
+    }, [] as ValidatedItem<Paragraph>[]);
+  };
 
-})
+  const $reset = () => {
+    validatedParagraphs.value = [];
+  };
+
+  return { validatedParagraphs,$reset };
+});
