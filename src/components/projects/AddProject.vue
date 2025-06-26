@@ -387,7 +387,6 @@ import ParagraphList from "../paragraphs/ParagraphListEditor.vue";
 import ChallengeListEditor from "./challenges/ChallengeListEditor.vue";
 import AchievementListEditor from "./achievements/AchievementListEditor.vue";
 import FeedbackListEditor from "./feedback/FeedbackListEditor.vue";
-import type { Paragraph } from "@/models/paragraph";
 import type { Challenge } from "@/models/challenge";
 import type { Achievement } from "@/models/achievement";
 import type { Feedback } from "@/models/feedback";
@@ -407,7 +406,9 @@ const router = useRouter();
 
 onMounted(() => {
   v$.value.$touch();
-  //reset the paragraphs state
+  //paragraphs are used for the project's background
+  //reset the paragraphs store state
+  paragraphStore.$reset();
 });
 
 // The new project being created
@@ -497,6 +498,8 @@ const submitProject = async () => {
 
   // Only proceed if form is valid
   if (!isInvalid) {
+    //add the background to the project
+    project.value.background = paragraphStore.paragraphs;
     projectStore
       .addNewProject(project.value)
       .then(({ id }) => {
