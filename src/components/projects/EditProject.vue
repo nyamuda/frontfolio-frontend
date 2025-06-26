@@ -323,6 +323,7 @@
         </p>
 
         <ParagraphList
+          :paragraphs="project.background"
           :paragraphType="ParagraphType.ProjectBackground"
           @paragraphs="(paragraphs: Paragraph[]) => (project.background = paragraphs)"
           @is-any-paragraph-invalid="

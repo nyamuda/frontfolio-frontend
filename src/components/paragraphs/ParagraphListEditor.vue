@@ -41,9 +41,28 @@ const props = defineProps({
     required: false,
     default: () => "New paragraph",
   },
+  paragraphs: {
+    type: Array as PropType<Paragraph[]>,
+    default: () => [],
+  },
 });
 
-const validatedParagraphs: Ref<ValidatedItem<Paragraph>[]> = ref([]);
+// Validate given paragraphs based on their fields
+const validateGivenParagraphs = (paragraphs: Paragraph[]): ValidatedItem<Paragraph>[] => {
+  return paragraphs.reduce((accumulator, currentValue) => {
+    const isValid: boolean = !!currentValue.title && !!currentValue.content;
+    const validatedParagraph: ValidatedItem<Paragraph> = {
+      item: currentValue,
+      isValid,
+    };
+    accumulator.push(validatedParagraph);
+    return accumulator;
+  }, [] as ValidatedItem<Paragraph>[]);
+};
+
+const validatedParagraphs: Ref<ValidatedItem<Paragraph>[]> = ref(
+  validateGivenParagraphs(props.paragraphs),
+);
 
 // Determine if any paragraph in the list has failed validation
 const isAnyParagraphInvalid: Ref<boolean> = computed(() => {
@@ -71,7 +90,7 @@ const updateParagraphById = (updatedParagraph: ValidatedItem<Paragraph>) => {
   );
 };
 //delete a paragraph with the specified ID
-const deleteParagraphById = (targetId: string) => {
+const deleteParagraphById = (targetId: string | number) => {
   validatedParagraphs.value = validatedParagraphs.value.filter(
     (validatedParagraph) => validatedParagraph.item.id != targetId,
   );

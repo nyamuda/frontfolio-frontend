@@ -105,6 +105,7 @@ import { Paragraph } from "@/models/paragraph";
 import Divider from "primevue/divider";
 import { required, url } from "@vuelidate/validators";
 import type { ValidatedItem } from "@/interfaces/shared/validatedItem";
+import { ParagraphType } from "@/enums/paragraphType";
 
 const props = defineProps({
   paragraph: {
@@ -127,7 +128,7 @@ onMounted(() => {
 //Text for the divider
 const dividerLabel: Ref<string> = computed(() => {
   switch (props.paragraph.paragraphType) {
-    case "ProjectBackground":
+    case ParagraphType.ProjectBackground:
       return "Project Paragraph";
     default:
       return "Paragraph";
