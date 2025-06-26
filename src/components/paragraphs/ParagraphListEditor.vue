@@ -20,7 +20,7 @@
       />
     </div>
   </section>
-  {{ validatedParagraphs }}
+  <ConfirmPopup></ConfirmPopup>
 </template>
 
 <script setup lang="ts">
@@ -33,10 +33,12 @@ import type { ParagraphType } from "@/enums/paragraphType";
 import { watch } from "vue";
 import { ref } from "vue";
 import { useParagraphStore } from "@/stores/paragraph";
+import ConfirmPopup from "primevue/confirmpopup";
 
 const emit = defineEmits(["paragraphs", "hasInvalidParagraphs"]);
 
 const store = useParagraphStore();
+
 const props = defineProps({
   paragraphType: {
     type: String as PropType<ParagraphType>,
@@ -72,9 +74,9 @@ const initializeParagraphs = (paragraphs: Paragraph[]) => {
   validatedParagraphs.value = store.validateGivenParagraphs(paragraphs);
   isInitialLoad.value = true;
 };
-
 // Expose this method so the parent component can call it after loading data
 defineExpose({ initializeParagraphs });
+
 // Extracts and returns the original Paragraph objects from the validatedParagraphs array
 const paragraphs: Ref<Paragraph[]> = computed(() => {
   return validatedParagraphs.value.reduce((accumulator, currentValue) => {

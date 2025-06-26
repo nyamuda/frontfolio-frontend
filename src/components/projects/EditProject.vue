@@ -531,7 +531,7 @@ const getProjectById = (id: number) => {
     .getProjectById(id)
     .then((data) => {
       project.value = data;
-      //initialized the background paragraphs
+      //initialize the background paragraphs
       backgroundEditorRef.value?.initializeParagraphs(data.background);
     })
     .catch((message) => {

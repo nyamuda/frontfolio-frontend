@@ -82,21 +82,23 @@
       <!-- Button section -->
       <div class="text-end">
         <Button
-          @click="deleteParagraph"
+          @click="(e) => deleteParagraph(e)"
           icon="pi pi-trash"
           severity="danger"
           rounded
           aria-label="Delete"
+          :id="paragraph.id.toString()"
         />
       </div>
     </form>
+    <ConfirmPopup></ConfirmPopup>
   </section>
 </template>
 
 <script setup lang="ts">
 import useVuelidate from "@vuelidate/core";
 import Textarea from "primevue/textarea";
-import { Message } from "primevue";
+import { Message, useConfirm, useToast } from "primevue";
 import InputText from "primevue/inputtext";
 import FloatLabel from "primevue/floatlabel";
 import { computed, onMounted, ref, type Ref } from "vue";
@@ -107,6 +109,10 @@ import { required, url } from "@vuelidate/validators";
 import type { ValidatedItem } from "@/interfaces/shared/validatedItem";
 import { ParagraphType } from "@/enums/paragraphType";
 
+import ConfirmPopup from "primevue/confirmpopup";
+
+const toast = useToast();
+const confirm = useConfirm();
 const props = defineProps({
   paragraph: {
     type: Paragraph,
@@ -166,5 +172,40 @@ const handleFormChange = async () => {
   emit("update", validatedParagraph);
 };
 
-const deleteParagraph = () => emit("delete");
+const deleteParagraph = (event: MouseEvent) => {
+  const target = event.currentTarget as HTMLElement;
+  const paragraphId = target.id;
+
+  confirm.require({
+    message: "Please confirm to proceed moving forward.",
+    header: "Confirmation",
+    icon: "pi pi-exclamation-triangle",
+    rejectProps: {
+      icon: "pi pi-times",
+      label: "Cancel",
+      outlined: true,
+    },
+    acceptProps: {
+      icon: "pi pi-check",
+      label: "Confirm",
+    },
+    accept: () => {
+      emit("delete");
+      toast.add({
+        severity: "info",
+        summary: "Confirmed",
+        detail: "Paragraph deleted: " + paragraphId,
+        life: 3000,
+      });
+    },
+    reject: () => {
+      toast.add({
+        severity: "error",
+        summary: "Rejected",
+        detail: "You cancelled deletion of: " + paragraphId,
+        life: 3000,
+      });
+    },
+  });
+};
 </script>
