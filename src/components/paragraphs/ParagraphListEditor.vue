@@ -56,15 +56,25 @@ const props = defineProps({
 onMounted(() => {});
 
 const validatedParagraphs: Ref<ValidatedItem<Paragraph>[]> = ref([]);
-// Flag to suppress emitting during the initial paragraph load
-const hasInitializedParagraphs = ref(false);
 
+// Flag to prevent emitting events during the initial paragraph load
+// This ensures that we don't notify the parent about paragraph changes
+// when we're just initializing the data for the first time and that data is coming from the parent component
+const isInitialLoad = ref(false);
+
+/**
+ * Initializes the paragraph list with pre-existing paragraphs.
+ * This is typically called from the parent component after fetching data from the backend.
+ * The paragraphs are validated before being stored locally.
+ * During this initialization phase, no update events will be emitted.
+ */
 const initializeParagraphs = (paragraphs: Paragraph[]) => {
   validatedParagraphs.value = store.validateGivenParagraphs(paragraphs);
-  hasInitializedParagraphs.value = true;
+  isInitialLoad.value = true;
 };
-defineExpose({ initializeParagraphs });
 
+// Expose this method so the parent component can call it after loading data
+defineExpose({ initializeParagraphs });
 // Extracts and returns the original Paragraph objects from the validatedParagraphs array
 const paragraphs: Ref<Paragraph[]> = computed(() => {
   return validatedParagraphs.value.reduce((accumulator, currentValue) => {
@@ -112,13 +122,17 @@ const deleteParagraphById = (targetId: string | number) => {
 watch(
   validatedParagraphs,
   () => {
-    if (hasInitializedParagraphs.value) {
-      // Emit the updated list of paragraphs to the parent component
-      emit("paragraphs", paragraphs.value);
-
-      // Emit the current overall validation status indicating if any paragraph is invalid
-      emit("hasInvalidParagraphs", hasInvalidParagraphs.value);
+    // If this is the initial paragraph load, don't emit changes to the parent.
+    //Since the initial data comes from the parent component itself
+    if (isInitialLoad.value) {
+      isInitialLoad.value = false;
+      return;
     }
+    // Emit the updated list of paragraphs to the parent component
+    emit("paragraphs", paragraphs.value);
+
+    // Emit the current overall validation status indicating if any paragraph is invalid
+    emit("hasInvalidParagraphs", hasInvalidParagraphs.value);
   },
   { deep: true },
 );
