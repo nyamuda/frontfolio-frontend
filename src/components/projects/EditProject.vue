@@ -322,7 +322,13 @@
           wonderful way to show your thinking and help others understand your work and vision.
         </p>
 
-        <ParagraphList :paragraphType="ParagraphType.ProjectBackground" />
+        <ParagraphList
+          :paragraphType="ParagraphType.ProjectBackground"
+          @paragraphs="(paragraphs: Paragraph[]) => (project.background = paragraphs)"
+          @is-any-paragraph-invalid="
+            (isAnyInvalid: boolean) => (hasInvalidBackgroundForms = isAnyInvalid)
+          "
+        />
       </Panel>
       <!-- Project background paragraphs end  -->
 
@@ -416,6 +422,7 @@ import ParagraphList from "../paragraphs/ParagraphListEditor.vue";
 import ChallengeListEditor from "./challenges/ChallengeListEditor.vue";
 import AchievementListEditor from "./achievements/AchievementListEditor.vue";
 import FeedbackListEditor from "./feedback/FeedbackListEditor.vue";
+import type { Paragraph } from "@/models/paragraph";
 import type { Challenge } from "@/models/challenge";
 import type { Achievement } from "@/models/achievement";
 import type { Feedback } from "@/models/feedback";
@@ -427,19 +434,14 @@ import InputNumber from "primevue/inputnumber";
 import Select from "primevue/select";
 import { ProjectDifficultyLevel } from "@/enums/projectDifficultyLevel";
 import { ParagraphType } from "@/enums/paragraphType";
-import { useParagraphStore } from "@/stores/paragraph";
 
+// Access the store
 const projectStore = useProjectStore();
-const paragraphStore = useParagraphStore();
 const toast = useToast();
 const router = useRouter();
 
 onMounted(async () => {
   v$.value.$touch();
-
-  //paragraphs are used for the project's background
-  //reset the paragraphs store state
-  paragraphStore.$reset();
   //get project ID from URL params
   const projectId = router.currentRoute.value.params["id"];
   //fetching project with given ID
@@ -451,7 +453,7 @@ onMounted(async () => {
 // The project being edited
 const project: Ref<Project> = ref(new Project());
 // Track whether any background paragraph form is invalid
-const hasInvalidBackgroundForms: Ref<boolean> = computed(() => paragraphStore.hasInvalidParagraphs);
+const hasInvalidBackgroundForms: Ref<boolean> = ref(false);
 
 // Track whether any challenge form is invalid
 const hasInvalidChallengeForms: Ref<boolean> = ref(false);
@@ -524,13 +526,7 @@ const getProjectById = (id: number) => {
   isLoadingProject.value = true;
   projectStore
     .getProjectById(id)
-    .then((data) => {
-      project.value = data;
-
-      //validate &add the project background paragraphs to the store
-      const validatedParagraphs = paragraphStore.validateGivenParagraphs(data.background);
-      paragraphStore.validatedParagraphs = validatedParagraphs;
-    })
+    .then((data) => (project.value = data))
     .catch((message) => {
       // Show error toast if the project fetching fails
       toast.add({
@@ -573,9 +569,6 @@ const submitProject = async () => {
 
   // Only proceed if form is valid
   if (!isInvalid) {
-    //add the background to the project
-    project.value.background = paragraphStore.paragraphs;
-
     projectStore
       .editProject(project.value.id, project.value)
       .then(() => {
