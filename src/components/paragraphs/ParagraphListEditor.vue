@@ -58,6 +58,7 @@ onMounted(() => {});
 const validatedParagraphs: Ref<ValidatedItem<Paragraph>[]> = ref([]);
 // Flag to suppress emitting during the initial paragraph load
 const hasInitializedParagraphs = ref(false);
+
 const initializeParagraphs = (paragraphs: Paragraph[]) => {
   validatedParagraphs.value = store.validateGivenParagraphs(paragraphs);
   hasInitializedParagraphs.value = true;

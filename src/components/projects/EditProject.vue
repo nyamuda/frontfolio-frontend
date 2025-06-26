@@ -328,7 +328,7 @@
           @is-any-paragraph-invalid="
             (isAnyInvalid: boolean) => (hasInvalidBackgroundForms = isAnyInvalid)
           "
-          :initialParagraphs="project.background"
+          ref="backgroundEditorRef"
         />
       </Panel>
       <!-- Project background paragraphs end  -->
@@ -453,6 +453,8 @@ onMounted(async () => {
 
 // The project being edited
 const project: Ref<Project> = ref(new Project());
+const backgroundEditorRef = ref();
+
 // Track whether any background paragraph form is invalid
 const hasInvalidBackgroundForms: Ref<boolean> = ref(false);
 
@@ -527,7 +529,11 @@ const getProjectById = (id: number) => {
   isLoadingProject.value = true;
   projectStore
     .getProjectById(id)
-    .then((data) => (project.value = data))
+    .then((data) => {
+      project.value = data;
+      //initialized the background paragraphs
+      backgroundEditorRef.value?.initializeParagraphs(data.background);
+    })
     .catch((message) => {
       // Show error toast if the project fetching fails
       toast.add({
