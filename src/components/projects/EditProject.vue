@@ -529,6 +529,9 @@ const getProjectById = (id: number) => {
     .getProjectById(id)
     .then((data) => {
       project.value = data;
+
+      //save the project background paragraphs to the store
+      paragraphStore.validateGivenParagraphs(data.background);
     })
     .catch((message) => {
       // Show error toast if the project fetching fails
