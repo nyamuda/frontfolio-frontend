@@ -322,14 +322,7 @@
           wonderful way to show your thinking and help others understand your work and vision.
         </p>
 
-        <ParagraphList
-          :paragraphs="project.background"
-          :paragraphType="ParagraphType.ProjectBackground"
-          @paragraphs="(paragraphs: Paragraph[]) => (project.background = paragraphs)"
-          @is-any-paragraph-invalid="
-            (isAnyInvalid: boolean) => (hasInvalidBackgroundForms = isAnyInvalid)
-          "
-        />
+        <ParagraphList :paragraphType="ParagraphType.ProjectBackground" />
       </Panel>
       <!-- Project background paragraphs end  -->
 
@@ -423,7 +416,6 @@ import ParagraphList from "../paragraphs/ParagraphListEditor.vue";
 import ChallengeListEditor from "./challenges/ChallengeListEditor.vue";
 import AchievementListEditor from "./achievements/AchievementListEditor.vue";
 import FeedbackListEditor from "./feedback/FeedbackListEditor.vue";
-import type { Paragraph } from "@/models/paragraph";
 import type { Challenge } from "@/models/challenge";
 import type { Achievement } from "@/models/achievement";
 import type { Feedback } from "@/models/feedback";
@@ -444,6 +436,8 @@ const router = useRouter();
 
 onMounted(async () => {
   v$.value.$touch();
+
+
   //get project ID from URL params
   const projectId = router.currentRoute.value.params["id"];
   //fetching project with given ID
@@ -455,7 +449,7 @@ onMounted(async () => {
 // The project being edited
 const project: Ref<Project> = ref(new Project());
 // Track whether any background paragraph form is invalid
-const hasInvalidBackgroundForms: Ref<boolean> = computed(()=>paragraphStore.hasInvalidParagraphs);
+const hasInvalidBackgroundForms: Ref<boolean> = computed(() => paragraphStore.hasInvalidParagraphs);
 
 // Track whether any challenge form is invalid
 const hasInvalidChallengeForms: Ref<boolean> = ref(false);
@@ -528,7 +522,13 @@ const getProjectById = (id: number) => {
   isLoadingProject.value = true;
   projectStore
     .getProjectById(id)
-    .then((data) => (project.value = data))
+    .then((data) => {
+      project.value = data;
+
+      //validate &add the project background paragraphs to the store
+      const validatedParagraphs = paragraphStore.validateGivenParagraphs(data.background);
+      paragraphStore.validatedParagraphs = validatedParagraphs;
+    })
     .catch((message) => {
       // Show error toast if the project fetching fails
       toast.add({
