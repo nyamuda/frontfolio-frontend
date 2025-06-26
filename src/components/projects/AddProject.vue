@@ -293,7 +293,11 @@
           wonderful way to show your thinking and help others understand your work and vision.
         </p>
 
-        <ParagraphList :paragraphType="ParagraphType.ProjectBackground" />
+        <ParagraphList
+          :paragraphType="ParagraphType.ProjectBackground"
+          @paragraphs="(paragraphs) => (project.background = paragraphs)"
+          @has-invalid-paragraphs="(isInvalid) => (hasInvalidBackgroundForms = isInvalid)"
+        />
       </Panel>
       <!-- Project background paragraphs end  -->
 
@@ -415,7 +419,7 @@ onMounted(() => {
 const project: Ref<Project> = ref(new Project());
 
 // Track whether any background paragraph form is invalid
-const hasInvalidBackgroundForms: Ref<boolean> = computed(() => paragraphStore.hasInvalidParagraphs);
+const hasInvalidBackgroundForms: Ref<boolean> = ref(false);
 
 // Track whether any challenge form is invalid
 const hasInvalidChallengeForms: Ref<boolean> = ref(false);
@@ -498,8 +502,6 @@ const submitProject = async () => {
 
   // Only proceed if form is valid
   if (!isInvalid) {
-    //add the background to the project
-    project.value.background = paragraphStore.paragraphs;
     projectStore
       .addNewProject(project.value)
       .then(({ id }) => {
