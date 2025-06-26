@@ -34,6 +34,7 @@ import { watch } from "vue";
 import { ref } from "vue";
 import { useParagraphStore } from "@/stores/paragraph";
 import ConfirmPopup from "primevue/confirmpopup";
+import type { CrudContContext } from "@/enums/crudContext";
 
 const emit = defineEmits(["paragraphs", "hasInvalidParagraphs"]);
 
@@ -49,9 +50,8 @@ const props = defineProps({
     required: false,
     default: () => "New paragraph",
   },
-
-  isE: {
-    type: Function,
+  crudContext: {
+    type: String as PropType<CrudContContext>,
     default: null,
     required: false,
   },
