@@ -56,6 +56,10 @@ onMounted(() => {});
 const validatedParagraphs: Ref<ValidatedItem<Paragraph>[]> = ref([]);
 // Flag to ensure initial paragraphs are only set once
 const hasInitializedParagraphs = ref(false);
+// Flag to suppress emitting during the initial paragraph load
+const shouldEmitParagraphs = ref(false);
+
+const ppp = computed(() => props.initialParagraphs);
 
 // Extracts and returns the original Paragraph objects from the validatedParagraphs array
 const paragraphs: Ref<Paragraph[]> = computed(() => {
@@ -104,11 +108,13 @@ const deleteParagraphById = (targetId: string | number) => {
 watch(
   validatedParagraphs,
   () => {
-    // Emit the updated list of paragraphs to the parent component
-    emit("paragraphs", paragraphs.value);
+    if (shouldEmitParagraphs.value) {
+      // Emit the updated list of paragraphs to the parent component
+      emit("paragraphs", paragraphs.value);
 
-    // Emit the current overall validation status indicating if any paragraph is invalid
-    emit("hasInvalidParagraphs", hasInvalidParagraphs.value);
+      // Emit the current overall validation status indicating if any paragraph is invalid
+      emit("hasInvalidParagraphs", hasInvalidParagraphs.value);
+    }
   },
   { deep: true },
 );
@@ -116,10 +122,14 @@ watch(
 // Watch the paragraphs prop (assumed to come from the parent component).
 // When the data becomes available, initialize the local validatedParagraphs array.
 // This setup runs only once to prevent re-initialization if the prop changes again.
-watch(props.initialParagraphs, (newParagraphs) => {
-  if (!hasInitializedParagraphs.value && newParagraphs.length > 0) {
-    validatedParagraphs.value = store.validateGivenParagraphs(newParagraphs);
-    hasInitializedParagraphs.value = true;
-  }
-});
+watch(
+  ppp,
+  (newParagraphs) => {
+    if (!hasInitializedParagraphs.value && newParagraphs.length > 0) {
+      validatedParagraphs.value = store.validateGivenParagraphs(newParagraphs);
+      hasInitializedParagraphs.value = true;
+    }
+  },
+  { immediate: true, deep: true },
+);
 </script>
