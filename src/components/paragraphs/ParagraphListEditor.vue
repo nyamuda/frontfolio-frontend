@@ -20,6 +20,7 @@
       />
     </div>
   </section>
+  {{ validatedParagraphs }}
 </template>
 
 <script setup lang="ts">
@@ -34,6 +35,7 @@ import { ref } from "vue";
 import { useParagraphStore } from "@/stores/paragraph";
 
 const emit = defineEmits(["paragraphs", "hasInvalidParagraphs"]);
+
 const store = useParagraphStore();
 const props = defineProps({
   paragraphType: {
@@ -54,10 +56,13 @@ const props = defineProps({
 onMounted(() => {});
 
 const validatedParagraphs: Ref<ValidatedItem<Paragraph>[]> = ref([]);
-// Flag to ensure initial paragraphs are only set once
-const hasInitializedParagraphs = ref(false);
 // Flag to suppress emitting during the initial paragraph load
-const shouldEmitParagraphs = ref(false);
+const hasInitializedParagraphs = ref(false);
+const initializeParagraphs = (paragraphs: Paragraph[]) => {
+  validatedParagraphs.value = store.validateGivenParagraphs(paragraphs);
+  hasInitializedParagraphs.value = true;
+};
+defineExpose({ initializeParagraphs });
 
 // Extracts and returns the original Paragraph objects from the validatedParagraphs array
 const paragraphs: Ref<Paragraph[]> = computed(() => {
@@ -106,7 +111,7 @@ const deleteParagraphById = (targetId: string | number) => {
 watch(
   validatedParagraphs,
   () => {
-    if (shouldEmitParagraphs.value) {
+    if (hasInitializedParagraphs.value) {
       // Emit the updated list of paragraphs to the parent component
       emit("paragraphs", paragraphs.value);
 
@@ -115,21 +120,5 @@ watch(
     }
   },
   { deep: true },
-);
-
-// Watch the paragraphs prop (assumed to come from the parent component).
-// When the data becomes available, initialize the local validatedParagraphs array.
-// This setup runs only once to prevent re-initialization if the prop changes again.
-watch(
-  () => props.initialParagraphs,
-  (newParagraphs) => {
-    if (!hasInitializedParagraphs.value && newParagraphs.length > 0) {
-      validatedParagraphs.value = store.validateGivenParagraphs(newParagraphs);
-    }
-
-    hasInitializedParagraphs.value = true;
-    shouldEmitParagraphs.value = true;
-  },
-  { immediate: true, deep: true },
 );
 </script>
