@@ -573,6 +573,9 @@ const submitProject = async () => {
 
   // Only proceed if form is valid
   if (!isInvalid) {
+    //add the background to the project
+    project.value.background = paragraphStore.paragraphs;
+
     projectStore
       .editProject(project.value.id, project.value)
       .then(() => {
