@@ -119,6 +119,7 @@ watch(
 watch(props.initialParagraphs, (newParagraphs) => {
   if (!hasInitializedParagraphs.value && newParagraphs.length > 0) {
     validatedParagraphs.value = store.validateGivenParagraphs(newParagraphs);
+    hasInitializedParagraphs.value = true;
   }
 });
 </script>
