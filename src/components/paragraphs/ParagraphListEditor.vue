@@ -50,10 +50,11 @@ const props = defineProps({
     required: false,
     default: () => "New paragraph",
   },
+  //the current CRUD operation context for the form
+  // based on whether the user is creating, viewing, updating, or deleting the paragraph
   crudContext: {
     type: String as PropType<CrudContContext>,
-    default: null,
-    required: false,
+    required: true,
   },
 });
 

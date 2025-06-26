@@ -101,7 +101,7 @@ import Textarea from "primevue/textarea";
 import { Message, useConfirm, useToast } from "primevue";
 import InputText from "primevue/inputtext";
 import FloatLabel from "primevue/floatlabel";
-import { computed, onMounted, ref, type Ref } from "vue";
+import { computed, onMounted, ref, type PropType, type Ref } from "vue";
 import Button from "primevue/button";
 import { Paragraph } from "@/models/paragraph";
 import Divider from "primevue/divider";
@@ -110,6 +110,7 @@ import type { ValidatedItem } from "@/interfaces/shared/validatedItem";
 import { ParagraphType } from "@/enums/paragraphType";
 
 import ConfirmPopup from "primevue/confirmpopup";
+import type { CrudContContext } from "@/enums/crudContext";
 
 const toast = useToast();
 const confirm = useConfirm();
@@ -123,6 +124,12 @@ const props = defineProps({
     type: Number,
     required: false,
     default: () => 0,
+  },
+  //the current CRUD operation context for the form
+  // based on whether the user is creating, viewing, updating, or deleting the paragraph
+  crudContext: {
+    type: String as PropType<CrudContContext>,
+    required: true,
   },
 });
 const emit = defineEmits(["update", "delete"]);
