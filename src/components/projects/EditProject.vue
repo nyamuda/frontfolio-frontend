@@ -437,7 +437,9 @@ const router = useRouter();
 onMounted(async () => {
   v$.value.$touch();
 
-
+  //paragraphs are used for the project's background
+  //reset the paragraphs store state
+  paragraphStore.$reset();
   //get project ID from URL params
   const projectId = router.currentRoute.value.params["id"];
   //fetching project with given ID
