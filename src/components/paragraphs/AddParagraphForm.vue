@@ -196,6 +196,7 @@ const deleteParagraph = (event: MouseEvent) => {
       label: "Confirm",
     },
     accept: () => {
+
       emit("delete");
       toast.add({
         severity: "info",
@@ -214,4 +215,9 @@ const deleteParagraph = (event: MouseEvent) => {
     },
   });
 };
+
+//Delete the paragraph on the backend
+const delete = () => {
+
+}
 </script>

@@ -8,6 +8,7 @@
         @update="(val: ValidatedItem<Paragraph>) => updateParagraphById(val)"
         @delete="() => deleteParagraphById(validatedParagraph.item.id)"
         :paragraph="validatedParagraph.item"
+        :crudContext="crudContext"
       />
     </div>
     <div class="d-flex justify-content-center align-items-center">
