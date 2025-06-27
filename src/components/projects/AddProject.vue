@@ -297,7 +297,7 @@
           :paragraphType="ParagraphType.ProjectBackground"
           @paragraphs="(paragraphs) => (project.background = paragraphs)"
           @has-invalid-paragraphs="(isInvalid) => (hasInvalidBackgroundForms = isInvalid)"
-          :crudContext="CrudContContext.Create"
+          :crudContext="CrudContext.Create"
         />
       </Panel>
       <!-- Project background paragraphs end  -->
@@ -401,7 +401,7 @@ import InputNumber from "primevue/inputnumber";
 import Select from "primevue/select";
 import { ProjectDifficultyLevel } from "@/enums/projectDifficultyLevel";
 import { ParagraphType } from "@/enums/paragraphType";
-import { CrudContContext } from "@/enums/crudContext";
+import { CrudContext } from "@/enums/crudContext";
 
 // Access the store
 const projectStore = useProjectStore();

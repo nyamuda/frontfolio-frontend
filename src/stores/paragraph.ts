@@ -24,8 +24,11 @@ export const useParagraphStore = defineStore("paragraph", () => {
     }, [] as ValidatedItem<Paragraph>[]);
   };
 
-  //delete background paragraph for a specif project
-  const deleteProjectBackgroundParagraph = (paragraphId: number, projectId: number) => {
+  //delete background paragraph for a specific project
+  const deleteProjectBackgroundParagraph = (
+    paragraphId: number | string,
+    projectId: number | string,
+  ) => {
     return new Promise((resolve, reject) => {
       const url = `${apiUrl}/projects/${projectId}/backgrounds/${paragraphId}`;
       //add an access token to the request to access the protected route
@@ -53,5 +56,5 @@ export const useParagraphStore = defineStore("paragraph", () => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   };
 
-  return { validateGivenParagraphs };
+  return { validateGivenParagraphs, deleteProjectBackgroundParagraph };
 });

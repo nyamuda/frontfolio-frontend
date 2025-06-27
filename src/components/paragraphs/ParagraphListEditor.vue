@@ -35,7 +35,7 @@ import { watch } from "vue";
 import { ref } from "vue";
 import { useParagraphStore } from "@/stores/paragraph";
 import ConfirmPopup from "primevue/confirmpopup";
-import type { CrudContContext } from "@/enums/crudContext";
+import type { CrudContext } from "@/enums/crudContext";
 
 const emit = defineEmits(["paragraphs", "hasInvalidParagraphs"]);
 
@@ -54,7 +54,7 @@ const props = defineProps({
   //the current CRUD operation context for the form
   // based on whether the user is creating, viewing, updating, or deleting the paragraph
   crudContext: {
-    type: String as PropType<CrudContContext>,
+    type: String as PropType<CrudContext>,
     required: true,
   },
 });

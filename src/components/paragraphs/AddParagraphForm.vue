@@ -82,7 +82,7 @@
       <!-- Button section -->
       <div class="text-end">
         <Button
-          @click="(e) => deleteParagraph(e)"
+          @click="confirmDelete"
           icon="pi pi-trash"
           severity="danger"
           rounded
@@ -110,9 +110,11 @@ import type { ValidatedItem } from "@/interfaces/shared/validatedItem";
 import { ParagraphType } from "@/enums/paragraphType";
 
 import ConfirmPopup from "primevue/confirmpopup";
-import type { CrudContContext } from "@/enums/crudContext";
+import { CrudContext } from "@/enums/crudContext";
+import { useParagraphStore } from "@/stores/paragraph";
 
 const toast = useToast();
+const store = useParagraphStore();
 const confirm = useConfirm();
 const props = defineProps({
   paragraph: {
@@ -128,11 +130,12 @@ const props = defineProps({
   //the current CRUD operation context for the form
   // based on whether the user is creating, viewing, updating, or deleting the paragraph
   crudContext: {
-    type: String as PropType<CrudContContext>,
+    type: String as PropType<CrudContext>,
     required: true,
   },
 });
 const emit = defineEmits(["update", "delete"]);
+const isDeletingParagraph = ref(false);
 
 onMounted(() => {
   v$.value.$touch();
@@ -179,9 +182,7 @@ const handleFormChange = async () => {
   emit("update", validatedParagraph);
 };
 
-const deleteParagraph = (event: MouseEvent) => {
-  const target = event.currentTarget as HTMLElement;
-  const paragraphId = target.id;
+const confirmDelete = () => {
   confirm.require({
     message: "Are you sure you want to delete this paragraph?",
     header: "Confirmation",
@@ -196,28 +197,50 @@ const deleteParagraph = (event: MouseEvent) => {
       label: "Confirm",
     },
     accept: () => {
-
-      emit("delete");
-      toast.add({
-        severity: "info",
-        summary: "Paragraph Deleted",
-        detail: "Selected paragraph was deleted.",
-        life: 3000,
-      });
+      //if current CRUD operation context is Update
+      //then the paragraph needs to be deleted on the backend since its already an existing paragraph that is
+      //being edited
+      if (props.crudContext == CrudContext.Update) {
+        deleteParagraph();
+      }
+      //if current CRUD operation context is Create
+      //then there is no need to delete the paragraph on the backend since it hasn't been created yet
+      if (props.crudContext == CrudContext.Create) {
+        //remove paragraph form from UI
+        emit("delete");
+      }
     },
-    reject: () => {
-      toast.add({
-        severity: "error",
-        summary: "Rejected",
-        detail: "You cancelled deletion of: " + paragraphId,
-        life: 3000,
-      });
-    },
+    reject: () => {},
   });
 };
 
 //Delete the paragraph on the backend
-const delete = () => {
-
-}
+const deleteParagraph = () => {
+  isDeletingParagraph.value = true;
+  const paragraphId = props.paragraph.id;
+  const projectId = props.paragraph.projectId;
+  if (paragraphId && projectId) {
+    store
+      .deleteProjectBackgroundParagraph(paragraphId, projectId)
+      .then(() => {
+        //remove paragraph form from UI
+        emit("delete");
+        //show toast
+        toast.add({
+          severity: "info",
+          summary: "Paragraph Deleted",
+          detail: "Selected paragraph was deleted.",
+          life: 5000,
+        });
+      })
+      .catch((message) => {
+        toast.add({
+          severity: "error",
+          summary: "Delete Failed",
+          detail: message,
+          life: 10000,
+        });
+      });
+  }
+};
 </script>
