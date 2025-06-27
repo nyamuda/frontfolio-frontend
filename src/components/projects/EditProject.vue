@@ -403,7 +403,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, type Ref } from "vue";
+import { computed, onMounted, ref, watch, type Ref } from "vue";
 import { useProjectStore } from "@/stores/project";
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers, url, numeric } from "@vuelidate/validators";
@@ -623,7 +623,7 @@ const debouncedSubmitProject = debounce(async () => {
   //Don't auto save if form is invalid
   const isInvalid: boolean = await isEntireFormInvalid();
   if (isInvalid) return;
-
+  alert("inside debounced method");
   isAutoSaved.value = true;
   isSavingProject.value = true;
   await submitProject();
@@ -636,22 +636,22 @@ const isInitialLoad = ref(true);
 // - To automatically save changes the user makes while editing a project.
 // - After any change is detected, the debounced submitProject function is triggered.
 // - This avoids excessive saves and only calls the save function after 10 seconds of inactivity.
-// watch(
-//   project,
-//   () => {
-//     // Skip the first watcher trigger, which happens when the project is initially loaded
-//     // from the backend. We only want to auto-save user-initiated edits.
-//     if (isInitialLoad.value) {
-//       isInitialLoad.value = false;
-//       return;
-//     }
-//     hasUnsavedChanges.value = true;
-//     // Trigger the debounced save function
-//     // This ensures we wait for 10 seconds of no changes before saving
-//     debouncedSubmitProject();
-//   },
-//   { deep: true }, // Watch nested properties inside the project object
-// );
+watch(
+  project,
+  () => {
+    // Skip the first watcher trigger, which happens when the project is initially loaded
+    // from the backend. We only want to auto-save user-initiated edits.
+    if (isInitialLoad.value) {
+      isInitialLoad.value = false;
+      return;
+    }
+    hasUnsavedChanges.value = true;
+    // Trigger the debounced save function
+    // This ensures we wait for 10 seconds of no changes before saving
+    debouncedSubmitProject();
+  },
+  { deep: true }, // Watch nested properties inside the project object
+);
 </script>
 
 <style scoped lang="scss">

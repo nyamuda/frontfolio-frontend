@@ -64,7 +64,13 @@ export const useProjectStore = defineStore("project", () => {
       const url = `${apiUrl}/projects/${id}`;
       //add an access token to the request to access the protected route
       setAuthToken();
-      console.log(updatedProject);
+      updatedProject.background = updatedProject.background.map((paragraph) => {
+        if (typeof paragraph.id == "string") {
+          paragraph.id = 0;
+          return paragraph;
+        }
+        return paragraph;
+      });
       //make the request
       axios
         .put(url, updatedProject)
