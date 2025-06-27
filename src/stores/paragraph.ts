@@ -37,6 +37,7 @@ export const useParagraphStore = defineStore("paragraph", () => {
         .delete(url)
         .then(() => resolve({}))
         .catch((error) => {
+          console.log(error);
           const message =
             error.response?.data?.message ||
             "An unexpected error occurred while deleting the project background.";

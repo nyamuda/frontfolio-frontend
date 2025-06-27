@@ -80,7 +80,7 @@
         </Message>
       </div>
       <!-- Button section -->
-      <div class="text-end">
+      <div class="text-end mt-1">
         <Button
           @click="confirmDelete"
           :icon="isDeletingParagraph ? 'pi pi-spin pi-spinner' : 'pi pi-trash'"
@@ -90,6 +90,7 @@
           :rounded="isDeletingParagraph ? false : true"
           aria-label="Delete"
           :id="paragraph.id.toString()"
+          size="small"
         />
       </div>
     </form>
@@ -242,7 +243,8 @@ const deleteParagraph = () => {
           detail: message,
           life: 10000,
         });
-      });
+      })
+      .finally(() => (isDeletingParagraph.value = false));
   }
 };
 </script>
