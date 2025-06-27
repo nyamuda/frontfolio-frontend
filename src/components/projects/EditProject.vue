@@ -328,7 +328,7 @@
           @is-any-paragraph-invalid="
             (isAnyInvalid: boolean) => (hasInvalidBackgroundForms = isAnyInvalid)
           "
-          :crudContext="CrudContContext.Read"
+          :crudContext="CrudContext.Read"
           ref="backgroundEditorRef"
         />
       </Panel>
@@ -436,7 +436,7 @@ import InputNumber from "primevue/inputnumber";
 import Select from "primevue/select";
 import { ProjectDifficultyLevel } from "@/enums/projectDifficultyLevel";
 import { ParagraphType } from "@/enums/paragraphType";
-import { CrudContContext } from "@/enums/crudContext";
+import { CrudContext } from "@/enums/crudContext";
 
 // Access the store
 const projectStore = useProjectStore();

@@ -83,9 +83,11 @@
       <div class="text-end">
         <Button
           @click="confirmDelete"
-          icon="pi pi-trash"
+          :icon="isDeletingParagraph ? 'pi pi-spin pi-spinner' : 'pi pi-trash'"
+          :label="isDeletingParagraph ? 'Deleting...' : ''"
+          :disabled="isDeletingParagraph"
           severity="danger"
-          rounded
+          :rounded="isDeletingParagraph ? false : true"
           aria-label="Delete"
           :id="paragraph.id.toString()"
         />
