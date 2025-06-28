@@ -211,7 +211,7 @@
                   id="imageUrl"
                   v-model="v$.imageUrl.$model"
                   :invalid="v$.imageUrl.$error"
-def
+                  def
                   type="url"
                 />
               </IconField>
@@ -438,6 +438,7 @@ import Select from "primevue/select";
 import { ProjectDifficultyLevel } from "@/enums/projectDifficultyLevel";
 import { ParagraphType } from "@/enums/paragraphType";
 import { CrudContext } from "@/enums/crudContext";
+import { ProjectHelper } from "@/helpers/projectHelper";
 
 // Access the store
 const projectStore = useProjectStore();
@@ -582,9 +583,11 @@ const submitProject = async () => {
 
   // Only proceed if form is valid
   if (!isInvalid) {
+    //sanitize the project to be submitted
+    const sanitizedProject = ProjectHelper.prepareProjectForSubmission(project.value);
     //save the project
     projectStore
-      .editProject(project.value.id, project.value)
+      .editProject(project.value.id, sanitizedProject)
       .then(() => {
         hasUnsavedChanges.value = false;
         //Don't show toast if the project was autosaved
