@@ -610,8 +610,6 @@ const submitProject = async () => {
         if (isPublishingProject.value) project.value.status = ProjectStatus.Draft;
       })
       .finally(() => {
-        //cancel the pending auto-save if there is one in progress
-        debouncedSubmitProject.cancel();
         isSavingProject.value = false;
         isPublishingProject.value = false;
       });
@@ -625,7 +623,6 @@ const debouncedSubmitProject = debounce(async () => {
   //Don't auto save if form is invalid
   const isInvalid: boolean = await isEntireFormInvalid();
   if (isInvalid) return;
-  alert("inside debounced method");
   isAutoSaved.value = true;
   isSavingProject.value = true;
   await submitProject();
