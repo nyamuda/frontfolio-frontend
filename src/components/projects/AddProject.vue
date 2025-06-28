@@ -402,6 +402,7 @@ import Select from "primevue/select";
 import { ProjectDifficultyLevel } from "@/enums/projectDifficultyLevel";
 import { ParagraphType } from "@/enums/paragraphType";
 import { CrudContext } from "@/enums/crudContext";
+import { ProjectHelper } from "@/helpers/projectHelper";
 
 // Access the store
 const projectStore = useProjectStore();
@@ -499,12 +500,11 @@ const submitProject = async () => {
 
   // Only proceed if form is valid
   if (!isInvalid) {
-    //nullify empty URL fields to avoid validation errors
-    //on the backend since it expects null for optional URLs.
-    project.value.nullifyEmptyUrls();
+    //sanitize the project to be submitted
+    const sanitizedProject = ProjectHelper.prepareProjectForSubmission(project.value);
     //save the project
     projectStore
-      .addNewProject(project.value)
+      .addNewProject(sanitizedProject)
       .then(({ id }) => {
         // Show success toast notification
         const toastSummary = isPublishingProject.value
