@@ -186,6 +186,7 @@ const handleFormChange = async () => {
   //emit the updated form details and the validation state
   const validatedParagraph: ValidatedItem<Paragraph> = { item: paragraph, isValid: isFormValid };
   emit("update", validatedParagraph);
+  emit("skipAutoSave", false);
 };
 
 const confirmDelete = () => {

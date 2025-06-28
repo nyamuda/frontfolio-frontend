@@ -647,6 +647,8 @@ watch(
       isInitialLoad.value = false;
       return;
     }
+    //if skip auto save is on
+    if (skipAutoSaveForBackgroundParagraphs.value) return;
     hasUnsavedChanges.value = true;
     // Trigger the debounced save function
     // This ensures we wait for 10 seconds of no changes before saving
