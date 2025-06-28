@@ -1,5 +1,5 @@
 import { ProjectStatus } from "@/enums/projectStatus";
-import type { Paragraph } from "./paragraph";
+import { Paragraph } from "./paragraph";
 import type { Challenge } from "./challenge";
 import type { Achievement } from "./achievement";
 import type { Feedback } from "./feedback";
@@ -35,15 +35,17 @@ export class Project {
    * This method makes them null if their values are empty strings
    */
   public nullifyEmptyUrls(): void {
-    //main urls
+    //main URLs
     this.imageUrl = this.imageUrl || null;
     this.githubUrl = this.githubUrl || null;
     this.videoUrl = this.videoUrl || null;
     this.liveUrl = this.liveUrl || null;
     //background paragraphs URLs
     this.background = this.background.map((paragraph) => {
-      paragraph.nullifyEmptyUrls();
-      return paragraph;
+      const sanitizedParagraph = Object.assign(new Paragraph(), paragraph);
+      sanitizedParagraph.nullifyEmptyUrls();
+      return sanitizedParagraph;
     });
+    console.log(this.background);
   }
 }

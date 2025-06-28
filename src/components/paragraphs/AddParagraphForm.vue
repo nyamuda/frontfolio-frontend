@@ -181,9 +181,6 @@ const handleFormChange = async () => {
   paragraph.imageUrl = form.value.imageUrl;
   paragraph.imageCaption = form.value.imageCaption;
   paragraph.content = form.value.content;
-  //nullify empty URL fields to avoid validation errors
-  //on the backend since it expects null for optional URLs.
-  paragraph.nullifyEmptyUrls();
   //is the form valid or not
   const isFormValid: boolean = await v$.value.$validate();
   //emit the updated form details and the validation state

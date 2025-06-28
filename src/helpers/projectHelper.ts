@@ -16,7 +16,7 @@ export class ProjectHelper {
     //nullify the project URLs
     projectToSubmit.nullifyEmptyUrls();
     //Reset temporary string IDs of new background paragraphs to 0
-    projectToSubmit.background = ParagraphHelper.resetTemporaryIds(project.background);
+    projectToSubmit.background = ParagraphHelper.resetTemporaryIds(projectToSubmit.background);
 
     return projectToSubmit;
   }
