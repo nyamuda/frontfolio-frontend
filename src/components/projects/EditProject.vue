@@ -327,7 +327,7 @@
           :paragraphType="ParagraphType.ProjectBackground"
           @paragraphs="(paragraphs: Paragraph[]) => (project.background = paragraphs)"
           @SkipAutoSave="(val) => (skipAutoSaveForBackgroundParagraphs = val)"
-          @is-any-paragraph-invalid="
+          @has-invalid-paragraphs="
             (isAnyInvalid: boolean) => (hasInvalidBackgroundForms = isAnyInvalid)
           "
           :crudContext="CrudContext.Update"
