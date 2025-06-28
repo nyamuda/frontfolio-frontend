@@ -66,6 +66,7 @@ export const useProjectStore = defineStore("project", () => {
       setAuthToken();
       //Reset temporary string IDs of new background paragraphs to 0
       updatedProject.background = ParagraphHelper.resetTemporaryIds(updatedProject.background);
+
       //make the request
       axios
         .put(url, updatedProject)

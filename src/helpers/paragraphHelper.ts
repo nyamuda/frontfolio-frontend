@@ -1,4 +1,4 @@
-import type { Paragraph } from "@/models/paragraph";
+import { Paragraph } from "@/models/paragraph";
 
 export class ParagraphHelper {
   /**
@@ -22,7 +22,9 @@ export class ParagraphHelper {
   public static resetTemporaryIds(paragraphs: Paragraph[]): Paragraph[] {
     return paragraphs.map((paragraph) => {
       if (typeof paragraph.id === "string") {
-        return { ...paragraph, id: 0 };
+        const paragraphWithZeroId = Object.assign(new Paragraph(), paragraph);
+        paragraphWithZeroId.id = 0;
+        return paragraphWithZeroId;
       }
       return paragraph;
     });

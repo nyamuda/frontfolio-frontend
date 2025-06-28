@@ -15,10 +15,10 @@ export class Project {
     public endDate: Date = new Date(),
     public summary: string = "",
     public techStack: string[] = [],
-    public githubUrl: string | null = "",
-    public imageUrl: string | null = "",
-    public videoUrl: string | null = "",
-    public liveUrl: string | null = "",
+    public githubUrl: string | null = null,
+    public imageUrl: string | null = null,
+    public videoUrl: string | null = null,
+    public liveUrl: string | null = null,
     public status: ProjectStatus = ProjectStatus.Draft,
     public background: Paragraph[] = [],
     public challenges: Challenge[] = [],
@@ -35,9 +35,15 @@ export class Project {
    * This method makes them null if their values are empty strings
    */
   public nullifyEmptyUrls(): void {
+    //main urls
     this.imageUrl = this.imageUrl || null;
     this.githubUrl = this.githubUrl || null;
-    this.videoUrl = this.githubUrl || null;
+    this.videoUrl = this.videoUrl || null;
     this.liveUrl = this.liveUrl || null;
+    //background paragraphs URLs
+    this.background = this.background.map((paragraph) => {
+      paragraph.nullifyEmptyUrls();
+      return paragraph;
+    });
   }
 }

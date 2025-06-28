@@ -211,6 +211,7 @@
                   id="imageUrl"
                   v-model="v$.imageUrl.$model"
                   :invalid="v$.imageUrl.$error"
+def
                   type="url"
                 />
               </IconField>
@@ -581,6 +582,7 @@ const submitProject = async () => {
 
   // Only proceed if form is valid
   if (!isInvalid) {
+    //save the project
     projectStore
       .editProject(project.value.id, project.value)
       .then(() => {
@@ -615,6 +617,8 @@ const submitProject = async () => {
       .finally(() => {
         isSavingProject.value = false;
         isPublishingProject.value = false;
+        //cancel the pending auto-save if there is one in progress
+        debouncedSubmitProject.cancel();
       });
   }
 };
