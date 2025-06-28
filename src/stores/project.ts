@@ -21,7 +21,6 @@ export const useProjectStore = defineStore("project", () => {
       axios
         .get<Project>(url)
         .then((response) => {
-          console.log(response);
           //format the start & end dates from UTC to local time for better readability
           const project: Project = response.data;
           project.startDate = DateHelper.convertTimeFromUTCToLocal(project.startDate);
@@ -71,8 +70,7 @@ export const useProjectStore = defineStore("project", () => {
       axios
         .put(url, updatedProject)
         .then(() => resolve({}))
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
           const message = "An unexpected error occurred while saving your changes.";
           reject(message);
         });

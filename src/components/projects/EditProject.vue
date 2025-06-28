@@ -398,7 +398,6 @@
       </Panel>
       <!-- Project feedback end  -->
     </form>
-    {{ project }}
   </div>
 </template>
 

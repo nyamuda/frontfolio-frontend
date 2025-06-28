@@ -210,8 +210,8 @@ const confirmDelete = () => {
       //if current CRUD operation context is Create
       //then there is no need to delete the paragraph on the backend since it hasn't been created yet
       if (props.crudContext == CrudContext.Create) {
-        //remove paragraph form from UI
         const suppressEmit: SuppressEmit = { suppress: false };
+        //remove paragraph form from UI
         emit("delete", suppressEmit);
       }
     },
@@ -228,8 +228,9 @@ const deleteParagraph = () => {
     store
       .deleteProjectBackgroundParagraph(paragraphId, projectId)
       .then(() => {
-        //remove paragraph form from UI
+        // Suppress emitting this delete action to the parent to avoid triggering duplicate deletes.
         const suppressEmit: SuppressEmit = { suppress: true };
+        //remove paragraph form from UI
         emit("delete", suppressEmit);
         //show toast
         toast.add({
