@@ -610,6 +610,8 @@ const submitProject = async () => {
         if (isPublishingProject.value) project.value.status = ProjectStatus.Draft;
       })
       .finally(() => {
+        //cancel the pending auto-save if there is one in progress
+        debouncedSubmitProject.cancel();
         isSavingProject.value = false;
         isPublishingProject.value = false;
       });

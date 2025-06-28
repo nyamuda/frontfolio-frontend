@@ -1,6 +1,6 @@
 <template>
   <section>
-    <form @change="handleFormChange" class="mb-4">
+    <form @input="handleFormChange" class="mb-4">
       <Divider align="center" type="dashed"> 📝 {{ dividerLabel }} {{ index + 1 }} </Divider>
       <!-- Title input -->
       <div class="form-group mb-3">
