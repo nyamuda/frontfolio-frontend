@@ -121,7 +121,7 @@ const store = useParagraphStore();
 const confirm = useConfirm();
 const props = defineProps({
   paragraph: {
-    type: Paragraph,
+    type: Object as PropType<Paragraph>,
     required: false,
     default: () => new Paragraph(),
   },
