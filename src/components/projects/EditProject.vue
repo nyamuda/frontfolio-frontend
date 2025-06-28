@@ -325,6 +325,7 @@
         <ParagraphList
           :paragraphType="ParagraphType.ProjectBackground"
           @paragraphs="(paragraphs: Paragraph[]) => (project.background = paragraphs)"
+          @SkipAutoSave="(val) => (skipAutoSaveForBackgroundParagraphs = val)"
           @is-any-paragraph-invalid="
             (isAnyInvalid: boolean) => (hasInvalidBackgroundForms = isAnyInvalid)
           "
@@ -494,6 +495,9 @@ const isLoadingProject = ref(false);
 // This is used to decide whether a toast notification should be shown.
 // If the project was saved automatically, no toast is displayed.
 const isAutoSaved = ref(true);
+// Flag to temporarily suppress auto-saving when background paragraphs are modified.
+// Used to avoid triggering an unnecessary save when changes are already handled elsewhere (e.g., on delete).
+const skipAutoSaveForBackgroundParagraphs = ref(false);
 // Tracks whether the user has made any changes to the project since the last save.
 // This is used to enable or disable the "Save Changes" button and prevent unnecessary saves.
 const hasUnsavedChanges = ref(false);

@@ -6,9 +6,8 @@
         :index="index"
         :key="validatedParagraph.item.id"
         @update="(val: ValidatedItem<Paragraph>) => updateParagraphById(val)"
-        @delete="
-          (val: SuppressEmit) => deleteParagraphById(validatedParagraph.item.id, val.suppress)
-        "
+        @skipAutoSave="(val) => (skipAutoSave = val)"
+        @delete="() => deleteParagraphById(validatedParagraph.item.id)"
         :paragraph="validatedParagraph.item"
         :crudContext="crudContext"
       />
@@ -38,9 +37,8 @@ import { ref } from "vue";
 import { useParagraphStore } from "@/stores/paragraph";
 import ConfirmPopup from "primevue/confirmpopup";
 import type { CrudContext } from "@/enums/crudContext";
-import type { SuppressEmit } from "@/interfaces/shared/suppressEmit";
 
-const emit = defineEmits(["paragraphs", "hasInvalidParagraphs"]);
+const emit = defineEmits(["paragraphs", "hasInvalidParagraphs", "skipAutoSave"]);
 
 const store = useParagraphStore();
 
@@ -118,16 +116,16 @@ const updateParagraphById = (updatedParagraph: ValidatedItem<Paragraph>) => {
   );
 };
 //delete a paragraph with the specified ID
-const deleteParagraphById = (targetId: string | number, skipWatch: boolean) => {
-  skipWatchOnParagraphDelete.value = skipWatch;
+const deleteParagraphById = (targetId: string | number) => {
   validatedParagraphs.value = validatedParagraphs.value.filter(
     (validatedParagraph) => validatedParagraph.item.id != targetId,
   );
 };
 
-// Flag used to temporarily skip the paragraph watcher logic when a paragraph is deleted.
-// This prevents emitting changes and triggering autosave when a delete was already handled internally.
-const skipWatchOnParagraphDelete = ref(false);
+// Flag used to temporarily prevent auto-saving when a paragraph is deleted individually.
+// This avoids triggering a full save in parent components (e.g., project or blog editors)
+// for deletions that are already handled at the paragraph level.
+const skipAutoSave = ref(false);
 
 // Watch for changes in the validatedParagraphs array.
 // Whenever any paragraph's content or validation state updates,
@@ -136,20 +134,21 @@ const skipWatchOnParagraphDelete = ref(false);
 watch(
   validatedParagraphs,
   () => {
-    // Skip emitting paragraph changes if this is the initial load or if a paragraph was just deleted individually.
-    // In both cases, the change does not need to be sent back to the parent:
-    // - The initial load comes from the parent, so emitting would be redundant.
-    // - When a paragraph is deleted via its own component, it’s already handled and shouldn’t trigger autosave.
-    if (isInitialLoad.value || skipWatchOnParagraphDelete) {
+    // Skip emitting paragraph changes if this is the initial load.
+    // The change does not need to be sent back to the parent since
+    //the initial load comes from the parent, so emitting would be redundant.
+
+    if (isInitialLoad.value) {
       isInitialLoad.value = false;
-      skipWatchOnParagraphDelete.value = false;
+
       return;
     }
-    // Emit the updated list of paragraphs to the parent component
-    emit("paragraphs", paragraphs.value);
-
     // Emit the current overall validation status indicating if any paragraph is invalid
     emit("hasInvalidParagraphs", hasInvalidParagraphs.value);
+    //wether or not to auto save the changes in the parent component
+    emit("skipAutoSave", skipAutoSave.value);
+    // Emit the updated list of paragraphs to the parent component
+    emit("paragraphs", paragraphs.value);
   },
   { deep: true },
 );

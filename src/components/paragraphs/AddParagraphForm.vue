@@ -115,7 +115,6 @@ import { ParagraphType } from "@/enums/paragraphType";
 import ConfirmPopup from "primevue/confirmpopup";
 import { CrudContext } from "@/enums/crudContext";
 import { useParagraphStore } from "@/stores/paragraph";
-import type { SuppressEmit } from "@/interfaces/shared/suppressEmit";
 
 const toast = useToast();
 const store = useParagraphStore();
@@ -138,8 +137,11 @@ const props = defineProps({
     required: true,
   },
 });
-const emit = defineEmits(["update", "delete"]);
+const emit = defineEmits(["update", "delete", "skipAutoSave"]);
 const isDeletingParagraph = ref(false);
+// Flag used to temporarily skip auto-saving the entire parent component e.g project, blog
+// when a paragraph has been deleted individually from its own component.
+// This prevents triggering an unnecessary project update after a paragraph deletion.
 
 onMounted(() => {
   v$.value.$touch();
@@ -210,9 +212,8 @@ const confirmDelete = () => {
       //if current CRUD operation context is Create
       //then there is no need to delete the paragraph on the backend since it hasn't been created yet
       if (props.crudContext == CrudContext.Create) {
-        const suppressEmit: SuppressEmit = { suppress: false };
         //remove paragraph form from UI
-        emit("delete", suppressEmit);
+        emit("delete");
       }
     },
     reject: () => {},
@@ -228,10 +229,12 @@ const deleteParagraph = () => {
     store
       .deleteProjectBackgroundParagraph(paragraphId, projectId)
       .then(() => {
-        // Suppress emitting this delete action to the parent to avoid triggering duplicate deletes.
-        const suppressEmit: SuppressEmit = { suppress: true };
+        // Emit a signal to skip auto-saving since this paragraph has already been deleted individually.
+        // This prevents the parent components from unnecessarily triggering a full parent component save.
+        emit("skipAutoSave", true);
         //remove paragraph form from UI
-        emit("delete", suppressEmit);
+        emit("delete");
+
         //show toast
         toast.add({
           severity: "success",
