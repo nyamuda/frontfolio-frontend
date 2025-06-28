@@ -2,7 +2,7 @@ import type { Paragraph } from "@/models/paragraph";
 
 export class ParagraphHelper {
   /**
-   * Prepares a list of paragraph objects for backend submission by normalizing their IDs.
+   * Resets temporary string IDs to 0.
    *
    * In the frontend, when users create new paragraphs dynamically (e.g., for a project or blog),
    * each paragraph is assigned a temporary string-based ID using tools like `crypto.randomUUID()`.
@@ -19,7 +19,7 @@ export class ParagraphHelper {
    * @param paragraphs - An array of Paragraph objects to be cleaned before sending to the backend.
    * @returns A new array of Paragraphs with temporary string IDs converted to 0.
    */
-  public static prepareParagraphsForSubmission(paragraphs: Paragraph[]): Paragraph[] {
+  public static resetTemporaryIds(paragraphs: Paragraph[]): Paragraph[] {
     return paragraphs.map((paragraph) => {
       if (typeof paragraph.id === "string") {
         return { ...paragraph, id: 0 };

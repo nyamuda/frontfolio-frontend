@@ -139,6 +139,7 @@ const props = defineProps({
 });
 const emit = defineEmits(["update", "delete"]);
 const isDeletingParagraph = ref(false);
+const skipAutoSaveAfterParagraphDelete=ref(false);
 
 onMounted(() => {
   v$.value.$touch();
@@ -230,7 +231,7 @@ const deleteParagraph = () => {
         emit("delete");
         //show toast
         toast.add({
-          severity: "info",
+          severity: "success",
           summary: "Paragraph Deleted",
           detail: "Selected paragraph was deleted.",
           life: 5000,

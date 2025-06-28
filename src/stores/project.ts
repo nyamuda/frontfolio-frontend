@@ -65,12 +65,8 @@ export const useProjectStore = defineStore("project", () => {
       const url = `${apiUrl}/projects/${id}`;
       //add an access token to the request to access the protected route
       setAuthToken();
-
-      //Prepare a list of background paragraphs for submission to the backend
-      //by changing the temporal string IDs of new paragraphs to 0
-      updatedProject.background = ParagraphHelper.prepareParagraphsForSubmission(
-        updatedProject.background,
-      );
+      //Reset temporary string IDs of new background paragraphs to 0
+      updatedProject.background = ParagraphHelper.resetTemporaryIds(updatedProject.background);
       //make the request
       axios
         .put(url, updatedProject)

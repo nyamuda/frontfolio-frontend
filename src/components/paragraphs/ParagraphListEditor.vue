@@ -121,6 +121,10 @@ const deleteParagraphById = (targetId: string | number) => {
   );
 };
 
+// Flag used to temporarily skip the paragraph watcher logic when a paragraph is deleted.
+// This prevents emitting changes and triggering autosave when a delete was already handled internally.
+const skipWatchOnParagraphDelete = ref(false);
+
 // Watch for changes in the validatedParagraphs array.
 // Whenever any paragraph's content or validation state updates,
 // extract the paragraph data and emit both the updated list
