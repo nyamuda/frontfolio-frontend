@@ -6,7 +6,9 @@
         :index="index"
         :key="validatedParagraph.item.id"
         @update="(val: ValidatedItem<Paragraph>) => updateParagraphById(val)"
-        @delete="() => deleteParagraphById(validatedParagraph.item.id)"
+        @delete="
+          (val: SuppressEmit) => deleteParagraphById(validatedParagraph.item.id, val.suppress)
+        "
         :paragraph="validatedParagraph.item"
         :crudContext="crudContext"
       />
@@ -36,6 +38,7 @@ import { ref } from "vue";
 import { useParagraphStore } from "@/stores/paragraph";
 import ConfirmPopup from "primevue/confirmpopup";
 import type { CrudContext } from "@/enums/crudContext";
+import type { SuppressEmit } from "@/interfaces/shared/suppressEmit";
 
 const emit = defineEmits(["paragraphs", "hasInvalidParagraphs"]);
 
@@ -115,7 +118,8 @@ const updateParagraphById = (updatedParagraph: ValidatedItem<Paragraph>) => {
   );
 };
 //delete a paragraph with the specified ID
-const deleteParagraphById = (targetId: string | number) => {
+const deleteParagraphById = (targetId: string | number, skipWatch: boolean) => {
+  skipWatchOnParagraphDelete.value = skipWatch;
   validatedParagraphs.value = validatedParagraphs.value.filter(
     (validatedParagraph) => validatedParagraph.item.id != targetId,
   );
@@ -132,10 +136,13 @@ const skipWatchOnParagraphDelete = ref(false);
 watch(
   validatedParagraphs,
   () => {
-    // If this is the initial paragraph load, don't emit changes to the parent.
-    //Since the initial data comes from the parent component itself
-    if (isInitialLoad.value) {
+    // Skip emitting paragraph changes if this is the initial load or if a paragraph was just deleted individually.
+    // In both cases, the change does not need to be sent back to the parent:
+    // - The initial load comes from the parent, so emitting would be redundant.
+    // - When a paragraph is deleted via its own component, it’s already handled and shouldn’t trigger autosave.
+    if (isInitialLoad.value || skipWatchOnParagraphDelete) {
       isInitialLoad.value = false;
+      skipWatchOnParagraphDelete.value = false;
       return;
     }
     // Emit the updated list of paragraphs to the parent component

@@ -115,6 +115,7 @@ import { ParagraphType } from "@/enums/paragraphType";
 import ConfirmPopup from "primevue/confirmpopup";
 import { CrudContext } from "@/enums/crudContext";
 import { useParagraphStore } from "@/stores/paragraph";
+import type { SuppressEmit } from "@/interfaces/shared/suppressEmit";
 
 const toast = useToast();
 const store = useParagraphStore();
@@ -139,7 +140,6 @@ const props = defineProps({
 });
 const emit = defineEmits(["update", "delete"]);
 const isDeletingParagraph = ref(false);
-const skipAutoSaveAfterParagraphDelete=ref(false);
 
 onMounted(() => {
   v$.value.$touch();
@@ -211,7 +211,8 @@ const confirmDelete = () => {
       //then there is no need to delete the paragraph on the backend since it hasn't been created yet
       if (props.crudContext == CrudContext.Create) {
         //remove paragraph form from UI
-        emit("delete");
+        const suppressEmit: SuppressEmit = { suppress: false };
+        emit("delete", suppressEmit);
       }
     },
     reject: () => {},
@@ -228,7 +229,8 @@ const deleteParagraph = () => {
       .deleteProjectBackgroundParagraph(paragraphId, projectId)
       .then(() => {
         //remove paragraph form from UI
-        emit("delete");
+        const suppressEmit: SuppressEmit = { suppress: true };
+        emit("delete", suppressEmit);
         //show toast
         toast.add({
           severity: "success",
