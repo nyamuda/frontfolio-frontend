@@ -28,10 +28,13 @@ export class Project {
     public updatedAt: Date = new Date(),
   ) {}
 
-  //URL fields like imageUrl cannot have empty strings as values
-  //otherwise they will fail validation on the backend expecting null for optional URLs.
-  //make them null if their values are empty strings
-  public nullifyEmptyUrl(): void {
+  /**
+   * Makes empty Url fields null
+   * URL fields like imageUrl cannot have empty strings as values
+   * otherwise they will fail validation on the backend expecting null for optional URLs.
+   * This method makes them null if their values are empty strings
+   */
+  public nullifyEmptyUrls(): void {
     this.imageUrl = this.imageUrl || null;
     this.githubUrl = this.githubUrl || null;
     this.videoUrl = this.githubUrl || null;
