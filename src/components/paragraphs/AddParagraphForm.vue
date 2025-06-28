@@ -178,12 +178,12 @@ const handleFormChange = async () => {
   //save the new paragraph details
   const paragraph = props.paragraph;
   paragraph.title = form.value.title;
-  //url field cannot have an empty string
-  //otherwise it will fail validation on the backed
-  //make it null if the value is an empty string
-  paragraph.imageUrl = form.value.imageUrl || null;
+  paragraph.imageUrl = form.value.imageUrl;
   paragraph.imageCaption = form.value.imageCaption;
   paragraph.content = form.value.content;
+  //nullify empty URL fields to avoid validation errors
+  //on the backend since it expects null for optional URLs.
+  paragraph.nullifyEmptyUrls();
   //is the form valid or not
   const isFormValid: boolean = await v$.value.$validate();
   //emit the updated form details and the validation state
