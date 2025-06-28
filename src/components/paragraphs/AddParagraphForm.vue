@@ -178,7 +178,10 @@ const handleFormChange = async () => {
   //save the new paragraph details
   const paragraph = props.paragraph;
   paragraph.title = form.value.title;
-  paragraph.imageUrl = form.value.imageUrl;
+  //url field cannot have an empty string
+  //otherwise it will fail validation on the backed
+  //make it null if the value is not provided
+  paragraph.imageUrl = form.value.imageUrl ? form.value.imageUrl : null;
   paragraph.imageCaption = form.value.imageCaption;
   paragraph.content = form.value.content;
   //is the form valid or not
