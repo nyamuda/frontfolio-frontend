@@ -499,6 +499,10 @@ const submitProject = async () => {
 
   // Only proceed if form is valid
   if (!isInvalid) {
+    //nullify empty URL fields to avoid validation errors
+    //on the backend expecting null for optional URLs.
+    project.value.nullifyEmptyUrls();
+    //save the project
     projectStore
       .addNewProject(project.value)
       .then(({ id }) => {
