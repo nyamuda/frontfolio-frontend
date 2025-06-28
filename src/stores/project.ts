@@ -5,6 +5,7 @@ import { apiUrl } from "@/helpers/urlHelper";
 import axios from "axios";
 import type { PageInfo } from "@/interfaces/shared/pageInfo";
 import { DateHelper } from "@/helpers/dateHelper";
+import { ParagraphHelper } from "@/helpers/paragraphHelper";
 
 export const useProjectStore = defineStore("project", () => {
   const projects: Ref<Project[]> = ref([]);
@@ -64,13 +65,12 @@ export const useProjectStore = defineStore("project", () => {
       const url = `${apiUrl}/projects/${id}`;
       //add an access token to the request to access the protected route
       setAuthToken();
-      updatedProject.background = updatedProject.background.map((paragraph) => {
-        if (typeof paragraph.id == "string") {
-          paragraph.id = 0;
-          return paragraph;
-        }
-        return paragraph;
-      });
+
+      //Prepare a list of background paragraphs for submission to the backend
+      //by changing the temporal string IDs of new paragraphs to 0
+      updatedProject.background = ParagraphHelper.prepareParagraphsForSubmission(
+        updatedProject.background,
+      );
       //make the request
       axios
         .put(url, updatedProject)
