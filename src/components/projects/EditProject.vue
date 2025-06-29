@@ -530,7 +530,7 @@ const onChangeAutoSave = () => {
   isAutoSaveEnabled.value = !isAutoSaveEnabled.value;
   //save setting to local storage
   localStorage.setItem("isProjectAutoSaveEnabled", JSON.stringify(isAutoSaveEnabled.value));
-  //if autosave is disabled, cancel a pending auto-save if there is one in progress
+  //if autosave is disabled, cancel a pending auto-save if there is already one in progress
   if (!isAutoSaveEnabled.value) {
     debouncedSubmitProject.cancel();
   }
