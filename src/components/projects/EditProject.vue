@@ -62,7 +62,7 @@
         "
       />
       <!-- Turn auto save on/off -->
-      <div class="d-flex align-items-center gap-1">
+      <div class="d-flex align-items-center gap-1 text-secondary" style="font-size: 0.9rem">
         AutoSave
         <ToggleSwitch v-model="isAutosaveEnabled">
           <template #handle="{ checked }">
@@ -513,10 +513,16 @@ const isLoadingProject = ref(false);
 // If the project was saved automatically, no toast is displayed.
 const isAutoSaved = ref(true);
 // Controls whether autosave is enabled
-const isAutosaveEnabled = ref(true);
+const isAutoSaveEnabled = ref(true);
 // Flag to temporarily suppress auto-saving when background paragraphs are modified.
 // Used to avoid triggering an unnecessary save when changes are already handled elsewhere (e.g., on delete).
 const skipAutoSaveForBackgroundParagraphs = ref(false);
+const onChangeAutoSave = () => {
+  isAutoSaveEnabled.value = !isAutoSaveEnabled.value;
+  //save setting to local storage
+  localStorage.setItem("isProjectAutoSaveEnabled", JSON.stringify(isAutoSaveEnabled.value));
+};
+
 // Tracks whether the user has made any changes to the project since the last save.
 // This is used to enable or disable the "Save Changes" button and prevent unnecessary saves.
 const hasUnsavedChanges = ref(false);
