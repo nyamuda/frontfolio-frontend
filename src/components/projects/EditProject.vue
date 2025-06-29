@@ -592,7 +592,7 @@ const submitProject = async () => {
       .then(() => {
         hasUnsavedChanges.value = false;
 
-        //Don't show toast if the project was autosaved
+        //Show toast if the project was not autosaved
         if (!isAutoSaved.value) {
           //show success toast notification after editing a project
           const toastSummary = isPublishingProject.value ? "Project Published" : "Project Updated";
