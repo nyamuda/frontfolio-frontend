@@ -69,12 +69,12 @@
           :modelValue="isAutoSaveEnabled"
           :disabled="isPublishingProject || isSavingProject"
         >
-          <template #handle="{ checked }">
+          <!-- <template #handle="{ checked }">
             <i
               style="font-size: 1rem"
               :class="['pi', { 'pi-check': checked, 'pi-times-circle': !checked }]"
             />
-          </template>
+          </template> -->
         </ToggleSwitch>
       </div>
     </div>
@@ -530,6 +530,10 @@ const onChangeAutoSave = () => {
   isAutoSaveEnabled.value = !isAutoSaveEnabled.value;
   //save setting to local storage
   localStorage.setItem("isProjectAutoSaveEnabled", JSON.stringify(isAutoSaveEnabled.value));
+  //if autosave is disabled, cancel a pending auto-save if there is one in progress
+  if (!isAutoSaveEnabled.value) {
+    debouncedSubmitProject.cancel();
+  }
 };
 
 // Tracks whether the user has made any changes to the project since the last save.
