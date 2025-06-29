@@ -590,6 +590,13 @@ const submitProject = async () => {
       .editProject(project.value.id, sanitizedProject)
       .then(() => {
         hasUnsavedChanges.value = false;
+
+        // Fetch the updated project immediately after saving to:
+        // - Ensure UI displays the latest state (e.g., updated timestamps, normalized fields)
+        // - Sync with any backend-side changes or validations
+        // - Avoid stale or inconsistent data in the frontend
+        getProjectById(project.value.id);
+
         //Don't show toast if the project was autosaved
         if (isAutoSaved.value) return;
         //show success toast notification after editing a project

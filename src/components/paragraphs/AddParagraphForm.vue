@@ -1,7 +1,9 @@
 <template>
   <section>
     <form @input="handleFormChange" class="mb-4">
-      <Divider align="center" type="dashed"> 📝 {{ dividerLabel }} {{ index + 1 }} </Divider>
+      <Divider align="center" type="dashed">
+        📝 {{ dividerLabel }} {{ index + 1 }} id-{{ paragraph.id }}
+      </Divider>
       <!-- Title input -->
       <div class="form-group mb-3">
         <FloatLabel variant="on">
@@ -136,6 +138,12 @@ const props = defineProps({
     type: String as PropType<CrudContext>,
     required: true,
   },
+  //Previous item ID
+  //Used to smoothly navigate up to the previous item if the current one is deleted
+  previousItemId: {
+    type: String,
+    required: false,
+  },
 });
 const emit = defineEmits(["update", "delete", "skipAutoSave"]);
 const isDeletingParagraph = ref(false);
@@ -243,6 +251,11 @@ const deleteParagraph = () => {
           detail: "Selected paragraph was deleted.",
           life: 5000,
         });
+
+        if (props.previousItemId) {
+          const element = document.getElementById(props.previousItemId);
+          element?.scrollIntoView({ behavior: "smooth" });
+        }
       })
       .catch((message) => {
         toast.add({
