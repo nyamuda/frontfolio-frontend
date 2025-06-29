@@ -20,10 +20,10 @@
     <div v-else class="d-flex justify-content-end gap-3 align-items-center mb-5">
       <Button
         :icon="
-          isPublishingProject || isSavingProject
-            ? 'pi pi-spin pi-refresh'
+          isPublishingProject || !isSavingProject
+            ? 'pi pi-spin pi-spinner-dotted'
             : !hasUnsavedChanges && !isInitialLoad
-              ? 'pi pi pi-check'
+              ? 'pi pi pi-check-circle'
               : hasUnsavedChanges
                 ? 'pi pi-save'
                 : 'pi pi-pencil'
