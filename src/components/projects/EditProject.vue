@@ -592,26 +592,27 @@ const submitProject = async () => {
       .then(() => {
         hasUnsavedChanges.value = false;
 
+        //Don't show toast if the project was autosaved
+        if (!isAutoSaved.value) {
+          //show success toast notification after editing a project
+          const toastSummary = isPublishingProject.value ? "Project Published" : "Project Updated";
+
+          const toastDetail = isPublishingProject.value
+            ? "Your project has been published and is now live in your portfolio."
+            : "Your project has been updated.";
+          toast.add({
+            severity: "success",
+            summary: toastSummary,
+            detail: toastDetail,
+            life: 5000,
+          });
+        }
+
         // Fetch the updated project immediately after saving to ensure that:
         // - Newly created background paragraphs, challenges, and achievements have their real database IDs
         // - (instead of temporary string IDs used on the frontend), which is essential for accurate deletion or editing
         // - Data consistency between frontend and backend is maintained
         getProjectById(project.value.id);
-
-        //Don't show toast if the project was autosaved
-        if (isAutoSaved.value) return;
-        //show success toast notification after editing a project
-        const toastSummary = isPublishingProject.value ? "Project Published" : "Project Updated";
-
-        const toastDetail = isPublishingProject.value
-          ? "Your project has been published and is now live in your portfolio."
-          : "Your project has been updated.";
-        toast.add({
-          severity: "success",
-          summary: toastSummary,
-          detail: toastDetail,
-          life: 5000,
-        });
       })
       .catch((message) => {
         // Show error toast if the project creation fails
