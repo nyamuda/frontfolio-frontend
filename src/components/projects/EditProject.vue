@@ -64,7 +64,7 @@
       <!-- Turn auto save on/off -->
       <div class="d-flex align-items-center gap-1 text-secondary" style="font-size: 0.9rem">
         AutoSave
-        <ToggleSwitch v-model="isAutosaveEnabled">
+        <ToggleSwitch @value-change="onChangeAutoSave" :modelValue="isAutoSaveEnabled">
           <template #handle="{ checked }">
             <i
               style="font-size: 1rem"
@@ -468,6 +468,9 @@ onMounted(async () => {
   if (projectId) {
     getProjectById(Number(projectId));
   }
+  //get autosave setting from local storage
+  const autoSaveSetting = localStorage.getItem("isProjectAutoSaveEnabled");
+  isAutoSaveEnabled.value = autoSaveSetting ? JSON.parse(autoSaveSetting) : true;
 });
 
 // The project being edited
@@ -517,6 +520,8 @@ const isAutoSaveEnabled = ref(true);
 // Flag to temporarily suppress auto-saving when background paragraphs are modified.
 // Used to avoid triggering an unnecessary save when changes are already handled elsewhere (e.g., on delete).
 const skipAutoSaveForBackgroundParagraphs = ref(false);
+
+// Toggle autosave setting and persist it in localStorage
 const onChangeAutoSave = () => {
   isAutoSaveEnabled.value = !isAutoSaveEnabled.value;
   //save setting to local storage
@@ -693,7 +698,7 @@ watch(
 
     // Trigger the debounced save function if the auto save is turned on
     // This ensures we wait for 10 seconds of no changes before saving
-    if (isAutosaveEnabled.value) debouncedSubmitProject();
+    if (isAutoSaveEnabled.value) debouncedSubmitProject();
   },
   { deep: true }, // Watch nested properties inside the project object
 );
