@@ -591,10 +591,10 @@ const submitProject = async () => {
       .then(() => {
         hasUnsavedChanges.value = false;
 
-        // Fetch the updated project immediately after saving to:
-        // - Ensure UI displays the latest state (e.g., updated timestamps, normalized fields)
-        // - Sync with any backend-side changes or validations
-        // - Avoid stale or inconsistent data in the frontend
+        // Fetch the updated project immediately after saving to ensure:
+        // - Newly created background paragraphs, challenges, and achievements have their real database IDs
+        // - (instead of temporary string IDs used on the frontend), which is essential for accurate deletion or editing
+        // - Data consistency between frontend and backend is maintained
         getProjectById(project.value.id);
 
         //Don't show toast if the project was autosaved
