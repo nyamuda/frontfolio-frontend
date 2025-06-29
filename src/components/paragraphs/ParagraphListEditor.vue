@@ -105,6 +105,9 @@ const addNewParagraph = () => {
   const newParagraph = new Paragraph();
   //set the paragraph type e.g project background, project challenge etc
   newParagraph.paragraphType = props.paragraphType;
+
+  //indicates whether the paragraph is newly created on the frontend and hasn't been saved to the backend yet
+  newParagraph.isNew = true;
   //by default, the a new paragraph form is invalid since its fields (the required ones) will be  empty
   const isValid = false;
   validatedParagraphs.value.push({ item: newParagraph, isValid });

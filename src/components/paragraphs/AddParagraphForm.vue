@@ -2,7 +2,7 @@
   <section>
     <form @input="handleFormChange" class="mb-4">
       <Divider align="center" type="dashed">
-        📝 {{ dividerLabel }} {{ index + 1 }} id-{{ paragraph.id }}
+        📝 {{ dividerLabel }} {{ index + 1 }} IsNew-{{ !paragraph.isNew }}
       </Divider>
       <!-- Title input -->
       <div class="form-group mb-3">
@@ -212,10 +212,10 @@ const confirmDelete = () => {
       label: "Confirm",
     },
     accept: () => {
-      //if current CRUD operation context is Update
+      //if current CRUD operation context is Update & the paragraph is not new (already persisted in the database).
       //then the paragraph needs to be deleted on the backend since its already an existing paragraph that is
       //being edited
-      if (props.crudContext == CrudContext.Update) {
+      if (props.crudContext == CrudContext.Update && !props.paragraph.isNew) {
         deleteParagraph();
       }
       //if current CRUD operation context is Create
