@@ -49,6 +49,7 @@
           hasInvalidSubForms ||
           !hasUnsavedChanges
         "
+        variant="text"
       />
 
       <Button
