@@ -49,7 +49,7 @@
           hasInvalidSubForms ||
           !hasUnsavedChanges
         "
-        variant="text"
+        :variant="!hasUnsavedChanges && !isInitialLoad ? 'text' : ''"
       />
 
       <Button
@@ -61,6 +61,10 @@
           isPublishingProject || isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms
         "
       />
+      <!-- Turn auto save on/off -->
+      <div class="d-flex align-items-center gap-1">
+        AutoSave <ToggleSwitch v-model="isAutosaveEnabled" />
+      </div>
     </div>
     <!-- Save and Publish buttons end-->
     <form class="">
@@ -441,6 +445,9 @@ import { ParagraphType } from "@/enums/paragraphType";
 import { CrudContext } from "@/enums/crudContext";
 import dayjs from "dayjs";
 import { ProjectHelper } from "@/helpers/projectHelper";
+import ToggleSwitch from "primevue/toggleswitch";
+
+const checked = ref(true);
 
 // Access the store
 const projectStore = useProjectStore();
@@ -457,6 +464,8 @@ onMounted(async () => {
   }
 });
 
+// Controls whether autosave is enabled
+const isAutosaveEnabled = ref(true);
 // The project being edited
 const project: Ref<Project> = ref(new Project());
 const backgroundEditorRef = ref();
