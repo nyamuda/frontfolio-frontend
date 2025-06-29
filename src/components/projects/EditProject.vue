@@ -64,7 +64,11 @@
       <!-- Turn auto save on/off -->
       <div class="d-flex align-items-center gap-1 text-secondary" style="font-size: 0.9rem">
         AutoSave
-        <ToggleSwitch @value-change="onChangeAutoSave" :modelValue="isAutoSaveEnabled">
+        <ToggleSwitch
+          @value-change="onChangeAutoSave"
+          :modelValue="isAutoSaveEnabled"
+          :disabled="isPublishingProject || isSavingProject"
+        >
           <template #handle="{ checked }">
             <i
               style="font-size: 1rem"
