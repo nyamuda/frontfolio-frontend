@@ -148,7 +148,7 @@ const props = defineProps({
   //Previous item ID
   //Used to smoothly navigate up to the previous item if the current one is deleted
   previousItemId: {
-    type: String,
+    type: [String, null],
     required: false,
   },
 });
@@ -171,7 +171,11 @@ const dividerLabel: Ref<string> = computed(() => {
       return "Paragraph";
   }
 });
-
+/**
+ * Scrolls to the previous item in the list using its element ID.
+ * Useful after deleting an item to keep the user’s focus on the preceding one.
+ *
+ * */
 const moveUpToPreviousItem = (id: string | undefined) => {
   if (id) {
     alert(id);
