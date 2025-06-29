@@ -537,6 +537,7 @@ const getProjectById = (id: number) => {
   projectStore
     .getProjectById(id)
     .then((data) => {
+      isInitialLoad.value = true;
       project.value = data;
       //initialize the background paragraphs
       backgroundEditorRef.value?.initializeParagraphs(data.background);
@@ -646,7 +647,7 @@ const debouncedSubmitProject = debounce(async () => {
 }, 10000);
 // Flag to determine if the current change to the project object is the initial load.
 // This is used to prevent triggering auto-save when the project is first loaded from the backend.
-const isInitialLoad = ref(true);
+const isInitialLoad = ref(false);
 // Watcher that observes any deep changes to the project object.
 // Purpose:
 // - To automatically save changes the user makes while editing a project.
