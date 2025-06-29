@@ -656,11 +656,11 @@ const submitProject = async () => {
           });
         }
 
-        // Fetch the updated project immediately after saving to ensure that:
+        // Silently refetch the updated project immediately after saving to ensure that:
         // - Newly created background paragraphs, challenges, and achievements have their real database IDs
         // - (instead of temporary string IDs used on the frontend), which is essential for accurate deletion or editing
         // - Data consistency between frontend and backend is maintained
-        //don't display loading spinner though
+        // Note: No loading spinner is shown — this is a background fetch invisible to the user
         displayLoadingSpinner.value = false;
         getProjectById(project.value.id);
       })
