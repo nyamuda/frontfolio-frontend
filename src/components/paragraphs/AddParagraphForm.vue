@@ -1,10 +1,7 @@
 <template>
   <section :id="paragraph.id.toString()">
     <form @input="handleFormChange" class="mb-4">
-      <Divider align="center" type="dashed">
-        📝 {{ dividerLabel }} {{ index + 1 }} CurId -{{ paragraph.id }} prevId -
-        {{ previousItemId }}
-      </Divider>
+      <Divider align="center" type="dashed"> 📝 {{ dividerLabel }} {{ index + 1 }} </Divider>
       <!-- Title input -->
       <div class="form-group mb-3">
         <FloatLabel variant="on">
@@ -85,7 +82,7 @@
       <!-- Button section -->
       <div class="text-end mt-1">
         <Button
-          @click="moveUpToPreviousItem(previousItemId)"
+          @click="moveUpToPreviousParagraph(previousParagraphId)"
           severity="info"
           label="Move up"
           size="small"
@@ -145,10 +142,10 @@ const props = defineProps({
     type: String as PropType<CrudContext>,
     required: true,
   },
-  //Previous item ID
-  //Used to smoothly navigate up to the previous item if the current one is deleted
-  previousItemId: {
-    type: [String, null],
+  //Id of the paragraph before the current one.
+  //Used to smoothly navigate up to the previous paragraph if the current one is deleted.
+  previousParagraphId: {
+    type: [String],
     required: false,
   },
 });
@@ -171,21 +168,6 @@ const dividerLabel: Ref<string> = computed(() => {
       return "Paragraph";
   }
 });
-/**
- * Scrolls to the previous item in the list using its element ID.
- * Useful after deleting an item to keep the user’s focus on the preceding one.
- *
- * */
-const moveUpToPreviousItem = (id: string | undefined) => {
-  if (id) {
-    alert(id);
-    // Scroll to the previous item's element using its ID
-    const element = document.getElementById(id.toString());
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }
-};
 
 //form validation start
 const form = ref({
@@ -217,6 +199,21 @@ const handleFormChange = async () => {
   const validatedParagraph: ValidatedItem<Paragraph> = { item: paragraph, isValid: isFormValid };
   emit("update", validatedParagraph);
   emit("skipAutoSave", false);
+};
+
+/**
+ * Scrolls to the previous paragraph in the list using its element ID.
+ * Useful after deleting a paragraph to keep the user’s focus on the preceding one.
+ *
+ * */
+const moveUpToPreviousParagraph = (id: string | undefined) => {
+  if (id) {
+    // Scroll to the previous paragraphs's element using its ID
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
 };
 
 const confirmDelete = () => {
@@ -273,11 +270,6 @@ const deleteParagraph = () => {
           detail: "Selected paragraph was deleted.",
           life: 5000,
         });
-
-        if (props.previousItemId) {
-          const element = document.getElementById(props.previousItemId);
-          element?.scrollIntoView({ behavior: "smooth" });
-        }
       })
       .catch((message) => {
         toast.add({

@@ -10,7 +10,7 @@
         @delete="() => deleteParagraphById(validatedParagraph.item.id)"
         :paragraph="validatedParagraph.item"
         :crudContext="crudContext"
-        :previousItemId="validatedParagraphs[index - 1]?.item.id.toString() || null"
+        :previousParagraphId="validatedParagraphs[index - 1]?.item.id.toString()"
       />
     </div>
     <div class="d-flex justify-content-center align-items-center">
