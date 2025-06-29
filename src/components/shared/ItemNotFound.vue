@@ -1,14 +1,15 @@
 <template>
   <div class="text-center">
-    <i class="fas fa-exclamation-circle fa-3x mb-3"></i>
-    <h2 class="text-primary fw-bold">{{ title }}</h2>
+    <i class="pi pi-exclamation-triangle mb-3 text-primary" style="font-size: 4rem"></i>
+    <h2 class="text-secondary fw-bold">{{ title }}</h2>
     <p class="text-muted m-auto col-md-5">{{ message }}</p>
     <Button
       class="mt-3"
       label="Go Back"
-      icon="fas fa-arrow-left"
-      severity="contrast"
-      variant="outlined"
+      icon="pi pi-arrow-left"
+      severity="primary"
+      variant=""
+      size="small"
       @click="goBack"
     />
   </div>
