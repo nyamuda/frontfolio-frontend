@@ -17,75 +17,69 @@
       <ProgressBar mode="indeterminate" style="height: 6px"></ProgressBar>
     </div>
     <!-- Save and Publish buttons start-->
-    <div v-else>
-      <div
-        v-if="!isPlaceholderProject"
-        class="d-flex justify-content-end gap-3 align-items-center mb-5 flex-wrap"
-      >
-        <Button
-          v-if="project"
-          :icon="
-            isPublishingProject || isSavingProject
-              ? 'pi pi-spin pi-spinner-dotted'
+    <div v-else class="d-flex justify-content-end gap-3 align-items-center mb-5 flex-wrap">
+      <Button
+        :icon="
+          isPublishingProject || isSavingProject
+            ? 'pi pi-spin pi-spinner-dotted'
+            : !hasUnsavedChanges && !isInitialLoad
+              ? 'pi pi pi-check-circle'
+              : hasUnsavedChanges
+                ? 'pi pi-save'
+                : 'pi pi-pencil'
+        "
+        :label="
+          isSavingProject
+            ? 'Saving changes...'
+            : isPublishingProject
+              ? 'Publishing project...'
               : !hasUnsavedChanges && !isInitialLoad
-                ? 'pi pi pi-check-circle'
+                ? 'Last saved ' + dayjs.utc(project.updatedAt).local().fromNow()
                 : hasUnsavedChanges
-                  ? 'pi pi-save'
-                  : 'pi pi-pencil'
-          "
-          :label="
-            isSavingProject
-              ? 'Saving changes...'
-              : isPublishingProject
-                ? 'Publishing project...'
-                : !hasUnsavedChanges && !isInitialLoad
-                  ? 'Last saved ' + dayjs.utc(project.updatedAt).local().fromNow()
-                  : hasUnsavedChanges
-                    ? 'Save changes'
-                    : 'No changes yet'
-          "
-          severity="contrast"
-          @click="saveProject"
-          size="small"
-          :disabled="
-            isPublishingProject ||
-            isSavingProject ||
-            v$.$errors.length > 0 ||
-            hasInvalidSubForms ||
-            !hasUnsavedChanges
-          "
-          :variant="!hasUnsavedChanges && !isInitialLoad ? 'text' : ''"
-        />
+                  ? 'Save changes'
+                  : 'No changes yet'
+        "
+        severity="contrast"
+        @click="saveProject"
+        size="small"
+        :disabled="
+          isPublishingProject ||
+          isSavingProject ||
+          v$.$errors.length > 0 ||
+          hasInvalidSubForms ||
+          !hasUnsavedChanges
+        "
+        :variant="!hasUnsavedChanges && !isInitialLoad ? 'text' : ''"
+      />
 
-        <Button
-          v-if="project.status != ProjectStatus.Published"
-          @click="publishProject"
-          label="Publish project"
-          size="small"
-          :disabled="
-            isPublishingProject || isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms
-          "
-        />
-        <!-- Turn auto save on/off -->
-        <div class="d-flex align-items-center gap-1 text-secondary" style="font-size: 0.9rem">
-          AutoSave
-          <ToggleSwitch
-            @value-change="onChangeAutoSave"
-            :modelValue="isAutoSaveEnabled"
-            :disabled="isPublishingProject || isSavingProject"
-          >
-            <!-- <template #handle="{ checked }">
+      <Button
+        v-if="project.status != ProjectStatus.Published"
+        @click="publishProject"
+        label="Publish project"
+        size="small"
+        :disabled="
+          isPublishingProject || isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms
+        "
+      />
+      <!-- Turn auto save on/off -->
+      <div class="d-flex align-items-center gap-1 text-secondary" style="font-size: 0.9rem">
+        AutoSave
+        <ToggleSwitch
+          @value-change="onChangeAutoSave"
+          :modelValue="isAutoSaveEnabled"
+          :disabled="isPublishingProject || isSavingProject"
+        >
+          <!-- <template #handle="{ checked }">
             <i
               style="font-size: 1rem"
               :class="['pi', { 'pi-check': checked, 'pi-times-circle': !checked }]"
             />
           </template> -->
-          </ToggleSwitch>
-        </div>
+        </ToggleSwitch>
       </div>
     </div>
     <!-- Save and Publish buttons end-->
-    <form v-if="!isPlaceholderProject" class="">
+    <form class="">
       <!-- Project main details start -->
       <Panel class="mb-3" toggleable>
         <template #header>
@@ -423,15 +417,6 @@
       </Panel>
       <!-- Project feedback end  -->
     </form>
-
-    <!-- Item not found start -->
-    <div v-else class="m-auto">
-      <ItemNotFound
-        title="Unable to Load Project"
-        message="Something went wrong while fetching the project. Please check the URL or try again later."
-      />
-    </div>
-    <!-- Item not found end -->
   </div>
 </template>
 
@@ -473,7 +458,6 @@ import { CrudContext } from "@/enums/crudContext";
 import dayjs from "dayjs";
 import { ProjectHelper } from "@/helpers/projectHelper";
 import ToggleSwitch from "primevue/toggleswitch";
-import ItemNotFound from "../shared/ItemNotFound.vue";
 
 // Access the store
 const projectStore = useProjectStore();
@@ -496,9 +480,6 @@ onMounted(async () => {
 // The project being edited
 const project: Ref<Project> = ref(new Project());
 const backgroundEditorRef = ref();
-// Determines if the project is a placeholder, typically used when no valid project was loaded
-//or indicating a failed fetch
-const isPlaceholderProject: Ref<boolean> = computed(() => project.value.id == 0);
 
 // Track whether any background paragraph form is invalid
 const hasInvalidBackgroundForms: Ref<boolean> = ref(false);
