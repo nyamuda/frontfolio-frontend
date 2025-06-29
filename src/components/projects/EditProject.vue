@@ -17,7 +17,7 @@
       <ProgressBar mode="indeterminate" style="height: 6px"></ProgressBar>
     </div>
     <!-- Save and Publish buttons start-->
-    <div v-else class="d-flex justify-content-end gap-3 align-items-center mb-5">
+    <div v-else class="d-flex justify-content-end gap-3 align-items-center mb-5 flex-wrap">
       <Button
         :icon="
           isPublishingProject || isSavingProject
@@ -63,7 +63,15 @@
       />
       <!-- Turn auto save on/off -->
       <div class="d-flex align-items-center gap-1">
-        AutoSave <ToggleSwitch v-model="isAutosaveEnabled" />
+        AutoSave
+        <ToggleSwitch v-model="isAutosaveEnabled">
+          <template #handle="{ checked }">
+            <i
+              style="font-size: 1rem"
+              :class="['pi', { 'pi-check': checked, 'pi-times-circle': !checked }]"
+            />
+          </template>
+        </ToggleSwitch>
       </div>
     </div>
     <!-- Save and Publish buttons end-->
