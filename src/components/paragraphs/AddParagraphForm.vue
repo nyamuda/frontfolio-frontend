@@ -1,6 +1,6 @@
 <template>
   <section :id="paragraph.id.toString()">
-    <form @input="handleFormChange" class="mb-4">
+    <form @input="handleFormChange" class="mb-2">
       <Divider align="center" type="dashed"> 📝 {{ dividerLabel }} {{ index + 1 }} </Divider>
       <!-- Title input -->
       <div class="form-group mb-3">
@@ -82,6 +82,7 @@
       <!-- Button section -->
       <div class="text-end mt-1">
         <Button
+          raised
           @click="confirmDelete"
           :icon="isDeletingParagraph ? 'pi pi-spin pi-spinner' : 'pi pi-trash'"
           :label="isDeletingParagraph ? 'Deleting...' : ''"
@@ -233,7 +234,7 @@ const confirmDelete = () => {
       else {
         //remove paragraph form from the UI
         emit("delete");
-        //scroll uo to the previous paragraph after the delete
+        //scroll up to the previous paragraph after the delete
         moveUpToPreviousParagraph();
       }
     },
