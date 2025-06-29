@@ -2,7 +2,7 @@
   <section>
     <form @input="handleFormChange" class="mb-4">
       <Divider align="center" type="dashed">
-        📝 {{ dividerLabel }} {{ index + 1 }} IsNew-{{ !paragraph.isNew }}
+        📝 {{ dividerLabel }} {{ index + 1 }} IsNotNew-{{ !paragraph.isNew }}
       </Divider>
       <!-- Title input -->
       <div class="form-group mb-3">
@@ -218,10 +218,10 @@ const confirmDelete = () => {
       if (props.crudContext == CrudContext.Update && !props.paragraph.isNew) {
         deleteParagraph();
       }
-      //if current CRUD operation context is Create
-      //then there is no need to delete the paragraph on the backend since it hasn't been created yet
-      if (props.crudContext == CrudContext.Create) {
-        //remove paragraph form from UI
+      //else there is no need to delete the paragraph on the backend since it hasn't been created yet
+      //all we need to do is remove it from the UI
+      else {
+        //remove paragraph form from the UI
         emit("delete");
       }
     },
