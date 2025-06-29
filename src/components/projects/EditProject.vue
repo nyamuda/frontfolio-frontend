@@ -592,7 +592,7 @@ const submitProject = async () => {
       .then(() => {
         hasUnsavedChanges.value = false;
 
-        // Fetch the updated project immediately after saving to ensure:
+        // Fetch the updated project immediately after saving to ensure that:
         // - Newly created background paragraphs, challenges, and achievements have their real database IDs
         // - (instead of temporary string IDs used on the frontend), which is essential for accurate deletion or editing
         // - Data consistency between frontend and backend is maintained
