@@ -1,7 +1,9 @@
 <template>
   <section :id="paragraph.id.toString()">
     <form @input="handleFormChange" class="mb-2">
-      <Divider align="center" type="dashed"> 📝 {{ dividerLabel }} {{ index + 1 }} </Divider>
+      <Divider align="center" type="dashed">
+        <i class="pi pi-file-edit"></i> {{ dividerLabel }}
+      </Divider>
       <!-- Title input -->
       <div class="form-group mb-3">
         <FloatLabel variant="on">
@@ -111,10 +113,10 @@ import Divider from "primevue/divider";
 import { required, url } from "@vuelidate/validators";
 import type { ValidatedItem } from "@/interfaces/shared/validatedItem";
 import { ParagraphType } from "@/enums/paragraphType";
-
 import ConfirmPopup from "primevue/confirmpopup";
 import { CrudContext } from "@/enums/crudContext";
 import { useParagraphStore } from "@/stores/paragraph";
+import { toWords } from "number-to-words";
 
 const toast = useToast();
 
@@ -155,9 +157,9 @@ onMounted(() => {
 const dividerLabel: Ref<string> = computed(() => {
   switch (props.paragraph.paragraphType) {
     case ParagraphType.ProjectBackground:
-      return "Project Paragraph";
+      return "project paragraph " + toWords(props.index + 1);
     default:
-      return "Paragraph";
+      return "paragraph " + toWords(props.index + 1);
   }
 });
 
