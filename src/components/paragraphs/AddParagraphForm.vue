@@ -1,8 +1,9 @@
 <template>
   <section :id="paragraph.id.toString()">
     <form @input="handleFormChange" class="mb-2">
-      <Divider align="center" type="dashed">
-        <i class="pi pi-file-edit"></i> {{ dividerLabel }}
+      <Divider align="center" type="dashed" class="text-secondary fw-bold">
+        <i class="pi pi-file-edit me-1"></i>
+        <span class="">{{ dividerLabel }}</span>
       </Divider>
       <!-- Title input -->
       <div class="form-group mb-3">
@@ -157,9 +158,9 @@ onMounted(() => {
 const dividerLabel: Ref<string> = computed(() => {
   switch (props.paragraph.paragraphType) {
     case ParagraphType.ProjectBackground:
-      return "project paragraph " + toWords(props.index + 1);
+      return "Project paragraph " + toWords(props.index + 1);
     default:
-      return "paragraph " + toWords(props.index + 1);
+      return "Paragraph " + toWords(props.index + 1);
   }
 });
 
