@@ -1,8 +1,9 @@
 <template>
-  <section>
+  <section :id="paragraph.id.toString()">
     <form @input="handleFormChange" class="mb-4">
       <Divider align="center" type="dashed">
-        📝 {{ dividerLabel }} {{ index + 1 }} IsNotNew-{{ !paragraph.isNew }}
+        📝 {{ dividerLabel }} {{ index + 1 }} CurId -{{ paragraph.id }} prevId -
+        {{ previousItemId }}
       </Divider>
       <!-- Title input -->
       <div class="form-group mb-3">
@@ -84,6 +85,12 @@
       <!-- Button section -->
       <div class="text-end mt-1">
         <Button
+          @click="moveUpToPreviousItem(previousItemId)"
+          severity="info"
+          label="Move up"
+          size="small"
+        />
+        <Button
           @click="confirmDelete"
           :icon="isDeletingParagraph ? 'pi pi-spin pi-spinner' : 'pi pi-trash'"
           :label="isDeletingParagraph ? 'Deleting...' : ''"
@@ -91,7 +98,6 @@
           severity="danger"
           :rounded="isDeletingParagraph ? false : true"
           aria-label="Delete"
-          :id="paragraph.id.toString()"
           size="small"
         />
       </div>
@@ -119,6 +125,7 @@ import { CrudContext } from "@/enums/crudContext";
 import { useParagraphStore } from "@/stores/paragraph";
 
 const toast = useToast();
+
 const store = useParagraphStore();
 const confirm = useConfirm();
 const props = defineProps({
@@ -164,6 +171,17 @@ const dividerLabel: Ref<string> = computed(() => {
       return "Paragraph";
   }
 });
+
+const moveUpToPreviousItem = (id: string | undefined) => {
+  if (id) {
+    alert(id);
+    // Scroll to the previous item's element using its ID
+    const element = document.getElementById(id.toString());
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+};
 
 //form validation start
 const form = ref({
