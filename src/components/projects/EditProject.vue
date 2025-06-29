@@ -34,7 +34,7 @@
             : isPublishingProject
               ? 'Publishing project...'
               : !hasUnsavedChanges && !isInitialLoad
-                ? 'All changes saved'
+                ? 'Last saved ' + dayjs.utc(project.updatedAt).local().fromNow()
                 : hasUnsavedChanges
                   ? 'Save changes'
                   : 'No changes yet'
@@ -438,6 +438,7 @@ import Select from "primevue/select";
 import { ProjectDifficultyLevel } from "@/enums/projectDifficultyLevel";
 import { ParagraphType } from "@/enums/paragraphType";
 import { CrudContext } from "@/enums/crudContext";
+import dayjs from "dayjs";
 import { ProjectHelper } from "@/helpers/projectHelper";
 
 // Access the store
