@@ -82,12 +82,6 @@
       <!-- Button section -->
       <div class="text-end mt-1">
         <Button
-          @click="moveUpToPreviousParagraph(previousParagraphId)"
-          severity="info"
-          label="Move up"
-          size="small"
-        />
-        <Button
           @click="confirmDelete"
           :icon="isDeletingParagraph ? 'pi pi-spin pi-spinner' : 'pi pi-trash'"
           :label="isDeletingParagraph ? 'Deleting...' : ''"
@@ -151,9 +145,6 @@ const props = defineProps({
 });
 const emit = defineEmits(["update", "delete", "skipAutoSave"]);
 const isDeletingParagraph = ref(false);
-// Flag used to temporarily skip auto-saving the entire parent component e.g project, blog
-// when a paragraph has been deleted individually from its own component.
-// This prevents triggering an unnecessary project update after a paragraph deletion.
 
 onMounted(() => {
   v$.value.$touch();
@@ -206,10 +197,10 @@ const handleFormChange = async () => {
  * Useful after deleting a paragraph to keep the user’s focus on the preceding one.
  *
  * */
-const moveUpToPreviousParagraph = (id: string | undefined) => {
-  if (id) {
+const moveUpToPreviousParagraph = () => {
+  if (props.previousParagraphId) {
     // Scroll to the previous paragraphs's element using its ID
-    const element = document.getElementById(id);
+    const element = document.getElementById(props.previousParagraphId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
     }
@@ -242,6 +233,8 @@ const confirmDelete = () => {
       else {
         //remove paragraph form from the UI
         emit("delete");
+        //scroll uo to the previous paragraph after the delete
+        moveUpToPreviousParagraph();
       }
     },
     reject: () => {},
@@ -270,6 +263,8 @@ const deleteParagraph = () => {
           detail: "Selected paragraph was deleted.",
           life: 5000,
         });
+        //scroll uo to the previous paragraph after the delete
+        moveUpToPreviousParagraph();
       })
       .catch((message) => {
         toast.add({
