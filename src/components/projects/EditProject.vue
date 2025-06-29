@@ -425,9 +425,8 @@
     </form>
 
     <!-- Item not found start -->
-    <div class="m-auto">
+    <div v-else class="m-auto">
       <ItemNotFound
-v-else
         title="Unable to Load Project"
         message="Something went wrong while fetching the project. Please check the URL or try again later."
       />
