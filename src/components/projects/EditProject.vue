@@ -447,8 +447,6 @@ import dayjs from "dayjs";
 import { ProjectHelper } from "@/helpers/projectHelper";
 import ToggleSwitch from "primevue/toggleswitch";
 
-const checked = ref(true);
-
 // Access the store
 const projectStore = useProjectStore();
 const toast = useToast();
@@ -464,8 +462,6 @@ onMounted(async () => {
   }
 });
 
-// Controls whether autosave is enabled
-const isAutosaveEnabled = ref(true);
 // The project being edited
 const project: Ref<Project> = ref(new Project());
 const backgroundEditorRef = ref();
@@ -508,6 +504,8 @@ const isLoadingProject = ref(false);
 // This is used to decide whether a toast notification should be shown.
 // If the project was saved automatically, no toast is displayed.
 const isAutoSaved = ref(true);
+// Controls whether autosave is enabled
+const isAutosaveEnabled = ref(true);
 // Flag to temporarily suppress auto-saving when background paragraphs are modified.
 // Used to avoid triggering an unnecessary save when changes are already handled elsewhere (e.g., on delete).
 const skipAutoSaveForBackgroundParagraphs = ref(false);
@@ -676,10 +674,12 @@ watch(
     }
     //if skip auto save is on
     if (skipAutoSaveForBackgroundParagraphs.value) return;
+
     hasUnsavedChanges.value = true;
-    // Trigger the debounced save function
+
+    // Trigger the debounced save function if the auto save is turned on
     // This ensures we wait for 10 seconds of no changes before saving
-    debouncedSubmitProject();
+    if (isAutosaveEnabled.value) debouncedSubmitProject();
   },
   { deep: true }, // Watch nested properties inside the project object
 );
