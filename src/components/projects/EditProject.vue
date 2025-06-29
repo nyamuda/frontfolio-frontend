@@ -14,7 +14,7 @@
     <!-- Title and description end -->
 
     <!-- Loader -->
-    <div v-if="isLoadingProject" class="mb-5">
+    <div v-if="isLoadingProject && displayLoadingSpinner" class="mb-5">
       <ProgressBar mode="indeterminate" style="height: 6px"></ProgressBar>
     </div>
     <!-- Save and Publish buttons start-->
@@ -525,6 +525,8 @@ const isSavingProject = ref(false);
 const isPublishingProject = ref(false);
 //Show loading project loader or not
 const isLoadingProject = ref(false);
+// Whether to show the loading spinner (e.g. during autosave or fetch)
+const displayLoadingSpinner = ref(true);
 // Tracks whether the project was saved automatically (via auto-save) or manually by the user.
 // This is used to decide whether a toast notification should be shown.
 // If the project was saved automatically, no toast is displayed.
@@ -658,6 +660,8 @@ const submitProject = async () => {
         // - Newly created background paragraphs, challenges, and achievements have their real database IDs
         // - (instead of temporary string IDs used on the frontend), which is essential for accurate deletion or editing
         // - Data consistency between frontend and backend is maintained
+        //don't display loading spinner though
+        displayLoadingSpinner.value = false;
         getProjectById(project.value.id);
       })
       .catch((message) => {
