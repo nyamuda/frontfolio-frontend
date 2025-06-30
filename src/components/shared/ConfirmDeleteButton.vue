@@ -12,12 +12,11 @@
 </template>
 
 <script setup lang="ts">
-import { useConfirm, useToast } from "primevue";
+import { useConfirm } from "primevue";
 import Button from "primevue/button";
 import ConfirmDialog from "primevue/confirmdialog";
 
 const confirm = useConfirm();
-const toast = useToast();
 
 const props = defineProps({
   title: {
@@ -58,30 +57,20 @@ const confirmDelete = () => {
     rejectProps: {
       label: props.buttonRejectLabel,
       severity: "secondary",
+      icon: "pi pi-times",
       outlined: true,
       size: "small",
     },
     acceptProps: {
       label: props.buttonAcceptLabel,
+      icon: "pi pi-trash",
       severity: "danger",
       size: "small",
     },
     accept: () => {
-      toast.add({
-        severity: "info",
-        summary: "Confirmed",
-        detail: "You have accepted",
-        life: 3000,
-      });
+      props.deleteCallback();
     },
-    reject: () => {
-      toast.add({
-        severity: "error",
-        summary: "Rejected",
-        detail: "You have rejected",
-        life: 3000,
-      });
-    },
+    reject: () => {},
   });
 };
 </script>

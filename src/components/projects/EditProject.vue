@@ -88,14 +88,14 @@
             >
             </ToggleSwitch>
           </div>
-          <ProjectMenu />
         </div>
         <!-- Delete project button -->
         <ConfirmDeleteButton
           title="Delete Project"
           message="Are you sure you want to delete this project?"
           :delete-callback="deleteProject"
-          button-accept-label="Delete project"
+          button-accept-label="Yes, delete it"
+          :is-deleting="isDeletingProject"
         />
       </div>
     </div>
@@ -479,7 +479,6 @@ import { CrudContext } from "@/enums/crudContext";
 import dayjs from "dayjs";
 import { ProjectHelper } from "@/helpers/projectHelper";
 import ToggleSwitch from "primevue/toggleswitch";
-import ProjectMenu from "./ProjectMenu.vue";
 import ConfirmDeleteButton from "../shared/ConfirmDeleteButton.vue";
 
 // Access the store
@@ -784,6 +783,7 @@ const deleteProject = () => {
         detail: "The project has been deleted. You won’t see it in your portfolio anymore.",
         life: 5000,
       });
+      router.push("/projects");
     })
     .catch((message) => {
       toast.add({

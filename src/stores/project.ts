@@ -135,8 +135,7 @@ export const useProjectStore = defineStore("project", () => {
         .then(() => resolve({}))
         .catch((ex) => {
           const message =
-            ex.response?.data?.message ||
-            "An unexpected error occurred while deleting your project.";
+            ex.response?.data?.message || "Failed to delete project. Please try again.";
           reject(message);
         });
     });
