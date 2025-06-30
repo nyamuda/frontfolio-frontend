@@ -781,7 +781,7 @@ const deleteProject = () => {
         severity: "success",
         summary: "Project Deleted",
         detail: "The project has been deleted. You won’t see it in your portfolio anymore.",
-        life: 5000,
+        life: 10000,
       });
       router.push("/projects");
     })

@@ -26,10 +26,8 @@ export const useProjectStore = defineStore("project", () => {
           project.endDate = DateHelper.convertTimeFromUTCToLocal(project.endDate);
           resolve(project);
         })
-        .catch((error) => {
-          const message =
-            error.response?.data?.message ||
-            "An unexpected error occurred while fetching your project.";
+        .catch(() => {
+          const message = "We couldn’t load the project details. Please try again shortly.";
           reject(message);
         });
     });

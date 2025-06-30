@@ -2,7 +2,7 @@
   <Button
     @click="confirmDelete"
     severity="danger"
-    label="Delete project"
+    :label="isDeleting ? 'Deleting...' : 'Delete project'"
     size="small"
     icon="pi pi-trash"
     :loading="isDeleting"
