@@ -6,7 +6,7 @@
     size="small"
     icon="pi pi-trash"
     :loading="isDeleting"
-    :disabled="isDeleting"
+    :disabled="isDeleting || isDisabled"
   />
   <ConfirmDialog group="deleteItem"></ConfirmDialog>
 </template>
@@ -37,6 +37,11 @@ const props = defineProps({
   },
   //used to show the loader
   isDeleting: {
+    type: Boolean,
+    default: false,
+  },
+
+  isDisabled: {
     type: Boolean,
     default: false,
   },
