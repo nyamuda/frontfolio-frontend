@@ -5,6 +5,8 @@
     label="Delete project"
     size="small"
     icon="pi pi-trash"
+    :loading="isDeleting"
+    :disabled="isDeleting"
   />
   <ConfirmDialog group="deleteItem"></ConfirmDialog>
 </template>
@@ -34,6 +36,11 @@ const props = defineProps({
     type: String,
     default: "Cancel",
   },
+  //used to show the loader
+  isDeleting: {
+    type: Boolean,
+    default: false,
+  },
   //callback to call if the delete is confirmed
   deleteCallback: {
     type: Function,
@@ -47,6 +54,7 @@ const confirmDelete = () => {
     message: props.message,
     header: props.title,
     icon: "pi pi-info-circle",
+    position: "right",
     rejectProps: {
       label: props.buttonRejectLabel,
       severity: "secondary",

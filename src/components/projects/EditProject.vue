@@ -91,10 +91,11 @@
           <ProjectMenu />
         </div>
         <!-- Delete project button -->
-        <DeleteItem
+        <ConfirmDeleteButton
           title="Delete Project"
-          message="Are you sure you want to delete this project? This action cannot be undone."
+          message="Are you sure you want to delete this project?"
           :delete-callback="deleteProject"
+          button-accept-label="Delete project"
         />
       </div>
     </div>
@@ -479,7 +480,7 @@ import dayjs from "dayjs";
 import { ProjectHelper } from "@/helpers/projectHelper";
 import ToggleSwitch from "primevue/toggleswitch";
 import ProjectMenu from "./ProjectMenu.vue";
-import DeleteItem from "./DeleteItem.vue";
+import ConfirmDeleteButton from "../shared/ConfirmDeleteButton.vue";
 
 // Access the store
 const projectStore = useProjectStore();
