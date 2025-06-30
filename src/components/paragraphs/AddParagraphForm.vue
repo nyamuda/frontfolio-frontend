@@ -235,6 +235,9 @@ const confirmDelete = () => {
       //else there is no need to delete the paragraph on the backend since it hasn't been created yet
       //all we need to do is remove it from the UI
       else {
+        // Emit a signal to skip auto-saving since this paragraph doesn't exist in the database
+        // This prevents the parent components from unnecessarily saving the delete
+        emit("skipAutoSave", true);
         //remove paragraph form from the UI
         emit("delete");
         //scroll up to the previous paragraph after the delete
