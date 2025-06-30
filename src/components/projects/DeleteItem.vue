@@ -34,6 +34,11 @@ const props = defineProps({
     type: String,
     default: "Cancel",
   },
+  //callback to call if the delete is confirmed
+  deleteCallback: {
+    type: Function,
+    required: true,
+  },
 });
 
 const confirmDelete = () => {

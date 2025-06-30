@@ -91,7 +91,10 @@
           <ProjectMenu />
         </div>
         <!-- Delete project button -->
-        <DeleteItem />
+        <DeleteItem
+          title="Delete Project"
+          message="Are you sure you want to delete this project? This action cannot be undone."
+        />
       </div>
     </div>
     <!--Buttons end-->
@@ -766,6 +769,12 @@ watch(
   },
   { deep: true }, // Watch nested properties inside the project object
 );
+
+
+const deleteProject =() =>{
+projectStore.d
+
+}
 </script>
 
 <style scoped lang="scss">

@@ -125,6 +125,23 @@ export const useProjectStore = defineStore("project", () => {
     });
   };
 
+  const deleteProject = (id: number) => {
+    return new Promise((resolve, reject) => {
+      const url = `${apiUrl}/projects/${id}`;
+      //add an access token to the request to access the protected route
+      setAuthToken();
+      axios
+        .delete(url)
+        .then(() => resolve({}))
+        .catch((ex) => {
+          const message =
+            ex.response?.data?.message ||
+            "An unexpected error occurred while deleting your project.";
+          reject(message);
+        });
+    });
+  };
+
   //Set authorization header for all request to access protected routes from the API
   const setAuthToken = () => {
     //check if there is a token in local storage
