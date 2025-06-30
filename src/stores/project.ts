@@ -161,5 +161,6 @@ export const useProjectStore = defineStore("project", () => {
     getProjects,
     loadMoreProjects,
     pageInfo,
+    deleteProject,
   };
 });

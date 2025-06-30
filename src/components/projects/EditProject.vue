@@ -94,6 +94,7 @@
         <DeleteItem
           title="Delete Project"
           message="Are you sure you want to delete this project? This action cannot be undone."
+          :delete-callback="deleteProject"
         />
       </div>
     </div>
@@ -540,6 +541,7 @@ const invalidFormMessage = ref(
 );
 
 const isSavingProject = ref(false);
+const isDeletingProject = ref(false);
 const isPublishingProject = ref(false);
 //Show loading project loader or not
 const isLoadingProject = ref(false);
@@ -770,11 +772,28 @@ watch(
   { deep: true }, // Watch nested properties inside the project object
 );
 
-
-const deleteProject =() =>{
-projectStore.d
-
-}
+const deleteProject = () => {
+  isDeletingProject.value = true;
+  projectStore
+    .deleteProject(project.value.id)
+    .then(() => {
+      toast.add({
+        severity: "success",
+        summary: "Project Deleted",
+        detail: "The project has been deleted. You won’t see it in your portfolio anymore.",
+        life: 5000,
+      });
+    })
+    .catch((message) => {
+      toast.add({
+        severity: "error",
+        summary: "Delete Failed",
+        detail: message,
+        life: 10000,
+      });
+    })
+    .finally(() => (isDeletingProject.value = false));
+};
 </script>
 
 <style scoped lang="scss">
