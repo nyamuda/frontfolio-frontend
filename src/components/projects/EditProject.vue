@@ -765,6 +765,9 @@ watch(
       isInitialLoad.value = false;
       return;
     }
+    //make sure there is no deletion in progress before saving any changes
+    if (isDeletingProject.value) return;
+
     //if skip auto save is on for background paragraphs, don't go any further
     if (checkAndResetAutoSaveSkip(skipAutoSaveForBackgroundParagraphs)) return;
 
