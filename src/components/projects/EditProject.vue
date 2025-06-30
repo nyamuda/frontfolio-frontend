@@ -537,6 +537,29 @@ const isAutoSaveEnabled = ref(true);
 // Used to avoid triggering an unnecessary save when changes are already handled elsewhere (e.g., on delete).
 const skipAutoSaveForBackgroundParagraphs = ref(false);
 
+/**
+ * Determines whether autosave should be skipped based on the provided flag.
+ *
+ * This method is used to temporarily disable autosave for specific sections
+ * (e.g. background paragraphs, challenges, achievements) during updates
+ * such as deleting a paragraph, challenge etc which is handled in the component itself.
+ *
+ * If the `shouldSkipFlag` is true:
+ * - Autosave will be skipped.
+ * - `hasUnsavedChanges` will be set to false, indicating that no user-driven changes need saving.
+ * - The flag will be reset to false to allow autosave on future edits.
+ *
+ * @param shouldSkipFlag - A reactive ref boolean that controls whether autosave should be skipped for a section.
+ * @returns `true` if autosave should be skipped and was reset; `false` otherwise.
+ */
+const shouldSkipAutoSave = (shouldSkipFlag: Ref<boolean>): boolean => {
+  if (shouldSkipFlag.value) {
+    hasUnsavedChanges.value = false;
+    shouldSkipFlag.value = false;
+  }
+  return shouldSkipFlag.value;
+};
+
 // Toggle autosave setting and persist it in localStorage
 const onChangeAutoSave = () => {
   isAutoSaveEnabled.value = !isAutoSaveEnabled.value;
@@ -713,8 +736,10 @@ watch(
       isInitialLoad.value = false;
       return;
     }
-    //if skip auto save is on
-    if (skipAutoSaveForBackgroundParagraphs.value) return;
+    //if skip auto save is on, don't go any further
+    //and set hasUnsavedChanges to false because there is nothing that
+    //needs to be saved
+    if (shouldSkipAutoSave(skipAutoSaveForBackgroundParagraphs)) return;
 
     hasUnsavedChanges.value = true;
 
