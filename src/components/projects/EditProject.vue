@@ -19,10 +19,7 @@
     </div>
     <!-- Buttons start-->
     <div v-else>
-      <div
-        v-if="!isPlaceholderProject"
-        class="d-flex flex-column align-items-end mb-5 gap-4 bg-light rounded-2 p-3"
-      >
+      <div v-if="!isPlaceholderProject" class="d-flex flex-column align-items-end mb-5 gap-4">
         <div class="d-flex justify-content-end gap-3 align-items-center flex-wrap">
           <!-- Form error message -->
           <Message

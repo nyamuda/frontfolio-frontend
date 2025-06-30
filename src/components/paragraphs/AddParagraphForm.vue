@@ -219,11 +219,13 @@ const confirmDelete = () => {
     rejectProps: {
       icon: "pi pi-times",
       label: "Cancel",
+      severity: "secondary",
       outlined: true,
     },
     acceptProps: {
-      icon: "pi pi-check",
-      label: "Confirm",
+      icon: "pi pi-trash",
+      label: "Delete",
+      severity: "danger",
     },
     accept: () => {
       //if current CRUD operation context is Update & the paragraph is not new (already persisted in the database).

@@ -28,27 +28,37 @@
     <!-- Skeleton list end -->
     <!-- Project list start -->
     <div v-else class="row">
-      <div
-        class="col-md-6 col-lg-4 g-3"
-        v-for="project in projectStore.pageInfo.items"
-        :key="project.id"
-      >
-        <ProjectItem :project="project" />
+      <div v-if="projectStore.pageInfo.items.length > 0">
+        <!-- Project list -->
+        <div class="row">
+          <div
+            class="col-md-6 col-lg-4 g-3"
+            v-for="project in projectStore.pageInfo.items"
+            :key="project.id"
+          >
+            <ProjectItem :project="project" />
+          </div>
+        </div>
+        <!-- Load more button -->
+        <div class="d-flex justify-content-center mt-5">
+          <LoadMoreItemsButton
+            label="Load more projects"
+            end-label="These are all your projects"
+            :is-loading="isLoadingMoreProjects"
+            :has-more="projectStore.pageInfo.hasMore"
+            :is-disabled="
+              isGettingProjects || isLoadingMoreProjects || !projectStore.pageInfo.hasMore
+            "
+            :onClick="loadMoreProjects"
+            end-variant="text"
+            variant="outlined"
+          />
+        </div>
       </div>
+      <!-- Project list empty -->
+      <div v-else></div>
     </div>
     <!-- Project list end -->
-    <div class="d-flex justify-content-center mt-5">
-      <LoadMoreItemsButton
-        label="Load more projects"
-        end-label="These are all your projects"
-        :is-loading="isLoadingMoreProjects"
-        :has-more="projectStore.pageInfo.hasMore"
-        :is-disabled="isGettingProjects || isLoadingMoreProjects || !projectStore.pageInfo.hasMore"
-        :onClick="loadMoreProjects"
-        end-variant="text"
-        variant="outlined"
-      />
-    </div>
   </div>
 </template>
 
