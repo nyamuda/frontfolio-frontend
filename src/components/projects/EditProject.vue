@@ -17,85 +17,83 @@
     <div v-if="isLoadingProject && displayLoadingSpinner" class="mb-5">
       <ProgressBar mode="indeterminate" style="height: 6px"></ProgressBar>
     </div>
-    <!-- Save and Publish buttons start-->
+    <!-- Buttons start-->
     <div v-else>
-      <div
-        v-if="!isPlaceholderProject"
-        class="d-flex justify-content-end gap-3 align-items-center mb-5 flex-wrap"
-      >
-        <!-- Form error message -->
-        <Message
-          v-if="hasInvalidSubForms || v$.$error"
-          icon="pi pi-times-circle"
-          severity="error"
-          variant="simple"
-          size="small"
-          >{{ invalidFormMessage }}</Message
-        >
-        <!-- Save changes button -->
-        <Button
-          v-else
-          :icon="
-            isPublishingProject || isSavingProject
-              ? 'pi pi-spin pi-spinner-dotted'
-              : !hasUnsavedChanges && !isInitialLoad
-                ? 'pi pi pi-check-circle'
-                : hasUnsavedChanges
-                  ? 'pi pi-save'
-                  : 'pi pi-pencil'
-          "
-          :label="
-            isSavingProject
-              ? 'Saving changes...'
-              : isPublishingProject
-                ? 'Publishing project...'
-                : !hasUnsavedChanges && !isInitialLoad
-                  ? 'Last saved ' + dayjs.utc(project.updatedAt).local().fromNow()
-                  : hasUnsavedChanges
-                    ? 'Save changes'
-                    : 'No changes yet'
-          "
-          severity="contrast"
-          @click="saveProject"
-          size="small"
-          :disabled="
-            isPublishingProject ||
-            isSavingProject ||
-            v$.$errors.length > 0 ||
-            hasInvalidSubForms ||
-            !hasUnsavedChanges
-          "
-          :variant="!hasUnsavedChanges && !isInitialLoad ? 'text' : ''"
-        />
-        <!-- Publish project button -->
-        <Button
-          v-if="project.status != ProjectStatus.Published"
-          @click="publishProject"
-          label="Publish project"
-          size="small"
-          :disabled="
-            isPublishingProject || isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms
-          "
-        />
-        <!-- Turn auto save on/off -->
-        <div class="d-flex align-items-center gap-1 text-secondary" style="font-size: 0.9rem">
-          AutoSave
-          <ToggleSwitch
-            @value-change="onChangeAutoSave"
-            :modelValue="isAutoSaveEnabled"
-            :disabled="isPublishingProject || isSavingProject"
+      <div v-if="!isPlaceholderProject" class="d-flex flex-column align-items-end mb-5 gap-4">
+        <div class="d-flex justify-content-end gap-3 align-items-center flex-wrap">
+          <!-- Form error message -->
+          <Message
+            v-if="hasInvalidSubForms || v$.$error"
+            icon="pi pi-times-circle"
+            severity="error"
+            variant="simple"
+            size="small"
+            >{{ invalidFormMessage }}</Message
           >
-            <!-- <template #handle="{ checked }">
-            <i
-              style="font-size: 1rem"
-              :class="['pi', { 'pi-check': checked, 'pi-times-circle': !checked }]"
-            />
-          </template> -->
-          </ToggleSwitch>
+          <!-- Save changes button -->
+          <Button
+            v-else
+            :icon="
+              isPublishingProject || isSavingProject
+                ? 'pi pi-spin pi-spinner-dotted'
+                : !hasUnsavedChanges && !isInitialLoad
+                  ? 'pi pi pi-check-circle'
+                  : hasUnsavedChanges
+                    ? 'pi pi-save'
+                    : 'pi pi-pencil'
+            "
+            :label="
+              isSavingProject
+                ? 'Saving changes...'
+                : isPublishingProject
+                  ? 'Publishing project...'
+                  : !hasUnsavedChanges && !isInitialLoad
+                    ? 'Last saved ' + dayjs.utc(project.updatedAt).local().fromNow()
+                    : hasUnsavedChanges
+                      ? 'Save changes'
+                      : 'No changes yet'
+            "
+            severity="contrast"
+            @click="saveProject"
+            size="small"
+            :disabled="
+              isPublishingProject ||
+              isSavingProject ||
+              v$.$errors.length > 0 ||
+              hasInvalidSubForms ||
+              !hasUnsavedChanges
+            "
+            :variant="!hasUnsavedChanges && !isInitialLoad ? 'text' : ''"
+          />
+          <!-- Publish project button -->
+          <Button
+            v-if="project.status != ProjectStatus.Published"
+            @click="publishProject"
+            label="Publish project"
+            size="small"
+            :disabled="
+              isPublishingProject || isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms
+            "
+          />
+          <!-- Turn auto save on/off -->
+          <div
+            class="d-flex align-items-center gap-1 text-secondary"
+            style="font-size: 0.9rem; margin-top: 0.2rem"
+          >
+            AutoSave
+            <ToggleSwitch
+              @value-change="onChangeAutoSave"
+              :modelValue="isAutoSaveEnabled"
+              :disabled="isPublishingProject || isSavingProject"
+            >
+            </ToggleSwitch>
+          </div>
         </div>
+        <!-- Delete project button -->
+        <Button severity="danger" label="Delete project" size="small" icon="pi pi-trash" />
       </div>
     </div>
-    <!-- Save and Publish buttons end-->
+    <!--Buttons end-->
     <form class="">
       <!-- Project main details start -->
       <Panel class="mb-3" toggleable>
