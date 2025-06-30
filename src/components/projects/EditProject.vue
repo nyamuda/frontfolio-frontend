@@ -58,6 +58,7 @@
             size="small"
             :disabled="
               isPublishingProject ||
+              isDeletingProject ||
               isSavingProject ||
               v$.$errors.length > 0 ||
               hasInvalidSubForms ||
@@ -72,7 +73,11 @@
             label="Publish project"
             size="small"
             :disabled="
-              isPublishingProject || isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms
+              isPublishingProject ||
+              isSavingProject ||
+              v$.$errors.length > 0 ||
+              hasInvalidSubForms ||
+              isDeletingProject
             "
           />
           <!-- Turn auto save on/off -->
@@ -84,7 +89,7 @@
             <ToggleSwitch
               @value-change="onChangeAutoSave"
               :modelValue="isAutoSaveEnabled"
-              :disabled="isPublishingProject || isSavingProject"
+              :disabled="isPublishingProject || isSavingProject || isDeletingProject"
             >
             </ToggleSwitch>
           </div>
@@ -487,6 +492,9 @@ const toast = useToast();
 const router = useRouter();
 
 onMounted(async () => {
+  //start from the top of the page
+  window.scrollTo(0, 0);
+  //show form validation errors
   v$.value.$touch();
   //get project ID from URL params
   const projectId = router.currentRoute.value.params["id"];
