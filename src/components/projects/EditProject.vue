@@ -88,9 +88,10 @@
             >
             </ToggleSwitch>
           </div>
+          <ProjectMenu />
         </div>
         <!-- Delete project button -->
-        <Button severity="danger" label="Delete project" size="small" icon="pi pi-trash" />
+        <DeleteItem />
       </div>
     </div>
     <!--Buttons end-->
@@ -473,6 +474,8 @@ import { CrudContext } from "@/enums/crudContext";
 import dayjs from "dayjs";
 import { ProjectHelper } from "@/helpers/projectHelper";
 import ToggleSwitch from "primevue/toggleswitch";
+import ProjectMenu from "./ProjectMenu.vue";
+import DeleteItem from "./DeleteItem.vue";
 
 // Access the store
 const projectStore = useProjectStore();
