@@ -23,7 +23,18 @@
         v-if="!isPlaceholderProject"
         class="d-flex justify-content-end gap-3 align-items-center mb-5 flex-wrap"
       >
+        <!-- Form error message -->
+        <Message
+          v-if="hasInvalidSubForms || v$.$error"
+          icon="pi pi-times-circle"
+          severity="error"
+          variant="simple"
+          size="small"
+          >{{ invalidFormMessage }}</Message
+        >
+        <!-- Save changes button -->
         <Button
+          v-else
           :icon="
             isPublishingProject || isSavingProject
               ? 'pi pi-spin pi-spinner-dotted'
@@ -56,7 +67,7 @@
           "
           :variant="!hasUnsavedChanges && !isInitialLoad ? 'text' : ''"
         />
-
+        <!-- Publish project button -->
         <Button
           v-if="project.status != ProjectStatus.Published"
           @click="publishProject"
@@ -520,6 +531,9 @@ const isEntireFormInvalid = async (): Promise<boolean> => {
   // Return true if any section (main or sub-forms) is invalid
   return !areMainFieldsValid || hasInvalidSubForms.value;
 };
+const invalidFormMessage = ref(
+  "Some required fields are missing or invalid. Please fix them to save your changes.",
+);
 
 const isSavingProject = ref(false);
 const isPublishingProject = ref(false);
@@ -556,8 +570,9 @@ const checkAndResetAutoSaveSkip = (skipAutosaveRef: Ref<boolean>): boolean => {
   if (skipAutosaveRef.value) {
     hasUnsavedChanges.value = false;
     skipAutosaveRef.value = false;
+    return true;
   }
-  return skipAutosaveRef.value;
+  return false;
 };
 
 // Toggle autosave setting and persist it in localStorage
