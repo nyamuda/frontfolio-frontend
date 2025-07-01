@@ -1,8 +1,9 @@
 <template>
-  <section>
-    <form @change="handleFormChange" class="mb-4">
-      <Divider align="center" type="dashed">
-        <i class="pi pi-comment"></i> Feedback {{ index + 1 }}
+  <section :id="feedback.id.toString()">
+    <form @input="handleFormChange" class="mb-2">
+      <Divider align="center" type="dashed" class="text-secondary fw-bold">
+        <i class="pi pi-file-edit me-1"></i>
+        <span class="">{{ dividerLabel }}</span>
       </Divider>
       <!-- Author name input -->
       <div class="form-group mb-3">
@@ -85,38 +86,49 @@
           </div>
         </Message>
       </div>
-
       <!-- Button section -->
-      <div class="text-end">
+      <div class="text-end mt-1">
         <Button
-          @click="deleteFeedback"
-          icon="pi pi-trash"
+          raised
+          @click="confirmDelete"
+          :icon="isDeletingFeedback ? 'pi pi-spin pi-spinner' : 'pi pi-trash'"
+          :label="isDeletingFeedback ? 'Deleting...' : ''"
+          :disabled="isDeletingFeedback"
           severity="danger"
-          rounded
+          :rounded="isDeletingFeedback ? false : true"
           aria-label="Delete"
+          size="small"
         />
       </div>
     </form>
+    <ConfirmPopup></ConfirmPopup>
   </section>
 </template>
 
 <script setup lang="ts">
 import useVuelidate from "@vuelidate/core";
 import Textarea from "primevue/textarea";
-import { Message } from "primevue";
+import { Message, useConfirm, useToast } from "primevue";
 import InputText from "primevue/inputtext";
 import FloatLabel from "primevue/floatlabel";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref, type PropType, type Ref } from "vue";
 import Button from "primevue/button";
-import Divider from "primevue/divider";
 import { Feedback } from "@/models/feedback";
-import DatePicker from "primevue/datepicker";
-import type { ValidatedItem } from "@/interfaces/shared/validatedItem";
+import Divider from "primevue/divider";
 import { required } from "@vuelidate/validators";
+import type { ValidatedItem } from "@/interfaces/shared/validatedItem";
+import ConfirmPopup from "primevue/confirmpopup";
+import { CrudContext } from "@/enums/crudContext";
+import { useFeedbackStore } from "@/stores/feedback";
+import { toWords } from "number-to-words";
 
+const toast = useToast();
+
+const store = useFeedbackStore();
+const confirm = useConfirm();
 const props = defineProps({
   feedback: {
-    type: Feedback,
+    type: Object as PropType<Feedback>,
     required: false,
     default: () => new Feedback(),
   },
@@ -125,11 +137,28 @@ const props = defineProps({
     required: false,
     default: () => 0,
   },
+  //the current CRUD operation context for the form
+  // based on whether the user is creating, viewing, updating, or deleting the feedback
+  crudContext: {
+    type: String as PropType<CrudContext>,
+    required: true,
+  },
+  //Id of the feedback before the current one.
+  //Used to smoothly navigate up to the previous feedback if the current one is deleted.
+  previousFeedbackId: {
+    type: [String],
+    required: false,
+  },
 });
-const emit = defineEmits(["update", "delete"]);
+const emit = defineEmits(["update", "delete", "skipAutoSave"]);
+const isDeletingFeedback = ref(false);
+
 onMounted(() => {
   v$.value.$touch();
 });
+
+//Text for the divider
+const dividerLabel: Ref<string> = computed(() => "Feedback " + toWords(props.index + 1));
 
 //form validation start
 const form = ref({
@@ -149,8 +178,8 @@ const v$ = useVuelidate(rules, form);
 //form validation end
 
 const handleFormChange = async () => {
-  //save the new form updated details
-  const feedback = props.feedback;
+  //save the new feedback details
+  const feedback = Object.assign(new Feedback(), props.feedback);
   feedback.authorName = form.value.authorName;
   feedback.authorRole = form.value.authorRole;
   feedback.comment = form.value.comment;
@@ -158,11 +187,100 @@ const handleFormChange = async () => {
 
   //is the form valid or not
   const isFormValid: boolean = await v$.value.$validate();
-
   //emit the updated form details and the validation state
   const validatedFeedback: ValidatedItem<Feedback> = { item: feedback, isValid: isFormValid };
   emit("update", validatedFeedback);
+  emit("skipAutoSave", false);
 };
 
-const deleteFeedback = () => emit("delete");
+/**
+ * Scrolls to the previous feedback in the list using its element ID.
+ * Useful after deleting a feedback to keep the user’s focus on the preceding one.
+ *
+ * */
+const moveUpToPreviousFeedback = () => {
+  if (props.previousFeedbackId) {
+    // Scroll to the previous feedbacks's element using its ID
+    const element = document.getElementById(props.previousFeedbackId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+};
+
+const confirmDelete = () => {
+  confirm.require({
+    message: "Are you sure you want to delete this feedback?",
+    header: "Confirmation",
+    icon: "pi pi-exclamation-triangle",
+    rejectProps: {
+      icon: "pi pi-times",
+      label: "Cancel",
+      severity: "secondary",
+      outlined: true,
+    },
+    acceptProps: {
+      icon: "pi pi-trash",
+      label: "Delete",
+      severity: "danger",
+    },
+    accept: () => {
+      //if current CRUD operation context is Update & the feedback is not new (already persisted in the database).
+      //then the feedback needs to be deleted on the backend since its already an existing feedback that is
+      //being edited
+      if (props.crudContext == CrudContext.Update && !props.feedback.isNew) {
+        deleteFeedback();
+      }
+      //else there is no need to delete the feedback on the backend since it hasn't been created yet
+      //all we need to do is remove it from the UI
+      else {
+        // Emit a signal to skip auto-saving since this feedback doesn't exist in the database
+        // This prevents the parent components from unnecessarily saving the delete
+        emit("skipAutoSave", true);
+        //remove feedback form from the UI
+        emit("delete");
+        //scroll up to the previous feedback after the delete
+        moveUpToPreviousFeedback();
+      }
+    },
+    reject: () => {},
+  });
+};
+
+//Delete the feedback on the backend
+const deleteFeedback = () => {
+  isDeletingFeedback.value = true;
+  const feedbackId = props.feedback.id;
+  const projectId = props.feedback.projectId;
+  if (feedbackId && projectId) {
+    store
+      .deleteProjectFeedback(feedbackId, projectId)
+      .then(() => {
+        // Emit a signal to skip auto-saving since this feedback has already been deleted individually.
+        // This prevents the parent components from unnecessarily triggering a full parent component save.
+        emit("skipAutoSave", true);
+        //remove feedback form from UI
+        emit("delete");
+
+        //show toast
+        toast.add({
+          severity: "success",
+          summary: "Feedback Deleted",
+          detail: "Selected feedback was deleted.",
+          life: 5000,
+        });
+        //scroll uo to the previous feedback after the delete
+        moveUpToPreviousFeedback();
+      })
+      .catch((message) => {
+        toast.add({
+          severity: "error",
+          summary: "Delete Failed",
+          detail: message,
+          life: 10000,
+        });
+      })
+      .finally(() => (isDeletingFeedback.value = false));
+  }
+};
 </script>
