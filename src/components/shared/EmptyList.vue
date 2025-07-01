@@ -1,7 +1,7 @@
 <template>
   <div class="text-center mt-4">
-    <i :class="[iconType]"></i>
-    <h5 class="mt-3">{{ title }}</h5>
+    <i :class="[iconType]" style="font-size: 4rem"></i>
+    <h5 class="mt-2 fs-2">{{ title }}</h5>
     <p class="mt-3 text-muted">{{ message }}</p>
   </div>
 </template>

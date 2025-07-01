@@ -1,6 +1,6 @@
 <template>
   <!-- Footer -->
-  <footer class="text-center text-white mt-5" style="background-color: #0a4275">
+  <footer class="text-center text-white" style="background-color: #0a4275; margin-top: 5rem">
     <!-- Text and button -->
     <div class="py-4">
       <p>

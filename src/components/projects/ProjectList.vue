@@ -27,7 +27,7 @@
     </div>
     <!-- Skeleton list end -->
     <!-- Project list start -->
-    <div v-else class="row">
+    <div v-else>
       <div v-if="projectStore.pageInfo.items.length > 0">
         <!-- Project list -->
         <div class="row">
@@ -56,7 +56,13 @@
         </div>
       </div>
       <!-- Project list empty -->
-      <div v-else></div>
+      <div v-else>
+        <EmptyList
+          title="No projects yet"
+          message="Ready to get started? Use the button above to create your first project."
+          icon-type="pi pi-folder-open"
+        />
+      </div>
     </div>
     <!-- Project list end -->
   </div>
@@ -71,6 +77,7 @@ import { useProjectStore } from "@/stores/project";
 import { useToast } from "primevue/usetoast";
 import { onMounted, ref } from "vue";
 import ProjectItemSkeleton from "./skeletons/ProjectItemSkeleton.vue";
+import EmptyList from "../shared/EmptyList.vue";
 
 const projectStore = useProjectStore();
 const toast = useToast();
