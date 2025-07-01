@@ -1,8 +1,9 @@
 <template>
-  <section>
-    <form @change="handleFormChange" class="mb-4">
-      <Divider align="center" type="dashed">
-        <i class="pi pi-exclamation-triangle"></i> Challenge {{ index + 1 }}
+  <section :id="challenge.id.toString()">
+    <form @input="handleFormChange" class="mb-2">
+      <Divider align="center" type="dashed" class="text-secondary fw-bold">
+        <i class="pi pi-file-edit me-1"></i>
+        <span class="">{{ dividerLabel }}</span>
       </Divider>
       <!-- Title input -->
       <div class="form-group mb-3">
@@ -64,37 +65,49 @@
           </div>
         </Message>
       </div>
-
       <!-- Button section -->
-      <div class="text-end">
+      <div class="text-end mt-1">
         <Button
-          @click="deleteChallenge"
-          icon="pi pi-trash"
+          raised
+          @click="confirmDelete"
+          :icon="isDeletingChallenge ? 'pi pi-spin pi-spinner' : 'pi pi-trash'"
+          :label="isDeletingChallenge ? 'Deleting...' : ''"
+          :disabled="isDeletingChallenge"
           severity="danger"
-          rounded
+          :rounded="isDeletingChallenge ? false : true"
           aria-label="Delete"
+          size="small"
         />
       </div>
     </form>
+    <ConfirmPopup></ConfirmPopup>
   </section>
 </template>
 
 <script setup lang="ts">
 import useVuelidate from "@vuelidate/core";
 import Textarea from "primevue/textarea";
-import { Message } from "primevue";
+import { Message, useConfirm, useToast } from "primevue";
 import InputText from "primevue/inputtext";
 import FloatLabel from "primevue/floatlabel";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref, type PropType, type Ref } from "vue";
 import Button from "primevue/button";
-import Divider from "primevue/divider";
 import { Challenge } from "@/models/challenge";
-import type { ValidatedItem } from "@/interfaces/shared/validatedItem";
+import Divider from "primevue/divider";
 import { required } from "@vuelidate/validators";
+import type { ValidatedItem } from "@/interfaces/shared/validatedItem";
+import ConfirmPopup from "primevue/confirmpopup";
+import { CrudContext } from "@/enums/crudContext";
+import { useChallengeStore } from "@/stores/challenge";
+import { toWords } from "number-to-words";
 
+const toast = useToast();
+
+const store = useChallengeStore();
+const confirm = useConfirm();
 const props = defineProps({
   challenge: {
-    type: Challenge,
+    type: Object as PropType<Challenge>,
     required: false,
     default: () => new Challenge(),
   },
@@ -103,12 +116,28 @@ const props = defineProps({
     required: false,
     default: () => 0,
   },
+  //the current CRUD operation context for the form
+  // based on whether the user is creating, viewing, updating, or deleting the challenge
+  crudContext: {
+    type: String as PropType<CrudContext>,
+    required: true,
+  },
+  //Id of the challenge before the current one.
+  //Used to smoothly navigate up to the previous challenge if the current one is deleted.
+  previousChallengeId: {
+    type: [String],
+    required: false,
+  },
 });
-const emit = defineEmits(["update", "delete"]);
+const emit = defineEmits(["update", "delete", "skipAutoSave"]);
+const isDeletingChallenge = ref(false);
 
 onMounted(() => {
   v$.value.$touch();
 });
+
+//Text for the divider
+const dividerLabel: Ref<string> = computed(() => "Challenge " + toWords(props.index + 1));
 
 //form validation start
 const form = ref({
@@ -126,17 +155,108 @@ const v$ = useVuelidate(rules, form);
 //form validation end
 
 const handleFormChange = async () => {
-  //save the new form updated details
-  const challenge = props.challenge;
+  //save the new challenge details
+  const challenge = Object.assign(new Challenge(), props.challenge);
   challenge.title = form.value.title;
   challenge.problem = form.value.problem;
   challenge.solution = form.value.solution;
+
   //is the form valid or not
   const isFormValid: boolean = await v$.value.$validate();
   //emit the updated form details and the validation state
   const validatedChallenge: ValidatedItem<Challenge> = { item: challenge, isValid: isFormValid };
   emit("update", validatedChallenge);
+  emit("skipAutoSave", false);
 };
 
-const deleteChallenge = () => emit("delete");
+/**
+ * Scrolls to the previous challenge in the list using its element ID.
+ * Useful after deleting a challenge to keep the user’s focus on the preceding one.
+ *
+ * */
+const moveUpToPreviousChallenge = () => {
+  if (props.previousChallengeId) {
+    // Scroll to the previous challenges's element using its ID
+    const element = document.getElementById(props.previousChallengeId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+};
+
+const confirmDelete = () => {
+  confirm.require({
+    message: "Are you sure you want to delete this challenge?",
+    header: "Confirmation",
+    icon: "pi pi-exclamation-triangle",
+    rejectProps: {
+      icon: "pi pi-times",
+      label: "Cancel",
+      severity: "secondary",
+      outlined: true,
+    },
+    acceptProps: {
+      icon: "pi pi-trash",
+      label: "Delete",
+      severity: "danger",
+    },
+    accept: () => {
+      //if current CRUD operation context is Update & the challenge is not new (already persisted in the database).
+      //then the challenge needs to be deleted on the backend since its already an existing challenge that is
+      //being edited
+      if (props.crudContext == CrudContext.Update && !props.challenge.isNew) {
+        deleteChallenge();
+      }
+      //else there is no need to delete the challenge on the backend since it hasn't been created yet
+      //all we need to do is remove it from the UI
+      else {
+        // Emit a signal to skip auto-saving since this challenge doesn't exist in the database
+        // This prevents the parent components from unnecessarily saving the delete
+        emit("skipAutoSave", true);
+        //remove challenge form from the UI
+        emit("delete");
+        //scroll up to the previous challenge after the delete
+        moveUpToPreviousChallenge();
+      }
+    },
+    reject: () => {},
+  });
+};
+
+//Delete the challenge on the backend
+const deleteChallenge = () => {
+  isDeletingChallenge.value = true;
+  const challengeId = props.challenge.id;
+  const projectId = props.challenge.projectId;
+  if (challengeId && projectId) {
+    store
+      .deleteProjectChallenge(challengeId, projectId)
+      .then(() => {
+        // Emit a signal to skip auto-saving since this challenge has already been deleted individually.
+        // This prevents the parent components from unnecessarily triggering a full parent component save.
+        emit("skipAutoSave", true);
+        //remove challenge form from UI
+        emit("delete");
+
+        //show toast
+        toast.add({
+          severity: "success",
+          summary: "Challenge Deleted",
+          detail: "Selected challenge was deleted.",
+          life: 5000,
+        });
+        //scroll uo to the previous challenge after the delete
+        moveUpToPreviousChallenge();
+      })
+      .catch((message) => {
+        toast.add({
+          severity: "error",
+          summary: "Delete Failed",
+          detail: message,
+          life: 10000,
+        });
+      })
+      .finally(() => (isDeletingChallenge.value = false));
+  }
+};
 </script>
