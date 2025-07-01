@@ -2,15 +2,15 @@
   <section>
     <div>
       <AddFeedbackForm
-        v-for="(validatedFeedback, index) in validatedFeedbacks"
+        v-for="(feedback, index) in validatedFeedback"
         :index="index"
-        :key="validatedFeedback.item.id"
+        :key="feedback.item.id"
         @update="(val: ValidatedItem<Feedback>) => updateFeedbackById(val)"
         @skipAutoSave="(val) => (skipAutoSave = val)"
-        @delete="() => deleteFeedbackById(validatedFeedback.item.id)"
-        :feedback="validatedFeedback.item"
+        @delete="() => deleteFeedbackById(feedback.item.id)"
+        :feedback="feedback.item"
         :crudContext="crudContext"
-        :previousFeedbackId="validatedFeedbacks[index - 1]?.item.id.toString()"
+        :previousFeedbackId="validatedFeedback[index - 1]?.item.id.toString()"
       />
     </div>
     <div class="d-flex justify-content-center align-items-center">
@@ -38,7 +38,7 @@ import { useFeedbackStore } from "@/stores/feedback";
 import ConfirmPopup from "primevue/confirmpopup";
 import type { CrudContext } from "@/enums/crudContext";
 
-const emit = defineEmits(["feedbacks", "hasInvalidFeedbacks", "skipAutoSave"]);
+const emit = defineEmits(["feedback", "hasInvalidFeedback", "skipAutoSave"]);
 
 const store = useFeedbackStore();
 
@@ -58,7 +58,7 @@ defineProps({
 
 onMounted(() => {});
 
-const validatedFeedbacks: Ref<ValidatedItem<Feedback>[]> = ref([]);
+const validatedFeedback: Ref<ValidatedItem<Feedback>[]> = ref([]);
 
 // Flag to prevent emitting events during the initial feedback load
 // This ensures that we don't notify the parent about feedback changes
@@ -66,36 +66,36 @@ const validatedFeedbacks: Ref<ValidatedItem<Feedback>[]> = ref([]);
 const isInitialLoad = ref(false);
 
 /**
- * Initializes the feedback list with pre-existing feedbacks (forgive me - I know the word doesn't exist).
+ * Initializes the feedback list with pre-existing feedback.
  * This is typically called from the parent component after fetching data from the backend.
- * The feedbacks are validated before being stored locally.
+ * The feedback is validated before being stored locally.
  * During this initialization phase, no update events will be emitted.
  */
-const initializeFeedbacks = (feedbacks: Feedback[]) => {
-  validatedFeedbacks.value = store.validateGivenFeedback(feedbacks);
+const initializeFeedback = (feedbackList: Feedback[]) => {
+  validatedFeedback.value = store.validateGivenFeedback(feedbackList);
   isInitialLoad.value = true;
 };
 // Expose this method so the parent component can call it after loading data
-defineExpose({ initializeFeedbacks });
+defineExpose({ initializeFeedback });
 
-// Extracts and returns the original Feedback objects from the validatedFeedbacks array
-const feedbacks: Ref<Feedback[]> = computed(() => {
-  return validatedFeedbacks.value.reduce((accumulator, currentValue) => {
+// Extracts and returns the original Feedback objects from the validatedFeedback array
+const feedback: Ref<Feedback[]> = computed(() => {
+  return validatedFeedback.value.reduce((accumulator, currentValue) => {
     accumulator.push(currentValue.item);
     return accumulator;
   }, [] as Feedback[]);
 });
 
 // Determine if any feedback in the list has failed validation
-const hasInvalidFeedbacks: Ref<boolean> = computed(() => {
-  //look for any feedbacks whose validation is invalid
-  const anyInvalid = validatedFeedbacks.value.filter(
-    (validatedFeedbacks) => !validatedFeedbacks.isValid,
+const hasInvalidFeedback: Ref<boolean> = computed(() => {
+  //look for any feedback whose validation is invalid
+  const anyInvalid = validatedFeedback.value.filter(
+    (validatedFeedback) => !validatedFeedback.isValid,
   );
   return anyInvalid.length > 0;
 });
 
-//Add a new feedback to the list of feedbacks when the Add button is clicked
+//Add a new feedback to the list of feedback when the Add button is clicked
 const addNewFeedback = () => {
   const newFeedback = new Feedback();
 
@@ -103,18 +103,18 @@ const addNewFeedback = () => {
   newFeedback.isNew = true;
   //by default, the a new feedback form is invalid since its fields (the required ones) will be  empty
   const isValid = false;
-  validatedFeedbacks.value.push({ item: newFeedback, isValid });
+  validatedFeedback.value.push({ item: newFeedback, isValid });
 };
 
 // Update the feedback with the specified ID
 const updateFeedbackById = (updatedFeedback: ValidatedItem<Feedback>) => {
-  validatedFeedbacks.value = validatedFeedbacks.value.map((validatedFeedback) =>
+  validatedFeedback.value = validatedFeedback.value.map((validatedFeedback) =>
     validatedFeedback.item.id === updatedFeedback.item.id ? updatedFeedback : validatedFeedback,
   );
 };
 //delete a feedback with the specified ID
 const deleteFeedbackById = (targetId: string | number) => {
-  validatedFeedbacks.value = validatedFeedbacks.value.filter(
+  validatedFeedback.value = validatedFeedback.value.filter(
     (validatedFeedback) => validatedFeedback.item.id != targetId,
   );
 };
@@ -124,12 +124,12 @@ const deleteFeedbackById = (targetId: string | number) => {
 // for deletions that are already handled at the feedback level.
 const skipAutoSave = ref(false);
 
-// Watch for changes in the validatedFeedbacks array.
+// Watch for changes in the validatedFeedback array.
 // Whenever any feedback's content or validation state updates,
 // extract the feedback data and emit both the updated list
 // and the combined validation status to keep the parent component in sync.
 watch(
-  validatedFeedbacks,
+  validatedFeedback,
   () => {
     // Skip emitting feedback changes if this is the initial load.
     // The change does not need to be sent back to the parent since
@@ -139,11 +139,11 @@ watch(
       return;
     }
     // Emit the current overall validation status indicating if any feedback is invalid
-    emit("hasInvalidFeedbacks", hasInvalidFeedbacks.value);
+    emit("hasInvalidFeedback", hasInvalidFeedback.value);
     //wether or not to auto save the changes in the parent component
     emit("skipAutoSave", skipAutoSave.value);
-    // Emit the updated list of feedbacks to the parent component
-    emit("feedbacks", feedbacks.value);
+    // Emit the updated list of feedback to the parent component
+    emit("feedback", feedback.value);
   },
   { deep: true },
 );

@@ -363,7 +363,7 @@
         </p>
         <FeedbackListEditor
           @feedback="(feedback: Feedback[]) => (project.feedback = feedback)"
-          @has-invalid-feedbacks="(isAnyInvalid) => (hasInvalidFeedbackForms = isAnyInvalid)"
+          @has-invalid-feedback="(isAnyInvalid) => (hasInvalidFeedbackForms = isAnyInvalid)"
           :crudContext="CrudContext.Create"
         />
       </Panel>
