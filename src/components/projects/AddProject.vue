@@ -317,7 +317,7 @@
         </p>
         <ChallengeListEditor
           @challenges="(challenges: Challenge[]) => (project.challenges = challenges)"
-          @is-any-challenge-invalid="
+          @has-invalid-challenges="
             (isAnyInvalid: boolean) => (hasInvalidChallengeForms = isAnyInvalid)
           "
           :crudContext="CrudContext.Create"
@@ -340,9 +340,10 @@
         </p>
         <AchievementListEditor
           @achievements="(achievements: Achievement[]) => (project.achievements = achievements)"
-          @is-any-achievement-invalid="
+          @has-invalid-achievements="
             (isAnyInvalid: boolean) => (hasInvalidAchievementForms = isAnyInvalid)
           "
+          :crudContext="CrudContext.Create"
         />
       </Panel>
       <!-- Project achievements end  -->
@@ -362,7 +363,8 @@
         </p>
         <FeedbackListEditor
           @feedback="(feedback: Feedback[]) => (project.feedback = feedback)"
-          @is-any-feedback-invalid="(isAnyInvalid) => (hasInvalidFeedbackForms = isAnyInvalid)"
+          @has-invalid-feedbacks="(isAnyInvalid) => (hasInvalidFeedbackForms = isAnyInvalid)"
+          :crudContext="CrudContext.Create"
         />
       </Panel>
       <!-- Project feedback end  -->
