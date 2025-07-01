@@ -94,7 +94,7 @@ import { computed, onMounted, ref, type PropType, type Ref } from "vue";
 import Button from "primevue/button";
 import { Challenge } from "@/models/challenge";
 import Divider from "primevue/divider";
-import { required} from "@vuelidate/validators";
+import { required } from "@vuelidate/validators";
 import type { ValidatedItem } from "@/interfaces/shared/validatedItem";
 import ConfirmPopup from "primevue/confirmpopup";
 import { CrudContext } from "@/enums/crudContext";
@@ -156,7 +156,7 @@ const v$ = useVuelidate(rules, form);
 
 const handleFormChange = async () => {
   //save the new challenge details
-  const challenge = props.challenge;
+  const challenge = Object.assign(new Challenge(), props.challenge);
   challenge.title = form.value.title;
   challenge.problem = form.value.problem;
   challenge.solution = form.value.solution;
