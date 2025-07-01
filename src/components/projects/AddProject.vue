@@ -320,6 +320,7 @@
           @is-any-challenge-invalid="
             (isAnyInvalid: boolean) => (hasInvalidChallengeForms = isAnyInvalid)
           "
+          :crudContext="CrudContext.Create"
         />
       </Panel>
       <!-- Project challenges end  -->
