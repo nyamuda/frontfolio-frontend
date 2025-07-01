@@ -183,7 +183,7 @@ const v$ = useVuelidate(rules, form);
 
 const handleFormChange = async () => {
   //save the new paragraph details
-  const paragraph = props.paragraph;
+  const paragraph = Object.assign(new Paragraph(), props.paragraph);
   paragraph.title = form.value.title;
   paragraph.imageUrl = form.value.imageUrl;
   paragraph.imageCaption = form.value.imageCaption;
