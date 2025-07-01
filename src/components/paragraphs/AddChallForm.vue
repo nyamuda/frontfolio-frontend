@@ -94,7 +94,7 @@ import { computed, onMounted, ref, type PropType, type Ref } from "vue";
 import Button from "primevue/button";
 import { Challenge } from "@/models/challenge";
 import Divider from "primevue/divider";
-import { required, url } from "@vuelidate/validators";
+import { required} from "@vuelidate/validators";
 import type { ValidatedItem } from "@/interfaces/shared/validatedItem";
 import ConfirmPopup from "primevue/confirmpopup";
 import { CrudContext } from "@/enums/crudContext";
@@ -230,7 +230,7 @@ const deleteChallenge = () => {
   const projectId = props.challenge.projectId;
   if (challengeId && projectId) {
     store
-      .deleteProjectBackgroundChallenge(challengeId, projectId)
+      .deleteProjectChallenge(challengeId, projectId)
       .then(() => {
         // Emit a signal to skip auto-saving since this challenge has already been deleted individually.
         // This prevents the parent components from unnecessarily triggering a full parent component save.

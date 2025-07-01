@@ -10,7 +10,8 @@ export const useChallengeStore = defineStore("challenge", () => {
   const validateGivenChallenges = (challenges: Challenge[]): ValidatedItem<Challenge>[] => {
     return challenges.reduce((accumulator, currentValue) => {
       // A challenge is considered valid if all 'title', 'problem' & 'solution' fields are present and non-empty
-      const isValid: boolean = !!currentValue.title && !!currentValue.problem &&!!currentValue.solution;
+      const isValid: boolean =
+        !!currentValue.title && !!currentValue.problem && !!currentValue.solution;
 
       // Wrap the challenge along with its validation result
       const validatedChallenge: ValidatedItem<Challenge> = {
@@ -25,10 +26,7 @@ export const useChallengeStore = defineStore("challenge", () => {
   };
 
   //delete background challenge for a specific project
-  const deleteProjectChallenge = (
-    challengeId: number | string,
-    projectId: number | string,
-  ) => {
+  const deleteProjectChallenge = (challengeId: number | string, projectId: number | string) => {
     return new Promise((resolve, reject) => {
       const url = `${apiUrl}/projects/${projectId}/challenges/${challengeId}`;
       //add an access token to the request to access the protected route
