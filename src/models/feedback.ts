@@ -2,7 +2,7 @@ import type { Project } from "./project";
 
 export class Feedback {
   public constructor(
-    public id: string = crypto.randomUUID(),
+    public id: string | number = crypto.randomUUID(),
     public authorName: string = "",
     public authorRole: string = "",
     public comment: string = "",
