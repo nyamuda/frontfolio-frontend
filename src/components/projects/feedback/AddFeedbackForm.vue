@@ -49,6 +49,7 @@
           <FloatLabel variant="on">
             <DatePicker
               fluid
+              @value-change="handleFormChange"
               inputId="submittedAt"
               v-model="v$.submittedAt.$model"
               view="month"
@@ -179,6 +180,7 @@ const v$ = useVuelidate(rules, form);
 //form validation end
 
 const handleFormChange = async () => {
+  alert("hey");
   //save the new feedback details
   const feedback = Object.assign(new Feedback(), props.feedback);
   feedback.authorName = form.value.authorName;
