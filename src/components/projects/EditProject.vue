@@ -367,7 +367,7 @@
           wonderful way to show your thinking and help others understand your work and vision.
         </p>
 
-        <ParagraphList
+        <ParagraphListEditor
           :paragraphType="ParagraphType.ProjectBackground"
           @paragraphs="(paragraphs: Paragraph[]) => (project.background = paragraphs)"
           @SkipAutoSave="(val) => (skipAutoSaveForBackgroundParagraphs = val)"
@@ -375,7 +375,7 @@
             (isAnyInvalid: boolean) => (hasInvalidBackgroundForms = isAnyInvalid)
           "
           :crudContext="CrudContext.Update"
-          ref="backgroundEditorRef"
+          ref="paragraphListEditorRef"
         />
       </Panel>
       <!-- Project background paragraphs end  -->
@@ -393,15 +393,14 @@
           project. It could be technical issues, time constraints, or anything that tested your
           skills. Sharing challenges shows how you work through problems.
         </p>
-        <ParagraphListEditor
-          :paragraphType="ParagraphType.ProjectBackground"
-          @paragraphs="(paragraphs: Paragraph[]) => (project.background = paragraphs)"
-          @SkipAutoSave="(val) => (skipAutoSaveForBackgroundParagraphs = val)"
-          @has-invalid-paragraphs="
-            (isAnyInvalid: boolean) => (hasInvalidBackgroundForms = isAnyInvalid)
+        <ChallengeListEditor
+          @challenges="(challenges: Challenge[]) => (project.challenges = challenges)"
+          @SkipAutoSave="(val) => (skipAutoSaveForChallenges = val)"
+          @has-invalid-challenges="
+            (isAnyInvalid: boolean) => (hasInvalidChallengeForms = isAnyInvalid)
           "
           :crudContext="CrudContext.Update"
-          ref="backgroundEditorRef"
+          ref="challengeListEditorRef"
         />
       </Panel>
       <!-- Project challenges end  -->
@@ -514,7 +513,10 @@ onMounted(async () => {
 
 // The project being edited
 const project: Ref<Project> = ref(new Project());
-const backgroundEditorRef = ref();
+const paragraphListEditorRef = ref();
+const challengeListEditorRef = ref();
+const achievementListEditorRef = ref();
+const feedbackListEditorRef = ref();
 
 // Determines if the project is a placeholder, typically used
 // when no valid project was loaded indicating failed fetch
@@ -654,7 +656,9 @@ const getProjectById = (id: number) => {
       isInitialLoad.value = true;
       project.value = data;
       //initialize the background paragraphs
-      backgroundEditorRef.value?.initializeParagraphs(data.background);
+      paragraphListEditorRef.value?.initializeParagraphs(data.background);
+      //initialize the challenges
+      challengeListEditorRef.value?.initializeChallenges(data.challenges);
     })
     .catch((message) => {
       // Show error toast if the project fetching fails
