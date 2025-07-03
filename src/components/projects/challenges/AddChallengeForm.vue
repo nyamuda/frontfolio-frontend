@@ -4,7 +4,7 @@
       <!-- Divider & delete button section -->
       <div class="d-flex align-items-center">
         <Divider align="center" type="dashed" class="text-secondary fw-bold">
-          <i class="pi pi-file-edit me-1"></i>
+          <i class="pi pi-exclamation-triangle me-1"></i>
           <span class="">{{ dividerLabel }}</span>
         </Divider>
         <!-- Delete button -->

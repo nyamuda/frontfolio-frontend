@@ -148,6 +148,13 @@ const props = defineProps({
     type: [String],
     required: false,
   },
+  //Id of the paragraph after the current one.
+  //Used to smoothly navigate up to the next paragraph if the current one is deleted and
+  //there is another paragraph next to it
+  nextParagraphId: {
+    type: [String],
+    required: false,
+  },
 });
 const emit = defineEmits(["update", "delete", "skipAutoSave"]);
 const isDeletingParagraph = ref(false);

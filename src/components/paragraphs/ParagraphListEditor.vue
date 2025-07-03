@@ -1,17 +1,20 @@
 <template>
   <section>
     <div>
-      <AddParagraphForm
-        v-for="(validatedParagraph, index) in validatedParagraphs"
-        :index="index"
-        :key="validatedParagraph.item.id"
-        @update="(val: ValidatedItem<Paragraph>) => updateParagraphById(val)"
-        @skipAutoSave="(val) => (skipAutoSave = val)"
-        @delete="() => deleteParagraphById(validatedParagraph.item.id)"
-        :paragraph="validatedParagraph.item"
-        :crudContext="crudContext"
-        :previousParagraphId="validatedParagraphs[index - 1]?.item.id.toString()"
-      />
+      <transition-group name="slide-left-fade">
+        <AddParagraphForm
+          v-for="(validatedParagraph, index) in validatedParagraphs"
+          :index="index"
+          :key="validatedParagraph.item.id"
+          @update="(val: ValidatedItem<Paragraph>) => updateParagraphById(val)"
+          @skipAutoSave="(val) => (skipAutoSave = val)"
+          @delete="() => deleteParagraphById(validatedParagraph.item.id)"
+          :paragraph="validatedParagraph.item"
+          :crudContext="crudContext"
+          :previousParagraphId="validatedParagraphs[index - 1]?.item.id.toString()"
+          :nextParagraphId="validatedParagraphs[index + 1]?.item.id.toString()"
+        />
+      </transition-group>
     </div>
     <div class="d-flex justify-content-center align-items-center">
       <Button
@@ -157,3 +160,20 @@ watch(
   { deep: true },
 );
 </script>
+
+<style lang="scss">
+.slide-left-fade-enter-active,
+.slide-left-fade-leave-active {
+  transition: all 0.4s ease;
+}
+
+.slide-left-fade-enter-from {
+  opacity: 0;
+  transform: translateX(-15px);
+}
+
+.slide-left-fade-leave-to {
+  opacity: 0;
+  transform: translateX(15px); /* move to the right on leave */
+}
+</style>

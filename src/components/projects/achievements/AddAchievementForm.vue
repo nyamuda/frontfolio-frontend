@@ -1,10 +1,10 @@
 <template>
   <section :id="achievement.id.toString()">
     <form @input="handleFormChange" class="mb-2">
-     <!-- Divider & delete button section -->
+      <!-- Divider & delete button section -->
       <div class="d-flex align-items-center">
         <Divider align="center" type="dashed" class="text-secondary fw-bold">
-          <i class="pi pi-file-edit me-1"></i>
+          <i class="pi pi-flag me-1"></i>
           <span class="">{{ dividerLabel }}</span>
         </Divider>
         <!-- Delete button -->
@@ -60,7 +60,6 @@
           </div>
         </Message>
       </div>
-
     </form>
     <ConfirmPopup></ConfirmPopup>
   </section>
