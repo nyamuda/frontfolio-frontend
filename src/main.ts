@@ -31,6 +31,7 @@ import Aura from "@primeuix/themes/aura";
 import ConfirmationService from "primevue/confirmationservice";
 import ToastService from "primevue/toastservice";
 import { definePreset } from "@primeuix/themes";
+import Tooltip from "primevue/tooltip";
 const MyPreset = definePreset(Aura, {
   semantic: {
     primary: {
@@ -63,6 +64,7 @@ const MyPreset = definePreset(Aura, {
 
 //Create app
 const app = createApp(App);
+app.directive("tooltip", Tooltip);
 app
   .use(createPinia())
   .use(PrimeVue, {
