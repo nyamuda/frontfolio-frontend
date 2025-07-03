@@ -2,7 +2,7 @@ import type { Project } from "./project";
 
 export class Achievement {
   public constructor(
-    public id: string = crypto.randomUUID(),
+    public id: string | number = crypto.randomUUID(),
     public title: string = "",
     public description: string = "",
     public projectId: number = 0,
