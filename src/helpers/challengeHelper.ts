@@ -4,7 +4,7 @@ export class ChallengeHelper {
   /**
    * Resets temporary string IDs to 0.
    *
-   * In the frontend, when users create new challenges dynamically (e.g., for a project or blog),
+   * In the frontend, when users create new challenges dynamically (e.g., for a project),
    * each challenge is assigned a temporary string-based ID using tools like `crypto.randomUUID()`.
    * These IDs are useful for managing state in the UI (e.g., tracking and updating items before saving).
    *
