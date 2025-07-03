@@ -393,11 +393,15 @@
           project. It could be technical issues, time constraints, or anything that tested your
           skills. Sharing challenges shows how you work through problems.
         </p>
-        <ChallengeListEditor
-          @challenges="(challenges: Challenge[]) => (project.challenges = challenges)"
-          @is-any-challenge-invalid="
-            (isAnyInvalid: boolean) => (hasInvalidChallengeForms = isAnyInvalid)
+        <ParagraphListEditor
+          :paragraphType="ParagraphType.ProjectBackground"
+          @paragraphs="(paragraphs: Paragraph[]) => (project.background = paragraphs)"
+          @SkipAutoSave="(val) => (skipAutoSaveForBackgroundParagraphs = val)"
+          @has-invalid-paragraphs="
+            (isAnyInvalid: boolean) => (hasInvalidBackgroundForms = isAnyInvalid)
           "
+          :crudContext="CrudContext.Update"
+          ref="backgroundEditorRef"
         />
       </Panel>
       <!-- Project challenges end  -->
@@ -465,7 +469,7 @@ import Panel from "primevue/panel";
 import Textarea from "primevue/textarea";
 import AutoComplete from "primevue/autocomplete";
 import { Project } from "@/models/project";
-import ParagraphList from "../paragraphs/ParagraphListEditor.vue";
+import ParagraphListEditor from "../paragraphs/ParagraphListEditor.vue";
 import ChallengeListEditor from "./challenges/ChallengeListEditor.vue";
 import AchievementListEditor from "./achievements/AchievementListEditor.vue";
 import FeedbackListEditor from "./feedback/FeedbackListEditor.vue";
@@ -565,6 +569,15 @@ const isAutoSaveEnabled = ref(true);
 // Flag to temporarily suppress auto-saving when background paragraphs are modified.
 // Used to avoid triggering an unnecessary save when changes are already handled elsewhere (e.g., on delete).
 const skipAutoSaveForBackgroundParagraphs = ref(false);
+// Flag to temporarily suppress auto-saving when challenges are modified.
+// Used to avoid triggering an unnecessary save when changes are already handled elsewhere (e.g., on delete).
+const skipAutoSaveForChallenges = ref(false);
+// Flag to temporarily suppress auto-saving when achievement are modified.
+// Used to avoid triggering an unnecessary save when changes are already handled elsewhere (e.g., on delete).
+const skipAutoSaveForAchievements = ref(false);
+// Flag to temporarily suppress auto-saving when feedback items are modified.
+// Used to avoid triggering an unnecessary save when changes are already handled elsewhere (e.g., on delete).
+const skipAutoSaveForFeedbackList = ref(false);
 
 /**
  * Determines whether autosave should be skipped based on the provided flag.
@@ -771,6 +784,12 @@ watch(
 
     //if skip auto save is on for background paragraphs, don't go any further
     if (checkAndResetAutoSaveSkip(skipAutoSaveForBackgroundParagraphs)) return;
+    //if skip auto save is on for challenges, don't go any further
+    if (checkAndResetAutoSaveSkip(skipAutoSaveForChallenges)) return;
+    //if skip auto save is on for achievements, don't go any further
+    if (checkAndResetAutoSaveSkip(skipAutoSaveForAchievements)) return;
+    //if skip auto save is on for feedback, don't go any further
+    if (checkAndResetAutoSaveSkip(skipAutoSaveForFeedbackList)) return;
 
     hasUnsavedChanges.value = true;
 
