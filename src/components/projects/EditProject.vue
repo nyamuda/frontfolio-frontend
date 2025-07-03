@@ -659,6 +659,10 @@ const getProjectById = (id: number) => {
       paragraphListEditorRef.value?.initializeParagraphs(data.background);
       //initialize the challenges
       challengeListEditorRef.value?.initializeChallenges(data.challenges);
+      //initialize the achievements
+      achievementListEditorRef.value?.initializeAchievements(data.achievements);
+      //initialize the feedback
+      feedbackListEditorRef.value?.initializeFeedback(data.feedback);
     })
     .catch((message) => {
       // Show error toast if the project fetching fails
