@@ -1,10 +1,12 @@
 <template>
   <section :id="paragraph.id.toString()">
     <form @input="handleFormChange" class="mb-2">
-      <Divider align="center" type="dashed" class="text-secondary fw-bold">
-        <i class="pi pi-file-edit me-1"></i>
-        <span class="">{{ dividerLabel }}</span>
-
+      <div class="d-flex align-items-center">
+        <Divider align="center" type="dashed" class="text-secondary fw-bold">
+          <i class="pi pi-file-edit me-1"></i>
+          <span class="">{{ dividerLabel }}</span>
+        </Divider>
+        <!-- Deleted -->
         <Button
           @click="confirmDelete"
           :icon="isDeletingParagraph ? 'pi pi-spin pi-spinner' : 'pi pi-trash'"
@@ -17,7 +19,7 @@
           class="ms-2"
           v-tooltip="'Delete this paragraph'"
         />
-      </Divider>
+      </div>
 
       <!-- Title input -->
       <div class="form-group mb-3">
@@ -96,20 +98,6 @@
           </div>
         </Message>
       </div>
-      <!-- Button section -->
-      <!-- <div class="text-end mt-1">
-        <Button
-          raised
-          @click="confirmDelete"
-          :icon="isDeletingParagraph ? 'pi pi-spin pi-spinner' : 'pi pi-trash'"
-          :label="isDeletingParagraph ? 'Deleting...' : ''"
-          :disabled="isDeletingParagraph"
-          severity="danger"
-          :rounded="isDeletingParagraph ? false : true"
-          aria-label="Delete"
-          size="small"
-        />
-      </div> -->
     </form>
     <ConfirmPopup></ConfirmPopup>
   </section>
