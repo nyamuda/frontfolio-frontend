@@ -420,9 +420,12 @@
         </p>
         <AchievementListEditor
           @achievements="(achievements: Achievement[]) => (project.achievements = achievements)"
-          @is-any-achievement-invalid="
+          @SkipAutoSave="(val) => (skipAutoSaveForAchievements = val)"
+          @has-invalid-achievements="
             (isAnyInvalid: boolean) => (hasInvalidAchievementForms = isAnyInvalid)
           "
+          :crudContext="CrudContext.Update"
+          ref="achievementListEditorRef"
         />
       </Panel>
       <!-- Project achievements end  -->
@@ -442,7 +445,12 @@
         </p>
         <FeedbackListEditor
           @feedback="(feedback: Feedback[]) => (project.feedback = feedback)"
-          @is-any-feedback-invalid="(isAnyInvalid) => (hasInvalidFeedbackForms = isAnyInvalid)"
+          @SkipAutoSave="(val) => (skipAutoSaveForFeedbackList = val)"
+          @has-invalid-feedback="
+            (isAnyInvalid: boolean) => (hasInvalidChallengeForms = isAnyInvalid)
+          "
+          :crudContext="CrudContext.Update"
+          ref="feedbackListEditorRef"
         />
       </Panel>
       <!-- Project feedback end  -->
