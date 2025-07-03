@@ -2,7 +2,7 @@
   <section :id="achievement.id.toString()">
     <form @input="handleFormChange" class="mb-2">
       <Divider align="center" type="dashed" class="text-secondary fw-bold">
-        <i class="pi pi-file-edit me-1"></i>
+        <i class="pi pi-flag me-1"></i>
         <span class="">{{ dividerLabel }}</span>
       </Divider>
       <!-- Title input -->
@@ -25,7 +25,7 @@
       </div>
 
       <!-- Description input -->
-      <div class="form-group mb-3">
+      <div class="form-group">
         <FloatLabel variant="on">
           <Textarea
             id="problem"

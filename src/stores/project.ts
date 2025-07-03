@@ -20,10 +20,14 @@ export const useProjectStore = defineStore("project", () => {
       axios
         .get<Project>(url)
         .then((response) => {
-          //format the start & end dates from UTC to local time for better readability
-          const project: Project = response.data;
+          //format any dates from UTC to local time for better readability
+          const project: Project = Object.assign(new Project(), response.data);
           project.startDate = DateHelper.convertTimeFromUTCToLocal(project.startDate);
           project.endDate = DateHelper.convertTimeFromUTCToLocal(project.endDate);
+          project.feedback = project.feedback.map((feedback) => {
+            feedback.submittedAt = DateHelper.convertTimeFromUTCToLocal(feedback.submittedAt);
+            return feedback;
+          });
           resolve(project);
         })
         .catch(() => {
