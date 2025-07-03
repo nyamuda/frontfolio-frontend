@@ -1,5 +1,8 @@
 import { Project } from "@/models/project";
 import { ParagraphHelper } from "./paragraphHelper";
+import { ChallengeHelper } from "./challengeHelper";
+import { AchievementHelper } from "./achievementHelper";
+import { FeedbackHelper } from "./feedbackHelper";
 
 export class ProjectHelper {
   /**
@@ -17,6 +20,14 @@ export class ProjectHelper {
     projectToSubmit.nullifyEmptyUrls();
     //Reset temporary string IDs of new background paragraphs to 0
     projectToSubmit.background = ParagraphHelper.resetTemporaryIds(projectToSubmit.background);
+    //Reset temporary string IDs of new challenges to 0
+    projectToSubmit.challenges = ChallengeHelper.resetTemporaryIds(projectToSubmit.challenges);
+    //Reset temporary string IDs of new achievements to 0
+    projectToSubmit.achievements = AchievementHelper.resetTemporaryIds(
+      projectToSubmit.achievements,
+    );
+    //Reset temporary string IDs of new feedback to 0
+    projectToSubmit.feedback = FeedbackHelper.resetTemporaryIds(projectToSubmit.feedback);
 
     return projectToSubmit;
   }
