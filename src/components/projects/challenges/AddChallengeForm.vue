@@ -1,10 +1,26 @@
 <template>
   <section :id="challenge.id.toString()">
     <form @input="handleFormChange" class="mb-2">
-      <Divider align="center" type="dashed" class="text-secondary fw-bold">
-        <i class="pi pi-exclamation-triangle me-1"></i>
-        <span class="">{{ dividerLabel }}</span>
-      </Divider>
+      <!-- Divider & delete button section -->
+      <div class="d-flex align-items-center">
+        <Divider align="center" type="dashed" class="text-secondary fw-bold">
+          <i class="pi pi-file-edit me-1"></i>
+          <span class="">{{ dividerLabel }}</span>
+        </Divider>
+        <!-- Delete button -->
+        <Button
+          @click="confirmDelete"
+          :icon="isDeletingChallenge ? 'pi pi-spin pi-spinner' : 'pi pi-trash'"
+          :label="isDeletingChallenge ? 'Deleting...' : ''"
+          :disabled="isDeletingChallenge"
+          severity="danger"
+          :rounded="isDeletingChallenge ? false : true"
+          aria-label="Delete"
+          size="small"
+          class="ms-2"
+          v-tooltip="'Delete this challenge'"
+        />
+      </div>
       <!-- Title input -->
       <div class="form-group mb-3">
         <FloatLabel variant="on">
@@ -64,20 +80,6 @@
             <div>{{ error.$message }}</div>
           </div>
         </Message>
-      </div>
-      <!-- Button section -->
-      <div class="text-end mt-1">
-        <Button
-          raised
-          @click="confirmDelete"
-          :icon="isDeletingChallenge ? 'pi pi-spin pi-spinner' : 'pi pi-trash'"
-          :label="isDeletingChallenge ? 'Deleting...' : ''"
-          :disabled="isDeletingChallenge"
-          severity="danger"
-          :rounded="isDeletingChallenge ? false : true"
-          aria-label="Delete"
-          size="small"
-        />
       </div>
     </form>
     <ConfirmPopup></ConfirmPopup>

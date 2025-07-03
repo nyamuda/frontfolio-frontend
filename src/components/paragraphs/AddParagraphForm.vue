@@ -1,12 +1,13 @@
 <template>
   <section :id="paragraph.id.toString()">
     <form @input="handleFormChange" class="mb-2">
+      <!-- Divider & delete button section -->
       <div class="d-flex align-items-center">
         <Divider align="center" type="dashed" class="text-secondary fw-bold">
           <i class="pi pi-file-edit me-1"></i>
           <span class="">{{ dividerLabel }}</span>
         </Divider>
-        <!-- Deleted -->
+        <!-- Delete button -->
         <Button
           @click="confirmDelete"
           :icon="isDeletingParagraph ? 'pi pi-spin pi-spinner' : 'pi pi-trash'"
@@ -115,7 +116,6 @@ import { Paragraph } from "@/models/paragraph";
 import Divider from "primevue/divider";
 import { required, url } from "@vuelidate/validators";
 import type { ValidatedItem } from "@/interfaces/shared/validatedItem";
-import { ParagraphType } from "@/enums/paragraphType";
 import ConfirmPopup from "primevue/confirmpopup";
 import { CrudContext } from "@/enums/crudContext";
 import { useParagraphStore } from "@/stores/paragraph";
@@ -157,14 +157,7 @@ onMounted(() => {
 });
 
 //Text for the divider
-const dividerLabel: Ref<string> = computed(() => {
-  switch (props.paragraph.paragraphType) {
-    case ParagraphType.ProjectBackground:
-      return "Project paragraph " + toWords(props.index + 1);
-    default:
-      return "Paragraph " + toWords(props.index + 1);
-  }
-});
+const dividerLabel: Ref<string> = computed(() => "Paragraph " + toWords(props.index + 1));
 
 //form validation start
 const form = ref({

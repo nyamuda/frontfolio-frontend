@@ -1,10 +1,26 @@
 <template>
   <section :id="achievement.id.toString()">
     <form @input="handleFormChange" class="mb-2">
-      <Divider align="center" type="dashed" class="text-secondary fw-bold">
-        <i class="pi pi-flag me-1"></i>
-        <span class="">{{ dividerLabel }}</span>
-      </Divider>
+     <!-- Divider & delete button section -->
+      <div class="d-flex align-items-center">
+        <Divider align="center" type="dashed" class="text-secondary fw-bold">
+          <i class="pi pi-file-edit me-1"></i>
+          <span class="">{{ dividerLabel }}</span>
+        </Divider>
+        <!-- Delete button -->
+        <Button
+          @click="confirmDelete"
+          :icon="isDeletingAchievement ? 'pi pi-spin pi-spinner' : 'pi pi-trash'"
+          :label="isDeletingAchievement ? 'Deleting...' : ''"
+          :disabled="isDeletingAchievement"
+          severity="danger"
+          :rounded="isDeletingAchievement ? false : true"
+          aria-label="Delete"
+          size="small"
+          class="ms-2"
+          v-tooltip="'Delete this achievement'"
+        />
+      </div>
       <!-- Title input -->
       <div class="form-group mb-3">
         <FloatLabel variant="on">
@@ -45,20 +61,6 @@
         </Message>
       </div>
 
-      <!-- Button section -->
-      <div class="text-end mt-1">
-        <Button
-          raised
-          @click="confirmDelete"
-          :icon="isDeletingAchievement ? 'pi pi-spin pi-spinner' : 'pi pi-trash'"
-          :label="isDeletingAchievement ? 'Deleting...' : ''"
-          :disabled="isDeletingAchievement"
-          severity="danger"
-          :rounded="isDeletingAchievement ? false : true"
-          aria-label="Delete"
-          size="small"
-        />
-      </div>
     </form>
     <ConfirmPopup></ConfirmPopup>
   </section>
