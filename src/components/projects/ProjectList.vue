@@ -42,7 +42,7 @@
             checkmark
             v-model="projectStore.sortBy"
             :options="sortOptions"
-            @change="getProjects"
+            @change="sortProjects"
           />
         </div>
       </div>
@@ -127,6 +127,14 @@ const sortOptions: Ref<ProjectSortOption[]> = computed(() => [
   ProjectSortOption.SortOrder,
   ProjectSortOption.Status,
 ]);
+
+const sortProjects = () => {
+  //reset the current page to 1
+  //to start from the beginning of the sorted list
+  projectStore.pageInfo.page = 1;
+  //get the sort list of projects
+  getProjects();
+};
 
 //get projects
 const getProjects = () => {
