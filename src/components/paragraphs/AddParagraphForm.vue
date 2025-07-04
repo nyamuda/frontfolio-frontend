@@ -162,7 +162,7 @@ const props = defineProps({
     type: [String],
     required: false,
   },
-  // The DOM element ID of the scrollable container that wraps the list of items (e.g., paragraphs).
+  // The DOM element ID of the container that wraps the list of items (e.g., paragraphs).
   // This is used as a final fallback scroll target if neither `previousItemId` nor `nextItemId` is available.
   // Helps prevent abrupt layout jumps by ensuring the user always lands back in the main container.
   //
@@ -215,11 +215,10 @@ const handleFormChange = async () => {
 };
 
 /**
- * Scrolls to the previous paragraph in the list using its element ID.
- * Useful after deleting a paragraph to keep the user’s focus on the preceding one.
- *
- * */
-const moveUpToPreviousParagraph = () => {
+ * Smoothly scrolls to the DOM element representing the paragraph *before* the current one.
+ * This helps maintain user focus after deleting a paragraph by repositioning them to the previous element.
+ */
+const moveToPreviousParagraph = () => {
   if (props.previousParagraphId) {
     // Scroll to the previous paragraphs's element using its ID
     const element = document.getElementById(props.previousParagraphId);
@@ -228,12 +227,12 @@ const moveUpToPreviousParagraph = () => {
     }
   }
 };
+
 /**
- * Scrolls to the next paragraph in the list using its element ID.
- * Useful after deleting a paragraph to keep the user’s focus on the next one if it exists.
+ * Smoothly scrolls to the DOM element representing the paragraph *after* the current one.
  *
- * */
-const moveDownToNextParagraph = () => {
+ */
+const moveToNextParagraph = () => {
   if (props.nextParagraphId) {
     // Scroll to the previous paragraphs's element using its ID
     const element = document.getElementById(props.nextParagraphId);
@@ -242,21 +241,27 @@ const moveDownToNextParagraph = () => {
     }
   }
 };
-
-const moveUpToParentElement = () => {
-  if (props.parentContainerId) {
-    // Scroll to the previous paragraphs's element using its ID
-    const element = document.getElementById("check-pp");
+/**
+ * Scrolls to the fallback container if there are no sibling paragraphs before or after the deleted one.
+ * Ensures the user isn't left disoriented after deleting the only item in a section.
+ */
+const scrollToFallbackContainer = () => {
+  if (props.fallbackContainerId) {
+    const element = document.getElementById(props.fallbackContainerId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
 };
 
+/**
+ * Determines where to scroll after a paragraph is deleted.
+ * Priority: scroll to the next item → scroll to the previous item → scroll to fallback container.
+ */
 const moveToSectionAfterDelete = () => {
-  if (props.nextParagraphId) moveDownToNextParagraph();
-  else if (props.previousParagraphId) moveUpToPreviousParagraph();
-  else moveUpToParentElement();
+  if (props.nextParagraphId) moveToNextParagraph();
+  else if (props.previousParagraphId) moveToPreviousParagraph();
+  else scrollToFallbackContainer();
 };
 
 const confirmDelete = () => {
