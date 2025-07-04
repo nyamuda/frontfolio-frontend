@@ -142,8 +142,8 @@ const props = defineProps({
     type: String as PropType<CrudContext>,
     required: true,
   },
-  // The DOM element ID of the item that appears immediately *before* the current item in the list.
-  // When the current item is deleted, this ID is used to smoothly scroll the user’s view to the previous item,
+  // The DOM element ID of the paragraph that appears immediately *before* the current paragraph in the list.
+  // When the current paragraph is deleted, this ID is used to smoothly scroll the user’s view to the previous paragraph,
   // helping maintain context and focus without jumping to an unrelated section.
   //
   // Example use: If a user deletes the second paragraph in a list, the app scrolls to the first paragraph.
@@ -152,9 +152,9 @@ const props = defineProps({
     type: [String],
     required: false,
   },
-  // The DOM element ID of the item that appears immediately *after* the current item in the list.
+  // The DOM element ID of the paragraph that appears immediately *after* the current paragraph in the list.
   // This ID is used for scrolling only if there is a `nextParagraphId` to scroll to after a deletion.
-  // Helps maintain continuity by shifting focus to the next available item.
+  // Helps maintain continuity by shifting focus to the next available paragraph.
   //
   // Example: If a user deletes the second paragraph and there’s a third paragraph, the app scrolls to that
   //third paragraph.
@@ -163,10 +163,10 @@ const props = defineProps({
     required: false,
   },
   // The DOM element ID of the container that wraps the list of items (e.g., paragraphs).
-  // This is used as a final fallback scroll target if neither `previousItemId` nor `nextItemId` is available.
+  // This is used as a final fallback scroll target if neither `previousParagraphId` nor `nextParagraphId` is available.
   // Helps prevent abrupt layout jumps by ensuring the user always lands back in the main container.
   //
-  // Example: If a user deletes the only item in the list, the UI scrolls back to the top of the container.
+  // Example: If a user deletes the only paragraph in the list, the UI scrolls back to the top of the container.
   fallbackContainerId: {
     type: [String],
     required: false,

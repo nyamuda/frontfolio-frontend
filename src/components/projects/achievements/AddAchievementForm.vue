@@ -103,9 +103,32 @@ const props = defineProps({
     type: String as PropType<CrudContext>,
     required: true,
   },
-  //Id of the achievement before the current one.
-  //Used to smoothly navigate up to the previous achievement if the current one is deleted.
+  // The DOM element ID of the achievement that appears immediately *before* the current achievement in the list.
+  // When the current achievement is deleted, this ID is used to smoothly scroll the user’s view to the previous achievement,
+  // helping maintain context and focus without jumping to an unrelated section.
+  //
+  // Example use: If a user deletes the second achievement in a list, the app scrolls to the first achievement.
+
   previousAchievementId: {
+    type: [String],
+    required: false,
+  },
+  // The DOM element ID of the achievement that appears immediately *after* the current achievement in the list.
+  // This ID is used for scrolling only if there is a `nextAchievementId` to scroll to after a deletion.
+  // Helps maintain continuity by shifting focus to the next available achievement.
+  //
+  // Example: If a user deletes the second achievement and there’s a third achievement, the app scrolls to that
+  //third achievement.
+  nextAchievementId: {
+    type: [String],
+    required: false,
+  },
+  // The DOM element ID of the container that wraps the list of items (e.g., achievements).
+  // This is used as a final fallback scroll target if neither `previousAchievementId` nor `nextAchievementId` is available.
+  // Helps prevent abrupt layout jumps by ensuring the user always lands back in the main container.
+  //
+  // Example: If a user deletes the only achievement in the list, the UI scrolls back to the top of the container.
+  fallbackContainerId: {
     type: [String],
     required: false,
   },
@@ -151,11 +174,10 @@ const handleFormChange = async () => {
 };
 
 /**
- * Scrolls to the previous achievement in the list using its element ID.
- * Useful after deleting a achievement to keep the user’s focus on the preceding one.
- *
- * */
-const moveUpToPreviousAchievement = () => {
+ * Smoothly scrolls to the DOM element representing the achievement *before* the current one.
+ * This helps maintain user focus after deleting a achievement by repositioning them to the previous element.
+ */
+const moveToPreviousAchievement = () => {
   if (props.previousAchievementId) {
     // Scroll to the previous achievements's element using its ID
     const element = document.getElementById(props.previousAchievementId);
@@ -163,6 +185,42 @@ const moveUpToPreviousAchievement = () => {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
+};
+
+/**
+ * Smoothly scrolls to the DOM element representing the achievement *after* the current one.
+ *
+ */
+const moveToNextAchievement = () => {
+  if (props.nextAchievementId) {
+    // Scroll to the previous achievements's element using its ID
+    const element = document.getElementById(props.nextAchievementId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+};
+/**
+ * Scrolls to the fallback container if there are no sibling achievements before or after the deleted one.
+ * Ensures the user isn't left disoriented after deleting the only item in a section.
+ */
+const scrollToFallbackContainer = () => {
+  if (props.fallbackContainerId) {
+    const element = document.getElementById(props.fallbackContainerId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+};
+
+/**
+ * Determines where to scroll after a achievement is deleted.
+ * Priority: scroll to the next item → scroll to the previous item → scroll to fallback container.
+ */
+const scrollAfterAchievementDelete = () => {
+  if (props.nextAchievementId) moveToNextAchievement();
+  else if (props.previousAchievementId) moveToPreviousAchievement();
+  else scrollToFallbackContainer();
 };
 
 const confirmDelete = () => {
@@ -196,8 +254,8 @@ const confirmDelete = () => {
         emit("skipAutoSave", true);
         //remove achievement form from the UI
         emit("delete");
-        //scroll up to the previous achievement after the delete
-        moveUpToPreviousAchievement();
+        //scroll to the previous or next achievement after the delete
+        scrollAfterAchievementDelete();
       }
     },
     reject: () => {},
@@ -226,8 +284,8 @@ const deleteAchievement = () => {
           detail: "Selected achievement was deleted.",
           life: 5000,
         });
-        //scroll uo to the previous achievement after the delete
-        moveUpToPreviousAchievement();
+        //scroll to the previous or next achievement after the delete
+        scrollAfterAchievementDelete();
       })
       .catch((message) => {
         toast.add({

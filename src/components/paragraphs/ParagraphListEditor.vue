@@ -1,7 +1,7 @@
 <template>
   <section>
     <div>
-      <transition-group name="skew-fade-slide">
+      <transition-group name="slide-left-fade">
         <AddParagraphForm
           v-for="(validatedParagraph, index) in validatedParagraphs"
           :index="index"
@@ -172,18 +172,33 @@ watch(
 </script>
 
 <style lang="scss">
-.skew-fade-slide-enter-active,
-.skew-fade-slide-leave-active {
+// .skew-fade-slide-enter-active,
+// .skew-fade-slide-leave-active {
+//   transition: all 0.4s ease;
+// }
+
+// .skew-fade-slide-enter-from {
+//   opacity: 0;
+//   transform: skewY(1deg) translateY(10px); /* skew + slide in */
+// }
+
+// .skew-fade-slide-leave-to {
+//   opacity: 0;
+//   transform: translateX(20px); /* fade + slide right on leave */
+// }
+
+.slide-left-fade-enter-active,
+.slide-left-fade-leave-active {
   transition: all 0.4s ease;
 }
 
-.skew-fade-slide-enter-from {
+.slide-left-fade-enter-from {
   opacity: 0;
-  transform: skewY(1deg) translateY(10px); /* skew + slide in */
+  transform: translateX(-15px);
 }
 
-.skew-fade-slide-leave-to {
+.slide-left-fade-leave-to {
   opacity: 0;
-  transform: translateX(20px); /* fade + slide right on leave */
+  transform: translateX(15px); /* move to the right on leave */
 }
 </style>

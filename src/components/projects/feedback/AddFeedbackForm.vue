@@ -147,9 +147,32 @@ const props = defineProps({
     type: String as PropType<CrudContext>,
     required: true,
   },
-  //Id of the feedback before the current one.
-  //Used to smoothly navigate up to the previous feedback if the current one is deleted.
+  // The DOM element ID of the feedback that appears immediately *before* the current feedback in the list.
+  // When the current feedback is deleted, this ID is used to smoothly scroll the user’s view to the previous feedback,
+  // helping maintain context and focus without jumping to an unrelated section.
+  //
+  // Example use: If a user deletes the second feedback in a list, the app scrolls to the first feedback.
+
   previousFeedbackId: {
+    type: [String],
+    required: false,
+  },
+  // The DOM element ID of the feedback that appears immediately *after* the current feedback in the list.
+  // This ID is used for scrolling only if there is a `nextFeedbackId` to scroll to after a deletion.
+  // Helps maintain continuity by shifting focus to the next available feedback.
+  //
+  // Example: If a user deletes the second feedback and there’s a third feedback, the app scrolls to that
+  //third feedback.
+  nextFeedbackId: {
+    type: [String],
+    required: false,
+  },
+  // The DOM element ID of the container that wraps the list of items (e.g., feedback).
+  // This is used as a final fallback scroll target if neither `previousFeedbackId` nor `nextFeedbackId` is available.
+  // Helps prevent abrupt layout jumps by ensuring the user always lands back in the main container.
+  //
+  // Example: If a user deletes the only feedback in the list, the UI scrolls back to the top of the container.
+  fallbackContainerId: {
     type: [String],
     required: false,
   },
@@ -198,19 +221,54 @@ const handleFormChange = async () => {
 };
 
 /**
- * Scrolls to the previous feedback in the list using its element ID.
- * Useful after deleting a feedback to keep the user’s focus on the preceding one.
- *
- * */
-const moveUpToPreviousFeedback = () => {
+ * Smoothly scrolls to the DOM element representing the feedback *before* the current one.
+ * This helps maintain user focus after deleting a feedback by repositioning them to the previous element.
+ */
+const moveToPreviousFeedback = () => {
   if (props.previousFeedbackId) {
-    // Scroll to the previous feedbacks's element using its ID
+    // Scroll to the previous feedback's element using its ID
     const element = document.getElementById(props.previousFeedbackId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
 };
+
+/**
+ * Smoothly scrolls to the DOM element representing the feedback *after* the current one.
+ *
+ */
+const moveToNextFeedback = () => {
+  if (props.nextFeedbackId) {
+    // Scroll to the previous feedback's element using its ID
+    const element = document.getElementById(props.nextFeedbackId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+};
+/**
+ * Scrolls to the fallback container if there are no sibling feedback before or after the deleted one.
+ * Ensures the user isn't left disoriented after deleting the only item in a section.
+ */
+const scrollToFallbackContainer = () => {
+  if (props.fallbackContainerId) {
+    const element = document.getElementById(props.fallbackContainerId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+};
+/**
+ * Determines where to scroll after a feedback is deleted.
+ * Priority: scroll to the next item → scroll to the previous item → scroll to fallback container.
+ */
+const scrollAfterFeedbackDelete = () => {
+  if (props.nextFeedbackId) moveToNextFeedback();
+  else if (props.previousFeedbackId) moveToPreviousFeedback();
+  else scrollToFallbackContainer();
+};
+
 
 const confirmDelete = () => {
   confirm.require({
@@ -243,8 +301,8 @@ const confirmDelete = () => {
         emit("skipAutoSave", true);
         //remove feedback form from the UI
         emit("delete");
-        //scroll up to the previous feedback after the delete
-        moveUpToPreviousFeedback();
+         //scroll to the previous or next feedback after the delete
+        scrollAfterFeedbackDelete();
       }
     },
     reject: () => {},
@@ -273,8 +331,8 @@ const deleteFeedback = () => {
           detail: "Selected feedback was deleted.",
           life: 5000,
         });
-        //scroll uo to the previous feedback after the delete
-        moveUpToPreviousFeedback();
+          //scroll to the previous or next feedback after the delete
+        scrollAfterFeedbackDelete();
       })
       .catch((message) => {
         toast.add({
