@@ -1,17 +1,19 @@
 <template>
   <section>
     <div>
-      <AddAchievementForm
-        v-for="(validatedAchievement, index) in validatedAchievements"
-        :index="index"
-        :key="validatedAchievement.item.id"
-        @update="(val: ValidatedItem<Achievement>) => updateAchievementById(val)"
-        @skipAutoSave="(val) => (skipAutoSave = val)"
-        @delete="() => deleteAchievementById(validatedAchievement.item.id)"
-        :achievement="validatedAchievement.item"
-        :crudContext="crudContext"
-        :previousAchievementId="validatedAchievements[index - 1]?.item.id.toString()"
-      />
+      <transition-group name="slide-left-fade">
+        <AddAchievementForm
+          v-for="(validatedAchievement, index) in validatedAchievements"
+          :index="index"
+          :key="validatedAchievement.item.id"
+          @update="(val: ValidatedItem<Achievement>) => updateAchievementById(val)"
+          @skipAutoSave="(val) => (skipAutoSave = val)"
+          @delete="() => deleteAchievementById(validatedAchievement.item.id)"
+          :achievement="validatedAchievement.item"
+          :crudContext="crudContext"
+          :previousAchievementId="validatedAchievements[index - 1]?.item.id.toString()"
+        />
+      </transition-group>
     </div>
     <div class="d-flex justify-content-center align-items-center">
       <Button
@@ -109,7 +111,9 @@ const addNewAchievement = () => {
 // Update the achievement with the specified ID
 const updateAchievementById = (updatedAchievement: ValidatedItem<Achievement>) => {
   validatedAchievements.value = validatedAchievements.value.map((validatedAchievement) =>
-    validatedAchievement.item.id === updatedAchievement.item.id ? updatedAchievement : validatedAchievement,
+    validatedAchievement.item.id === updatedAchievement.item.id
+      ? updatedAchievement
+      : validatedAchievement,
   );
 };
 //delete a achievement with the specified ID
@@ -148,3 +152,34 @@ watch(
   { deep: true },
 );
 </script>
+<style lang="scss">
+// .skew-fade-slide-enter-active,
+// .skew-fade-slide-leave-active {
+//   transition: all 0.4s ease;
+// }
+
+// .skew-fade-slide-enter-from {
+//   opacity: 0;
+//   transform: skewY(1deg) translateY(10px); /* skew + slide in */
+// }
+
+// .skew-fade-slide-leave-to {
+//   opacity: 0;
+//   transform: translateX(20px); /* fade + slide right on leave */
+// }
+
+.slide-left-fade-enter-active,
+.slide-left-fade-leave-active {
+  transition: all 0.4s ease;
+}
+
+.slide-left-fade-enter-from {
+  opacity: 0;
+  transform: translateX(-15px);
+}
+
+.slide-left-fade-leave-to {
+  opacity: 0;
+  transform: translateX(15px); /* move to the right on leave */
+}
+</style>

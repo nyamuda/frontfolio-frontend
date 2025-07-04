@@ -1,17 +1,19 @@
 <template>
   <section>
     <div>
-      <AddChallengeForm
-        v-for="(validatedChallenge, index) in validatedChallenges"
-        :index="index"
-        :key="validatedChallenge.item.id"
-        @update="(val: ValidatedItem<Challenge>) => updateChallengeById(val)"
-        @skipAutoSave="(val) => (skipAutoSave = val)"
-        @delete="() => deleteChallengeById(validatedChallenge.item.id)"
-        :challenge="validatedChallenge.item"
-        :crudContext="crudContext"
-        :previousChallengeId="validatedChallenges[index - 1]?.item.id.toString()"
-      />
+      <transition-group name="slide-left-fade">
+        <AddChallengeForm
+          v-for="(validatedChallenge, index) in validatedChallenges"
+          :index="index"
+          :key="validatedChallenge.item.id"
+          @update="(val: ValidatedItem<Challenge>) => updateChallengeById(val)"
+          @skipAutoSave="(val) => (skipAutoSave = val)"
+          @delete="() => deleteChallengeById(validatedChallenge.item.id)"
+          :challenge="validatedChallenge.item"
+          :crudContext="crudContext"
+          :previousChallengeId="validatedChallenges[index - 1]?.item.id.toString()"
+        />
+      </transition-group>
     </div>
     <div class="d-flex justify-content-center align-items-center">
       <Button
@@ -148,3 +150,34 @@ watch(
   { deep: true },
 );
 </script>
+<style lang="scss">
+// .skew-fade-slide-enter-active,
+// .skew-fade-slide-leave-active {
+//   transition: all 0.4s ease;
+// }
+
+// .skew-fade-slide-enter-from {
+//   opacity: 0;
+//   transform: skewY(1deg) translateY(10px); /* skew + slide in */
+// }
+
+// .skew-fade-slide-leave-to {
+//   opacity: 0;
+//   transform: translateX(20px); /* fade + slide right on leave */
+// }
+
+.slide-left-fade-enter-active,
+.slide-left-fade-leave-active {
+  transition: all 0.4s ease;
+}
+
+.slide-left-fade-enter-from {
+  opacity: 0;
+  transform: translateX(-15px);
+}
+
+.slide-left-fade-leave-to {
+  opacity: 0;
+  transform: translateX(15px); /* move to the right on leave */
+}
+</style>
