@@ -316,7 +316,7 @@
       <!-- Project background paragraphs end  -->
 
       <!-- Project challenges start  -->
-      <Panel class="mb-3" toggleable :collapsed="true">
+      <Panel id="add-project-challenges" class="mb-3" toggleable :collapsed="true">
         <template #header>
           <div class="d-flex justify-content-start align-items-center gap-1 fw-bold text-secondary">
             <i class="pi pi-exclamation-triangle mt-1" style="font-size: 1.2rem"></i>
@@ -334,12 +334,13 @@
             (isAnyInvalid: boolean) => (hasInvalidChallengeForms = isAnyInvalid)
           "
           :crudContext="CrudContext.Create"
+          :fallback-container-id="'add-project-challenges'"
         />
       </Panel>
       <!-- Project challenges end  -->
 
       <!-- Project achievements start  -->
-      <Panel class="mb-3" toggleable :collapsed="true">
+      <Panel id="add-project-achievements" class="mb-3" toggleable :collapsed="true">
         <template #header>
           <div class="d-flex justify-content-start align-items-center gap-1 fw-bold text-secondary">
             <i class="pi pi-flag mt-1" style="font-size: 1.2rem"></i>
@@ -357,12 +358,13 @@
             (isAnyInvalid: boolean) => (hasInvalidAchievementForms = isAnyInvalid)
           "
           :crudContext="CrudContext.Create"
+          :fallback-container-id="'add-project-achievements'"
         />
       </Panel>
       <!-- Project achievements end  -->
 
       <!-- Project feedback start  -->
-      <Panel class="mb-3" toggleable :collapsed="true">
+      <Panel id="add-project-feedback" class="mb-3" toggleable :collapsed="true">
         <template #header>
           <div class="d-flex justify-content-start align-items-center gap-1 fw-bold text-secondary">
             <i class="pi pi-comment mt-1" style="font-size: 1.2rem"></i>
@@ -378,6 +380,7 @@
           @feedback="(feedback: Feedback[]) => (project.feedback = feedback)"
           @has-invalid-feedback="(isAnyInvalid) => (hasInvalidFeedbackForms = isAnyInvalid)"
           :crudContext="CrudContext.Create"
+          :fallback-container-id="'add-project-feedback'"
         />
       </Panel>
       <!-- Project feedback end  -->
