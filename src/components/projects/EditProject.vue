@@ -376,13 +376,13 @@
           "
           :crudContext="CrudContext.Update"
           ref="paragraphListEditorRef"
-          :fallback-container-id="'add-project-paragraphs'"
+          :fallback-container-id="'edit-project-paragraphs'"
         />
       </Panel>
       <!-- Project background paragraphs end  -->
 
       <!-- Project challenges start  -->
-      <Panel class="mb-3" toggleable :collapsed="true">
+      <Panel id="edit-project-challenges" class="mb-3" toggleable :collapsed="true">
         <template #header>
           <div class="d-flex justify-content-start align-items-center gap-1 fw-bold text-secondary">
             <i class="pi pi-exclamation-triangle mt-1" style="font-size: 1.2rem"></i>
@@ -402,12 +402,13 @@
           "
           :crudContext="CrudContext.Update"
           ref="challengeListEditorRef"
+          :fallback-container-id="'edit-project-challenges'"
         />
       </Panel>
       <!-- Project challenges end  -->
 
       <!-- Project achievements start  -->
-      <Panel class="mb-3" toggleable :collapsed="true">
+      <Panel id="edit-project-achievements" class="mb-3" toggleable :collapsed="true">
         <template #header>
           <div class="d-flex justify-content-start align-items-center gap-1 fw-bold text-secondary">
             <i class="pi pi-flag mt-1" style="font-size: 1.2rem"></i>
@@ -427,12 +428,13 @@
           "
           :crudContext="CrudContext.Update"
           ref="achievementListEditorRef"
+          :fallback-container-id="'edit-project-achievements'"
         />
       </Panel>
       <!-- Project achievements end  -->
 
       <!-- Project feedback start  -->
-      <Panel class="mb-3" toggleable :collapsed="true">
+      <Panel id="edit-project-feedback" class="mb-3" toggleable :collapsed="true">
         <template #header>
           <div class="d-flex justify-content-start align-items-center gap-1 fw-bold text-secondary">
             <i class="pi pi-comment mt-1" style="font-size: 1.2rem"></i>
@@ -452,6 +454,7 @@
           "
           :crudContext="CrudContext.Update"
           ref="feedbackListEditorRef"
+          :fallback-container-id="'edit-project-feedback'"
         />
       </Panel>
       <!-- Project feedback end  -->

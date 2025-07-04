@@ -64,10 +64,10 @@ const props = defineProps({
     required: true,
   },
   // The DOM element ID of the container that wraps the list of items (e.g., paragraphs).
-  // This is used as a final fallback scroll target if neither `previousItemId` nor `nextItemId` is available.
+  // This is used as a final fallback scroll target if neither `previousParagraphId` nor `nextParagraphId` is available.
   // Helps prevent abrupt layout jumps by ensuring the user always lands back in the main container.
   //
-  // Example: If a user deletes the only item in the list, the UI scrolls back to the top of the container.
+  // Example: If a user deletes the only paragraph in the list, the UI scrolls back to the top of the container.
   fallbackContainerId: {
     type: [String],
     required: false,

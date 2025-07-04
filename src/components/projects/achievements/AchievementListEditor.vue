@@ -12,6 +12,8 @@
           :achievement="validatedAchievement.item"
           :crudContext="crudContext"
           :previousAchievementId="validatedAchievements[index - 1]?.item.id.toString()"
+          :nextAchievementId="validatedAchievements[index + 1]?.item.id.toString()"
+          :fallbackContainerId="fallbackContainerId"
         />
       </transition-group>
     </div>
@@ -55,6 +57,15 @@ defineProps({
   crudContext: {
     type: String as PropType<CrudContext>,
     required: true,
+  },
+  // The DOM element ID of the container that wraps the list of items (e.g., achievements).
+  // This is used as a final fallback scroll target if neither `previousAchievementId` nor `nextAchievementId` is available.
+  // Helps prevent abrupt layout jumps by ensuring the user always lands back in the main container.
+  //
+  // Example: If a user deletes the only achievement in the list, the UI scrolls back to the top of the container.
+  fallbackContainerId: {
+    type: [String],
+    required: false,
   },
 });
 
