@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div id="paragraph-list">
+    <div>
       <transition-group name="skew-fade-slide">
         <AddParagraphForm
           v-for="(validatedParagraph, index) in validatedParagraphs"
@@ -13,7 +13,7 @@
           :crudContext="crudContext"
           :previousParagraphId="validatedParagraphs[index - 1]?.item.id.toString()"
           :nextParagraphId="validatedParagraphs[index + 1]?.item.id.toString()"
-          :parentContainerId="'paragraph-list'"
+          :fallbackContainerId="fallbackContainerId"
         />
       </transition-group>
     </div>
@@ -62,6 +62,15 @@ const props = defineProps({
   crudContext: {
     type: String as PropType<CrudContext>,
     required: true,
+  },
+  // The DOM element ID of the container that wraps the list of items (e.g., paragraphs).
+  // This is used as a final fallback scroll target if neither `previousItemId` nor `nextItemId` is available.
+  // Helps prevent abrupt layout jumps by ensuring the user always lands back in the main container.
+  //
+  // Example: If a user deletes the only item in the list, the UI scrolls back to the top of the container.
+  fallbackContainerId: {
+    type: [String],
+    required: false,
   },
 });
 

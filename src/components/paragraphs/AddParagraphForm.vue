@@ -258,7 +258,7 @@ const scrollToFallbackContainer = () => {
  * Determines where to scroll after a paragraph is deleted.
  * Priority: scroll to the next item → scroll to the previous item → scroll to fallback container.
  */
-const moveToSectionAfterDelete = () => {
+const scrollAfterParagraphDelete = () => {
   if (props.nextParagraphId) moveToNextParagraph();
   else if (props.previousParagraphId) moveToPreviousParagraph();
   else scrollToFallbackContainer();
@@ -295,8 +295,9 @@ const confirmDelete = () => {
         emit("skipAutoSave", true);
         //remove paragraph form from the UI
         emit("delete");
-        //scroll up to the previous paragraph after the delete
-        moveToSectionAfterDelete();
+
+        //scroll to the previous or next paragraph after the delete
+        scrollAfterParagraphDelete();
       }
     },
     reject: () => {},
@@ -325,8 +326,8 @@ const deleteParagraph = () => {
           detail: "Selected paragraph was deleted.",
           life: 5000,
         });
-        //scroll uo to the previous paragraph after the delete
-        moveToSectionAfterDelete();
+        //scroll to the previous or next paragraph after the delete
+        scrollAfterParagraphDelete();
       })
       .catch((message) => {
         toast.add({

@@ -292,7 +292,7 @@
       </Panel>
       <!-- Project main details end -->
       <!-- Project background paragraphs start  -->
-      <Panel class="mb-3" toggleable :collapsed="true">
+      <Panel id="add-project-paragraphs" class="mb-3" toggleable :collapsed="true">
         <template #header>
           <div class="d-flex justify-content-start align-items-center gap-1 fw-bold text-secondary">
             <i class="pi pi-history mt-1" style="font-size: 1.2rem"></i>
@@ -310,6 +310,7 @@
           @paragraphs="(paragraphs) => (project.background = paragraphs)"
           @has-invalid-paragraphs="(isInvalid) => (hasInvalidBackgroundForms = isInvalid)"
           :crudContext="CrudContext.Create"
+          :fallback-container-id="'add-project-paragraphs'"
         />
       </Panel>
       <!-- Project background paragraphs end  -->
