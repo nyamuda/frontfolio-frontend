@@ -10,27 +10,39 @@
       </p>
     </div>
     <!-- Save and Publish buttons start-->
-    <div class="d-flex justify-content-end gap-3 align-items-center mb-5">
-      <Button
+    <div class="d-flex flex-column gap-2 align-items-end mb-5">
+      <!-- Save changes & publish buttons -->
+      <div class="d-flex justify-content-end gap-3 align-items-center">
+        <Button
+          size="small"
+          @click="saveProjectAsDraft"
+          :label="isSavingProject ? 'Saving...' : 'Save as draft'"
+          severity="contrast"
+          :loading="isSavingProject"
+          :disabled="
+            isPublishingProject || isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms
+          "
+        />
+        <Button
+          size="small"
+          v-if="project.status != ProjectStatus.Published"
+          @click="publishProject"
+          :label="isPublishingProject ? 'Publishing project...' : 'Publish'"
+          :loading="isPublishingProject"
+          :disabled="
+            isPublishingProject || isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms
+          "
+        />
+      </div>
+      <!-- Form error message -->
+      <Message
+        v-if="hasInvalidSubForms || v$.$error"
+        icon="pi pi-times-circle"
+        severity="error"
+        variant="simple"
         size="small"
-        @click="saveProjectAsDraft"
-        :label="isSavingProject ? 'Saving...' : 'Save as draft'"
-        severity="contrast"
-        :loading="isSavingProject"
-        :disabled="
-          isPublishingProject || isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms
-        "
-      />
-      <Button
-        size="small"
-        v-if="project.status != ProjectStatus.Published"
-        @click="publishProject"
-        :label="isPublishingProject ? 'Publishing project...' : 'Publish'"
-        :loading="isPublishingProject"
-        :disabled="
-          isPublishingProject || isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms
-        "
-      />
+        >{{ invalidFormMessage }}</Message
+      >
     </div>
     <!-- Save and Publish buttons end-->
     <form class="">
@@ -418,7 +430,9 @@ onMounted(() => {
 
 // The new project being created
 const project: Ref<Project> = ref(new Project());
-
+const invalidFormMessage = ref(
+  "Some fields are missing or invalid. Please fix them to save or publish your project.",
+);
 // Track whether any background paragraph form is invalid
 const hasInvalidBackgroundForms: Ref<boolean> = ref(false);
 

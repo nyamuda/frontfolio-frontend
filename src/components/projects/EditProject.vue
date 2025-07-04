@@ -560,7 +560,7 @@ const isEntireFormInvalid = async (): Promise<boolean> => {
   return !areMainFieldsValid || hasInvalidSubForms.value;
 };
 const invalidFormMessage = ref(
-  "Some required fields are missing or invalid. Please fix them to save your changes.",
+  "Some fields are missing or invalid. Please fix them to save your changes.",
 );
 
 const isSavingProject = ref(false);
