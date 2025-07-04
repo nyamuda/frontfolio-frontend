@@ -142,21 +142,32 @@ const props = defineProps({
     type: String as PropType<CrudContext>,
     required: true,
   },
-  //Id of the paragraph before the current one.
-  //Used to smoothly navigate up to the previous paragraph if the current one is deleted.
+  // The DOM element ID of the item that appears immediately *before* the current item in the list.
+  // When the current item is deleted, this ID is used to smoothly scroll the user’s view to the previous item,
+  // helping maintain context and focus without jumping to an unrelated section.
+  //
+  // Example use: If a user deletes the second paragraph in a list, the app scrolls to the first paragraph.
+
   previousParagraphId: {
     type: [String],
     required: false,
   },
-  //Id of the paragraph after the current one.
-  //Used to smoothly navigate up to the next paragraph if the current one is deleted and
-  //there is another paragraph next to it
+  // The DOM element ID of the item that appears immediately *after* the current item in the list.
+  // This ID is used for scrolling only if there is a `nextParagraphId` to scroll to after a deletion.
+  // Helps maintain continuity by shifting focus to the next available item.
+  //
+  // Example: If a user deletes the second paragraph and there’s a third paragraph, the app scrolls to that
+  //third paragraph.
   nextParagraphId: {
     type: [String],
     required: false,
   },
-  //Id of the container element that contains a list of paragraphs forms
-  parentContainerId: {
+  // The DOM element ID of the scrollable container that wraps the list of items (e.g., paragraphs).
+  // This is used as a final fallback scroll target if neither `previousItemId` nor `nextItemId` is available.
+  // Helps prevent abrupt layout jumps by ensuring the user always lands back in the main container.
+  //
+  // Example: If a user deletes the only item in the list, the UI scrolls back to the top of the container.
+  fallbackContainerId: {
     type: [String],
     required: false,
   },
