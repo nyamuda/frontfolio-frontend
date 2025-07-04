@@ -1,7 +1,7 @@
 <template>
   <section>
-    <div>
-      <transition-group name="slide-left-fade">
+    <div id="paragraph-list">
+      <transition-group name="skew-fade-slide">
         <AddParagraphForm
           v-for="(validatedParagraph, index) in validatedParagraphs"
           :index="index"
@@ -13,6 +13,7 @@
           :crudContext="crudContext"
           :previousParagraphId="validatedParagraphs[index - 1]?.item.id.toString()"
           :nextParagraphId="validatedParagraphs[index + 1]?.item.id.toString()"
+          :parentContainerId="'paragraph-list'"
         />
       </transition-group>
     </div>
@@ -162,18 +163,18 @@ watch(
 </script>
 
 <style lang="scss">
-.slide-left-fade-enter-active,
-.slide-left-fade-leave-active {
+.skew-fade-slide-enter-active,
+.skew-fade-slide-leave-active {
   transition: all 0.4s ease;
 }
 
-.slide-left-fade-enter-from {
+.skew-fade-slide-enter-from {
   opacity: 0;
-  transform: translateX(-15px);
+  transform: skewY(1deg) translateY(10px); /* skew + slide in */
 }
 
-.slide-left-fade-leave-to {
+.skew-fade-slide-leave-to {
   opacity: 0;
-  transform: translateX(15px); /* move to the right on leave */
+  transform: translateX(20px); /* fade + slide right on leave */
 }
 </style>

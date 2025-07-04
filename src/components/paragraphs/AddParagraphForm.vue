@@ -155,6 +155,11 @@ const props = defineProps({
     type: [String],
     required: false,
   },
+  //Id of the container element that contains a list of paragraphs forms
+  parentContainerId: {
+    type: [String],
+    required: false,
+  },
 });
 const emit = defineEmits(["update", "delete", "skipAutoSave"]);
 const isDeletingParagraph = ref(false);
@@ -212,6 +217,36 @@ const moveUpToPreviousParagraph = () => {
     }
   }
 };
+/**
+ * Scrolls to the next paragraph in the list using its element ID.
+ * Useful after deleting a paragraph to keep the user’s focus on the next one if it exists.
+ *
+ * */
+const moveDownToNextParagraph = () => {
+  if (props.nextParagraphId) {
+    // Scroll to the previous paragraphs's element using its ID
+    const element = document.getElementById(props.nextParagraphId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+};
+
+const moveUpToParentElement = () => {
+  if (props.parentContainerId) {
+    // Scroll to the previous paragraphs's element using its ID
+    const element = document.getElementById("check-pp");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+};
+
+const moveToSectionAfterDelete = () => {
+  if (props.nextParagraphId) moveDownToNextParagraph();
+  else if (props.previousParagraphId) moveUpToPreviousParagraph();
+  else moveUpToParentElement();
+};
 
 const confirmDelete = () => {
   confirm.require({
@@ -245,7 +280,7 @@ const confirmDelete = () => {
         //remove paragraph form from the UI
         emit("delete");
         //scroll up to the previous paragraph after the delete
-        moveUpToPreviousParagraph();
+        moveToSectionAfterDelete();
       }
     },
     reject: () => {},
@@ -275,7 +310,7 @@ const deleteParagraph = () => {
           life: 5000,
         });
         //scroll uo to the previous paragraph after the delete
-        moveUpToPreviousParagraph();
+        moveToSectionAfterDelete();
       })
       .catch((message) => {
         toast.add({
