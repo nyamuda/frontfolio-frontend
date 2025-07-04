@@ -18,6 +18,35 @@
           size="small"
         />
       </router-link>
+
+      <!-- Sorting select input start -->
+      <div
+        class="d-flex justify-content-start justify-content-md-end align-items-center gap-3 flex-wrap mb-3"
+      >
+        <div class="flex-grow-1 flex-md-grow-0">
+          <!-- For desktop screens -->
+          <Select
+            style="width: 12rem"
+            class="d-none d-md-flex"
+            placeholder="Sort by"
+            checkmark
+            v-model="projectStore.sortBy"
+            :options="sortOptions"
+            @change="getProjects"
+          />
+
+          <!-- For mobile screens -->
+          <Select
+            class="w-100 d-md-none"
+            placeholder="Sort by"
+            checkmark
+            v-model="projectStore.sortBy"
+            :options="sortOptions"
+            @change="getProjects"
+          />
+        </div>
+      </div>
+      <!-- Sorting select input end -->
     </div>
     <!-- Skeleton list start -->
     <div v-if="isGettingProjects" class="row">
@@ -75,9 +104,10 @@ import Button from "primevue/button";
 import LoadMoreItemsButton from "../shared/LoadMoreItemsButton.vue";
 import { useProjectStore } from "@/stores/project";
 import { useToast } from "primevue/usetoast";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref, type Ref } from "vue";
 import ProjectItemSkeleton from "./skeletons/ProjectItemSkeleton.vue";
 import EmptyList from "../shared/EmptyList.vue";
+import { ProjectSortOption } from "@/enums/projectSortOption";
 
 const projectStore = useProjectStore();
 const toast = useToast();
@@ -88,6 +118,15 @@ const isLoadingMoreProjects = ref(false);
 onMounted(() => {
   getProjects();
 });
+
+const sortOptions: Ref<ProjectSortOption[]> = computed(() => [
+  ProjectSortOption.CreatedAt,
+  ProjectSortOption.DifficultyLevel,
+  ProjectSortOption.EndDate,
+  ProjectSortOption.StartDate,
+  ProjectSortOption.SortOrder,
+  ProjectSortOption.Status,
+]);
 
 //get projects
 const getProjects = () => {

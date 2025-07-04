@@ -5,10 +5,12 @@ import { apiUrl } from "@/helpers/urlHelper";
 import axios from "axios";
 import type { PageInfo } from "@/interfaces/shared/pageInfo";
 import { DateHelper } from "@/helpers/dateHelper";
+import { ProjectSortOption } from "@/enums/projectSortOption";
 
 export const useProjectStore = defineStore("project", () => {
   const projects: Ref<Project[]> = ref([]);
   const pageInfo: Ref<PageInfo<Project>> = ref({ page: 1, pageSize: 5, hasMore: false, items: [] });
+  const sortBy: Ref<ProjectSortOption> = ref(ProjectSortOption.SortOrder);
 
   //get a project by ID
   const getProjectById = (id: number): Promise<Project> => {
@@ -86,7 +88,7 @@ export const useProjectStore = defineStore("project", () => {
       //make the request
       axios
         .get<PageInfo<Project>>(url, {
-          params: { page: 1, pageSize: 5 },
+          params: { page: 1, pageSize: 5, sortBy: sortBy.value },
         })
         .then((response) => {
           pageInfo.value = response.data;
@@ -164,5 +166,6 @@ export const useProjectStore = defineStore("project", () => {
     loadMoreProjects,
     pageInfo,
     deleteProject,
+    sortBy,
   };
 });
