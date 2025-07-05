@@ -31,13 +31,14 @@
 
 <script setup lang="ts">
 import Select from "primevue/select";
-import { ref, type PropType, type Ref } from "vue";
+import { ref } from "vue";
 
 const props = defineProps({
   options: {
     type: Array,
     required: true,
   },
+
   callbackOnChange: {
     type: Function,
     required: true,
@@ -49,7 +50,6 @@ const props = defineProps({
 });
 const selectedItem = ref();
 
-
 //Method to run if an option is selected
-const onItemChange = () => props.callbackOnChange();
+const onItemChange = () => props.callbackOnChange(selectedItem);
 </script>

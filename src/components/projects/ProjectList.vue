@@ -19,6 +19,12 @@
         />
       </router-link>
 
+      <!-- Sort projects input -->
+      <SelectItemInput
+        :options="sortOptions"
+        :callback-on-change="sortProjects"
+        placeholder-text="Sort by"
+      />
 
       <!-- Filter select input start -->
       <div
@@ -111,6 +117,7 @@ import EmptyList from "../shared/EmptyList.vue";
 import { ProjectSortOption } from "@/enums/projectSortOption";
 import Select from "primevue/select";
 import { ProjectFilterOption } from "@/enums/projectFilterOption";
+import SelectItemInput from "../shared/SelectItemInput.vue";
 
 const projectStore = useProjectStore();
 const toast = useToast();
