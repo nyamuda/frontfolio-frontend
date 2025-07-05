@@ -92,7 +92,7 @@ import { onMounted, ref } from "vue";
 import ProjectItemSkeleton from "./skeletons/ProjectItemSkeleton.vue";
 import EmptyList from "../shared/EmptyList.vue";
 import { ProjectSortOption } from "@/enums/projectSortOption";
-import { ProjectFilterOption } from "@/enums/projectFilterOption";
+import { ProjectStatusFilter } from "@/enums/projectStatusFilter";
 import SelectItemInput from "../shared/SelectItemInput.vue";
 const projectStore = useProjectStore();
 const toast = useToast();
@@ -106,9 +106,9 @@ onMounted(() => {
 
 const sortOptions = ref(["Title", "Difficulty level", "Sort order"]);
 const filterOptions = ref([
-  ProjectFilterOption.All,
-  ProjectFilterOption.Draft,
-  ProjectFilterOption.Published,
+  ProjectStatusFilter.All,
+  ProjectStatusFilter.Draft,
+  ProjectStatusFilter.Published,
 ]);
 
 const sortProjects = (selectedSortOption: string) => {
@@ -131,7 +131,7 @@ const sortProjects = (selectedSortOption: string) => {
   getProjects();
 };
 
-const filterProjects = (selectedFilterOption: ProjectFilterOption) => {
+const filterProjects = (selectedFilterOption: ProjectStatusFilter) => {
   projectStore.status = selectedFilterOption;
   getProjects();
 };

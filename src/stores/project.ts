@@ -6,14 +6,14 @@ import axios from "axios";
 import type { PageInfo } from "@/interfaces/shared/pageInfo";
 import { DateHelper } from "@/helpers/dateHelper";
 import { ProjectSortOption } from "@/enums/projectSortOption";
-import { ProjectFilterOption } from "@/enums/projectFilterOption";
+import { ProjectStatusFilter } from "@/enums/projectStatusFilter";
 
 export const useProjectStore = defineStore("project", () => {
   const projects: Ref<Project[]> = ref([]);
   const pageInfo: Ref<PageInfo<Project>> = ref({ page: 1, pageSize: 5, hasMore: false, items: [] });
   const sortBy: Ref<ProjectSortOption> = ref(ProjectSortOption.SortOrder);
   //used for filtering the projects
-  const status: Ref<ProjectFilterOption> = ref(ProjectFilterOption.All);
+  const status: Ref<ProjectStatusFilter> = ref(ProjectStatusFilter.All);
 
   //get a project by ID
   const getProjectById = (id: number): Promise<Project> => {
