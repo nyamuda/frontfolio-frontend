@@ -13,6 +13,7 @@
         v-model="selectedItem"
         :options="options"
         @change="onItemChange"
+        size="small"
       />
 
       <!-- For mobile screens -->

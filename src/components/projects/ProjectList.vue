@@ -8,7 +8,20 @@
         ones, or revisit existing projects to keep your portfolio fresh and up to date
       </p>
     </div>
-    <div class="d-flex justify-content-end mb-3">
+    <div class="d-flex justify-content-end gap-3 mb-3">
+      <!-- Sort projects input -->
+      <SelectItemInput
+        :options="sortOptions"
+        :callback-on-change="sortProjects"
+        placeholder-text="Sort by"
+      />
+      <!-- Filter projects input -->
+      <SelectItemInput
+        :options="filterOptions"
+        :callback-on-change="filterProjects"
+        placeholder-text="Filter"
+      />
+      <!-- Add new project button -->
       <router-link to="/projects/add">
         <Button
           icon="pi pi-plus"
@@ -18,42 +31,6 @@
           size="small"
         />
       </router-link>
-
-      <!-- Sort projects input -->
-      <SelectItemInput
-        :options="sortOptions"
-        :callback-on-change="sortProjects"
-        placeholder-text="Sort by"
-      />
-
-      <!-- Filter select input start -->
-      <div
-        class="d-flex justify-content-start justify-content-md-end align-items-center gap-3 flex-wrap mb-3"
-      >
-        <div class="flex-grow-1 flex-md-grow-0">
-          <!-- For desktop screens -->
-          <Select
-            style="width: 12rem"
-            class="d-none d-md-flex"
-            placeholder="Sort by"
-            checkmark
-            v-model="selectedFilterOption"
-            :options="filterOptions"
-            @change="filterProjects"
-          />
-
-          <!-- For mobile screens -->
-          <Select
-            class="w-100 d-md-none"
-            placeholder="Sort by"
-            checkmark
-            v-model="selectedFilterOption"
-            :options="filterOptions"
-            @change="filterProjects"
-          />
-        </div>
-      </div>
-      <!-- Filter select input end -->
     </div>
     <!-- Skeleton list start -->
     <div v-if="isGettingProjects" class="row">
@@ -115,10 +92,8 @@ import { onMounted, ref, type Ref } from "vue";
 import ProjectItemSkeleton from "./skeletons/ProjectItemSkeleton.vue";
 import EmptyList from "../shared/EmptyList.vue";
 import { ProjectSortOption } from "@/enums/projectSortOption";
-import Select from "primevue/select";
 import { ProjectFilterOption } from "@/enums/projectFilterOption";
 import SelectItemInput from "../shared/SelectItemInput.vue";
-
 const projectStore = useProjectStore();
 const toast = useToast();
 
