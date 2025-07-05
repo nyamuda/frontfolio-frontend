@@ -88,7 +88,7 @@ import Button from "primevue/button";
 import LoadMoreItemsButton from "../shared/LoadMoreItemsButton.vue";
 import { useProjectStore } from "@/stores/project";
 import { useToast } from "primevue/usetoast";
-import { onMounted, ref, type Ref } from "vue";
+import { onMounted, ref } from "vue";
 import ProjectItemSkeleton from "./skeletons/ProjectItemSkeleton.vue";
 import EmptyList from "../shared/EmptyList.vue";
 import { ProjectSortOption } from "@/enums/projectSortOption";
@@ -104,8 +104,6 @@ onMounted(() => {
   getProjects();
 });
 
-const selectedSortOption: Ref<string> = ref("");
-const selectedFilterOption: Ref<ProjectFilterOption> = ref(ProjectFilterOption.All);
 const sortOptions = ref(["Title", "Difficulty level", "Sort order"]);
 const filterOptions = ref([
   ProjectFilterOption.All,
@@ -113,20 +111,18 @@ const filterOptions = ref([
   ProjectFilterOption.Published,
 ]);
 
-const sortProjects = () => {
+const sortProjects = (selectedSortOption: string) => {
   //reset the current page to 1
   //to start from the beginning of the sorted list
   projectStore.pageInfo.page = 1;
 
-  //convert the selected option to its corresponding enum value
-  switch (selectedSortOption.value) {
+  //save the selected option as its corresponding enum value
+  switch (selectedSortOption) {
     case "Title":
       projectStore.sortBy = ProjectSortOption.Title;
-      alert(projectStore.sortBy);
       break;
     case "Difficulty level":
       projectStore.sortBy = ProjectSortOption.DifficultyLevel;
-      alert(projectStore.sortBy);
       break;
     default:
       projectStore.sortBy = ProjectSortOption.SortOrder;
@@ -135,8 +131,8 @@ const sortProjects = () => {
   getProjects();
 };
 
-const filterProjects = () => {
-  projectStore.status = selectedFilterOption.value;
+const filterProjects = (selectedFilterOption: ProjectFilterOption) => {
+  projectStore.status = selectedFilterOption;
   getProjects();
 };
 

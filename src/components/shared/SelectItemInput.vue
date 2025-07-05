@@ -52,5 +52,5 @@ const props = defineProps({
 const selectedItem = ref();
 
 //Method to run if an option is selected
-const onItemChange = () => props.callbackOnChange(selectedItem);
+const onItemChange = () => props.callbackOnChange(selectedItem.value);
 </script>
