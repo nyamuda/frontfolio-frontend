@@ -47,6 +47,34 @@
         </div>
       </div>
       <!-- Sorting select input end -->
+      <!-- Filter select input start -->
+      <div
+        class="d-flex justify-content-start justify-content-md-end align-items-center gap-3 flex-wrap mb-3"
+      >
+        <div class="flex-grow-1 flex-md-grow-0">
+          <!-- For desktop screens -->
+          <Select
+            style="width: 12rem"
+            class="d-none d-md-flex"
+            placeholder="Sort by"
+            checkmark
+            v-model="selectedFilterOption"
+            :options="filterOptions"
+            @change="filterProjects"
+          />
+
+          <!-- For mobile screens -->
+          <Select
+            class="w-100 d-md-none"
+            placeholder="Sort by"
+            checkmark
+            v-model="selectedFilterOption"
+            :options="filterOptions"
+            @change="filterProjects"
+          />
+        </div>
+      </div>
+      <!-- Filter select input end -->
     </div>
     <!-- Skeleton list start -->
     <div v-if="isGettingProjects" class="row">
@@ -109,6 +137,7 @@ import ProjectItemSkeleton from "./skeletons/ProjectItemSkeleton.vue";
 import EmptyList from "../shared/EmptyList.vue";
 import { ProjectSortOption } from "@/enums/projectSortOption";
 import Select from "primevue/select";
+import { ProjectFilterOption } from "@/enums/projectFilterOption";
 
 const projectStore = useProjectStore();
 const toast = useToast();
@@ -121,8 +150,13 @@ onMounted(() => {
 });
 
 const selectedSortOption: Ref<string> = ref("");
-
-const sortOptions = ref(["Title", "Status", "Difficulty level", "Sort order"]);
+const selectedFilterOption: Ref<ProjectFilterOption> = ref(ProjectFilterOption.All);
+const sortOptions = ref(["Title", "Difficulty level", "Sort order"]);
+const filterOptions = ref([
+  ProjectFilterOption.All,
+  ProjectFilterOption.Draft,
+  ProjectFilterOption.Published,
+]);
 
 const sortProjects = () => {
   //reset the current page to 1
@@ -131,10 +165,6 @@ const sortProjects = () => {
 
   //convert the selected option to its corresponding enum value
   switch (selectedSortOption.value) {
-    case "Status":
-      projectStore.sortBy = ProjectSortOption.Status;
-      alert(projectStore.sortBy);
-      break;
     case "Title":
       projectStore.sortBy = ProjectSortOption.Title;
       alert(projectStore.sortBy);
@@ -147,6 +177,11 @@ const sortProjects = () => {
       projectStore.sortBy = ProjectSortOption.SortOrder;
   }
   //get the sort list of projects
+  getProjects();
+};
+
+const filterProjects = () => {
+  projectStore.status = selectedFilterOption.value;
   getProjects();
 };
 
