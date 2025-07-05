@@ -97,7 +97,8 @@ export const useProjectStore = defineStore("project", () => {
           pageInfo.value = response.data;
           resolve(response.data);
         })
-        .catch(() => {
+        .catch((ex) => {
+          console.log(ex);
           const message = "An unexpected error occurred while fetching your projects.";
           reject(message);
         });
