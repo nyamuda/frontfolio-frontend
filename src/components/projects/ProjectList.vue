@@ -30,9 +30,9 @@
             class="d-none d-md-flex"
             placeholder="Sort by"
             checkmark
-            v-model="projectStore.sortBy"
+            v-model="selectedSortOption"
             :options="sortOptions"
-            @change="getProjects"
+            @change="sortProjects"
           />
 
           <!-- For mobile screens -->
@@ -40,7 +40,7 @@
             class="w-100 d-md-none"
             placeholder="Sort by"
             checkmark
-            v-model="projectStore.sortBy"
+            v-model="selectedSortOption"
             :options="sortOptions"
             @change="sortProjects"
           />
@@ -104,10 +104,11 @@ import Button from "primevue/button";
 import LoadMoreItemsButton from "../shared/LoadMoreItemsButton.vue";
 import { useProjectStore } from "@/stores/project";
 import { useToast } from "primevue/usetoast";
-import { computed, onMounted, ref, type Ref } from "vue";
+import { onMounted, ref, type Ref } from "vue";
 import ProjectItemSkeleton from "./skeletons/ProjectItemSkeleton.vue";
 import EmptyList from "../shared/EmptyList.vue";
 import { ProjectSortOption } from "@/enums/projectSortOption";
+import Select from "primevue/select";
 
 const projectStore = useProjectStore();
 const toast = useToast();
@@ -119,19 +120,32 @@ onMounted(() => {
   getProjects();
 });
 
-const sortOptions: Ref<ProjectSortOption[]> = computed(() => [
-  ProjectSortOption.CreatedAt,
-  ProjectSortOption.DifficultyLevel,
-  ProjectSortOption.EndDate,
-  ProjectSortOption.StartDate,
-  ProjectSortOption.SortOrder,
-  ProjectSortOption.Status,
-]);
+const selectedSortOption: Ref<string> = ref("");
+
+const sortOptions = ref(["Title", "Status", "Difficulty level", "Sort order"]);
 
 const sortProjects = () => {
   //reset the current page to 1
   //to start from the beginning of the sorted list
   projectStore.pageInfo.page = 1;
+
+  //convert the selected option to its corresponding enum value
+  switch (selectedSortOption.value) {
+    case "Status":
+      projectStore.sortBy = ProjectSortOption.Status;
+      alert(projectStore.sortBy);
+      break;
+    case "Title":
+      projectStore.sortBy = ProjectSortOption.Title;
+      alert(projectStore.sortBy);
+      break;
+    case "Difficulty level":
+      projectStore.sortBy = ProjectSortOption.DifficultyLevel;
+      alert(projectStore.sortBy);
+      break;
+    default:
+      projectStore.sortBy = ProjectSortOption.SortOrder;
+  }
   //get the sort list of projects
   getProjects();
 };

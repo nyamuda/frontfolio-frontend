@@ -83,6 +83,7 @@ export const useProjectStore = defineStore("project", () => {
   const getProjects = (): Promise<PageInfo<Project>> => {
     return new Promise((resolve, reject) => {
       const url = `${apiUrl}/projects`;
+      console.log(sortBy.value);
       //add an access token to the request to access the protected route
       setAuthToken();
       //make the request

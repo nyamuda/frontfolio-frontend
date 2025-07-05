@@ -1,8 +1,7 @@
 export enum ProjectSortOption {
-  StartDate,
-  EndDate,
-  SortOrder,
-  Status,
-  DifficultyLevel,
-  CreatedAt,
+  Status = "status",
+  Title = "title",
+  DifficultyLevel = "difficultyLevel",
+  CreatedAt = "createdAt",
+  SortOrder = "Sort order",
 }
