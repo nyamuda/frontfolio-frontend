@@ -72,7 +72,7 @@
       <div v-else>
         <EmptyList
           title="No projects yet"
-          message="Ready to get started? Use the button above to create your first project."
+          :message="noProjectsMessage"
           icon-type="pi pi-folder-open"
         />
       </div>
@@ -88,7 +88,7 @@ import Button from "primevue/button";
 import LoadMoreItemsButton from "../shared/LoadMoreItemsButton.vue";
 import { useProjectStore } from "@/stores/project";
 import { useToast } from "primevue/usetoast";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, type Ref } from "vue";
 import ProjectItemSkeleton from "./skeletons/ProjectItemSkeleton.vue";
 import EmptyList from "../shared/EmptyList.vue";
 import { ProjectSortOption } from "@/enums/projectSortOption";
@@ -106,14 +106,24 @@ onMounted(() => {
 
 //Message to display if there are no projects to display
 //based on the current applied status filter
-const noProjectsMessage = computed(() => {
+const noProjectsMessage: Ref<{ title: string; message: string }> = computed(() => {
   switch (projectStore.statusFilter) {
     case ProjectStatusFilter.Published:
-      return "No published projects found. Make sure to mark your projects as 'Published' once they're ready to be shared.";
+      return {
+        title: "No Projects Yest",
+        message:
+          "No published projects found. Make sure to mark your projects as 'Published' once they're ready to be shared.",
+      };
     case ProjectStatusFilter.Draft:
-      return "You don’t have any draft projects saved. ";
+      return {
+        title: "No Published Projects",
+        message: "You don’t have any draft projects saved. ",
+      };
     default:
-      return "No projects found. Create a new one to showcase your work.";
+      return {
+        title: "No Drafts Available",
+        message: "No projects found. Create a new one to showcase your work.",
+      };
   }
 });
 const sortOptions = ref(["Title", "Difficulty level", "Sort order"]);
