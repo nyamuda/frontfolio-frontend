@@ -56,7 +56,7 @@
         <div class="d-flex justify-content-center mt-5">
           <LoadMoreItemsButton
             label="Load more projects"
-            end-label="These are all your projects"
+            end-label="You’ve reached the end. No more projects to display"
             :is-loading="isLoadingMoreProjects"
             :has-more="projectStore.pageInfo.hasMore"
             :is-disabled="
@@ -71,8 +71,8 @@
       <!-- Project list empty -->
       <div v-else>
         <EmptyList
-          title="No projects yet"
-          :message="noProjectsMessage"
+          :title="noProjectsMessage.title"
+          :message="noProjectsMessage.message"
           icon-type="pi pi-folder-open"
         />
       </div>
@@ -110,20 +110,32 @@ const noProjectsMessage: Ref<{ title: string; message: string }> = computed(() =
   switch (projectStore.statusFilter) {
     case ProjectStatusFilter.Published:
       return {
-        title: "No Projects Yest",
+        title: "No Published Projects",
         message:
           "No published projects found. Make sure to mark your projects as 'Published' once they're ready to be shared.",
       };
     case ProjectStatusFilter.Draft:
       return {
-        title: "No Published Projects",
+        title: "No Drafts Available",
         message: "You don’t have any draft projects saved. ",
       };
     default:
       return {
-        title: "No Drafts Available",
+        title: "No Projects Yet",
         message: "No projects found. Create a new one to showcase your work.",
       };
+  }
+});
+//Message to display if the is user has reached the end of the list of projects
+//based on the current applied status filter
+const endOfListMessage = computed(() => {
+  switch (projectStore.statusFilter) {
+    case ProjectStatusFilter.Published:
+      return "You’ve reached the end of the list";
+    case ProjectStatusFilter.Draft:
+      return "You've reached the end of the published projects";
+    default:
+      return "No more draft projects to show";
   }
 });
 const sortOptions = ref(["Title", "Difficulty level", "Sort order"]);
@@ -154,7 +166,7 @@ const sortProjects = (selectedSortOption: string) => {
 };
 
 const filterProjects = (selectedFilterOption: ProjectStatusFilter) => {
-  projectStore.status = selectedFilterOption;
+  projectStore.statusFilter = selectedFilterOption;
   getProjects();
 };
 
