@@ -13,7 +13,7 @@ export const useProjectStore = defineStore("project", () => {
   const pageInfo: Ref<PageInfo<Project>> = ref({ page: 1, pageSize: 5, hasMore: false, items: [] });
   const sortBy: Ref<ProjectSortOption> = ref(ProjectSortOption.SortOrder);
   //used for filtering the projects
-  const status: Ref<ProjectStatusFilter> = ref(ProjectStatusFilter.All);
+  const statusFilter: Ref<ProjectStatusFilter> = ref(ProjectStatusFilter.All);
 
   //get a project by ID
   const getProjectById = (id: number): Promise<Project> => {
@@ -91,7 +91,7 @@ export const useProjectStore = defineStore("project", () => {
       //make the request
       axios
         .get<PageInfo<Project>>(url, {
-          params: { page: 1, pageSize: 5, status: status.value, sortBy: sortBy.value },
+          params: { page: 1, pageSize: 5, status: statusFilter.value, sortBy: sortBy.value },
         })
         .then((response) => {
           pageInfo.value = response.data;
@@ -171,6 +171,6 @@ export const useProjectStore = defineStore("project", () => {
     pageInfo,
     deleteProject,
     sortBy,
-    status,
+    statusFilter,
   };
 });

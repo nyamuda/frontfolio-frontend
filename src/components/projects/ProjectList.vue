@@ -19,7 +19,7 @@
       <SelectItemInput
         :options="filterOptions"
         :callback-on-change="filterProjects"
-        placeholder-text="Filter"
+        placeholder-text="Status"
       />
       <!-- Add new project button -->
       <router-link to="/projects/add">
@@ -88,7 +88,7 @@ import Button from "primevue/button";
 import LoadMoreItemsButton from "../shared/LoadMoreItemsButton.vue";
 import { useProjectStore } from "@/stores/project";
 import { useToast } from "primevue/usetoast";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import ProjectItemSkeleton from "./skeletons/ProjectItemSkeleton.vue";
 import EmptyList from "../shared/EmptyList.vue";
 import { ProjectSortOption } from "@/enums/projectSortOption";
@@ -104,6 +104,18 @@ onMounted(() => {
   getProjects();
 });
 
+//Message to display if there are no projects to display
+//based on the current applied status filter
+const noProjectsMessage = computed(() => {
+  switch (projectStore.statusFilter) {
+    case ProjectStatusFilter.Published:
+      return "No published projects found. Make sure to mark your projects as 'Published' once they're ready to be shared.";
+    case ProjectStatusFilter.Draft:
+      return "You don’t have any draft projects saved. ";
+    default:
+      return "No projects found. Create a new one to showcase your work.";
+  }
+});
 const sortOptions = ref(["Title", "Difficulty level", "Sort order"]);
 const filterOptions = ref([
   ProjectStatusFilter.All,
