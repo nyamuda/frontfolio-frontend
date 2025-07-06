@@ -53,10 +53,10 @@
           </div>
         </div>
         <!-- Load more button -->
-        <div class="d-flex justify-content-center mt-5">
+        <div class="d-flex justify-content-center mt-4">
           <LoadMoreItemsButton
             label="Load more projects"
-            end-label="You’ve reached the end. No more projects to display"
+            :end-label="endOfListMessage"
             :is-loading="isLoadingMoreProjects"
             :has-more="projectStore.pageInfo.hasMore"
             :is-disabled="
@@ -104,7 +104,7 @@ onMounted(() => {
   getProjects();
 });
 
-//Message to display if there are no projects to display
+//Message to display if there are no projects to display (project list is empty)
 //based on the current applied status filter
 const noProjectsMessage: Ref<{ title: string; message: string }> = computed(() => {
   switch (projectStore.statusFilter) {
@@ -131,11 +131,11 @@ const noProjectsMessage: Ref<{ title: string; message: string }> = computed(() =
 const endOfListMessage = computed(() => {
   switch (projectStore.statusFilter) {
     case ProjectStatusFilter.Published:
-      return "You’ve reached the end of the list";
-    case ProjectStatusFilter.Draft:
       return "You've reached the end of the published projects";
-    default:
+    case ProjectStatusFilter.Draft:
       return "No more draft projects to show";
+    default:
+      return "You’ve reached the end of the list";
   }
 });
 const sortOptions = ref(["Title", "Difficulty level", "Sort order"]);
@@ -179,7 +179,7 @@ const getProjects = () => {
     .catch((message) => {
       toast.add({
         severity: "error",
-        summary: "Error",
+        summary: "Failed to Fetch Projects",
         detail: message,
         life: 10000,
       });
@@ -200,7 +200,7 @@ const loadMoreProjects = () => {
     .catch((message) => {
       toast.add({
         severity: "error",
-        summary: "Error",
+        summary: "Unable to Load More Projects",
         detail: message,
         life: 10000,
       });

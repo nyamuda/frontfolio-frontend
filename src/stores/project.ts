@@ -116,7 +116,7 @@ export const useProjectStore = defineStore("project", () => {
       //make the request
       axios
         .get<PageInfo<Project>>(url, {
-          params: { page, pageSize },
+          params: { page, pageSize, status: statusFilter.value, sortBy: sortBy.value },
         })
         .then((response) => {
           //add the additional projects the the projects that are already there
@@ -128,7 +128,7 @@ export const useProjectStore = defineStore("project", () => {
           resolve(response.data);
         })
         .catch(() => {
-          const message = "An unexpected error occurred while loading more projects.";
+          const message = "An error occurred while loading more projects.";
           reject(message);
         });
     });
