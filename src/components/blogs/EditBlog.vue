@@ -444,6 +444,8 @@ const publishBlog = async () => {
           detail: "Your blog has been published and is now live in your portfolio.",
           life: 5000,
         });
+        //change the status of the displayed blog to "Published"
+        blog.value.status = BlogStatus.Published;
         //mark the change as one that doesn't require saving / auto saving
         ignorePublishedStatusChange.value = true;
       })

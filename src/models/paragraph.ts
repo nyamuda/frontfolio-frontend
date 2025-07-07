@@ -9,6 +9,7 @@ export class Paragraph {
     public content: string = "",
     public paragraphType: ParagraphType = ParagraphType.ProjectBackground,
     public projectId: number = 0,
+    public blogId: number = 0,
     // Indicates whether the paragraph is newly created on the frontend and hasn't been saved to the backend yet.
     // Used to differentiate between temporary frontend-only paragraphs and those already persisted in the database.
     public isNew: boolean = false,

@@ -120,6 +120,7 @@ import ConfirmPopup from "primevue/confirmpopup";
 import { CrudContext } from "@/enums/crudContext";
 import { useParagraphStore } from "@/stores/paragraph";
 import { toWords } from "number-to-words";
+import { ParagraphType } from "@/enums/paragraphType";
 
 const toast = useToast();
 
@@ -305,10 +306,41 @@ const confirmDelete = () => {
 };
 
 //Delete the paragraph on the backend
-const deleteParagraph = () => {
+const deleteParagraph = async () => {
+  try {
+    const paragraphId = props.paragraph.id;
+    //if deleting project background paragraph
+    if (props.paragraph.paragraphType == ParagraphType.ProjectBackground) {
+      const projectId = props.paragraph.projectId;
+      //delete the paragraph
+      if (paragraphId && projectId) {
+        await store.deleteProjectBackgroundParagraph(paragraphId, projectId);
+        // Emit a signal to skip auto-saving since this paragraph has already been deleted individually.
+        // This prevents the parent components from unnecessarily triggering a full parent component save.
+        emit("skipAutoSave", true);
+        //remove paragraph form from UI
+        emit("delete");
+        return;
+      }
+    }
+    //if deleting blog content paragraph
+    if (props.paragraph.paragraphType == ParagraphType.BlogSection) {
+      const blogId = props.paragraph.blogId;
+      //delete the paragraph
+      if (paragraphId && blogId) {
+        await store.deleteProjectBackgroundParagraph(paragraphId, projectId);
+        // Emit a signal to skip auto-saving since this paragraph has already been deleted individually.
+        // This prevents the parent components from unnecessarily triggering a full parent component save.
+        emit("skipAutoSave", true);
+        //remove paragraph form from UI
+        emit("delete");
+        return;
+      }
+    }
+  } catch (error) {}
+
   isDeletingParagraph.value = true;
-  const paragraphId = props.paragraph.id;
-  const projectId = props.paragraph.projectId;
+
   if (paragraphId && projectId) {
     store
       .deleteProjectBackgroundParagraph(paragraphId, projectId)
