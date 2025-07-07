@@ -1,5 +1,5 @@
 import { BlogStatus } from "@/enums/blogStatus";
-import type { Paragraph } from "./paragraph";
+import { Paragraph } from "./paragraph";
 
 export class Blog {
   public constructor(
@@ -7,7 +7,7 @@ export class Blog {
     public title: string = "",
     public topic: string = "",
     public summary: string = "",
-    public imageUrl: string = "",
+    public imageUrl: string | null = null,
     public status: BlogStatus = BlogStatus.Draft,
     public content: Paragraph[] = [],
     public tags: string[] = [],
@@ -16,4 +16,22 @@ export class Blog {
     public updatedAt: Date = new Date(),
     public publishedAt: Date = new Date(),
   ) {}
+
+  /**
+   * Makes empty Url fields null
+   * URL fields like imageUrl cannot have empty strings as values
+   * otherwise they will fail validation on the backend expecting null for optional URLs.
+   * This method makes them null if their values are empty strings
+   */
+  public nullifyEmptyUrls(): void {
+    //main URLs
+    this.imageUrl = this.imageUrl || null;
+
+    //content paragraphs URLs
+    this.content = this.content.map((paragraph) => {
+      const sanitizedParagraph = Object.assign(new Paragraph(), paragraph);
+      sanitizedParagraph.nullifyEmptyUrls();
+      return sanitizedParagraph;
+    });
+  }
 }

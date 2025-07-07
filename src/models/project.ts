@@ -46,6 +46,5 @@ export class Project {
       sanitizedParagraph.nullifyEmptyUrls();
       return sanitizedParagraph;
     });
-    console.log(this.background);
   }
 }
