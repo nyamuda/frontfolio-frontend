@@ -76,5 +76,5 @@ export const useParagraphStore = defineStore("paragraph", () => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   };
 
-  return { validateGivenParagraphs, deleteProjectBackgroundParagraph };
+  return { validateGivenParagraphs, deleteProjectBackgroundParagraph, deleteBlogContentParagraph };
 });
