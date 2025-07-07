@@ -11,7 +11,7 @@ import { BlogStatusFilter } from "@/enums/blogStatusFilter";
 export const useBlogStore = defineStore("blog", () => {
   const blogs: Ref<Blog[]> = ref([]);
   const pageInfo: Ref<PageInfo<Blog>> = ref({ page: 1, pageSize: 5, hasMore: false, items: [] });
-  const sortBy: Ref<BlogSortOption> = ref(BlogSortOption.SortOrder);
+  const sortBy: Ref<BlogSortOption> = ref(BlogSortOption.PublishedAt);
   //used for filtering the blogs
   const statusFilter: Ref<BlogStatusFilter> = ref(BlogStatusFilter.All);
 
@@ -39,7 +39,7 @@ export const useBlogStore = defineStore("blog", () => {
     });
   };
 
-  //submit a new portfolio blog
+  //submit a new blog
   const addNewBlog = (blog: Blog): Promise<{ id: number | null }> => {
     return new Promise((resolve, reject) => {
       const url = `${apiUrl}/blogs`;
@@ -70,8 +70,7 @@ export const useBlogStore = defineStore("blog", () => {
       axios
         .put(url, updatedBlog)
         .then(() => resolve({}))
-        .catch((ex) => {
-          console.log(ex);
+        .catch(() => {
           const message = "An unexpected error occurred while saving your changes.";
           reject(message);
         });
