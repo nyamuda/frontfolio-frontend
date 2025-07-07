@@ -7,7 +7,7 @@
           <Skeleton width="10rem" height="1.5rem" borderRadius="4px" />
           <Skeleton width="5rem" height="1.5rem" borderRadius="20px" />
         </div>
-        <!-- short summary -->
+        <!-- short summary & other info -->
         <Skeleton width="100%" height="3rem" class="mb-2" borderRadius="4px" />
         <!-- button -->
         <div class="mt-3">
