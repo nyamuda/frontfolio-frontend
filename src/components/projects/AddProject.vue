@@ -21,16 +21,7 @@
           :loading="isSavingProject"
           :disabled="isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms"
         />
-        <!-- <Button
-          size="small"
-          v-if="project.status != ProjectStatus.Published"
-          @click="publishProject"
-          :label="isPublishingProject ? 'Publishing project...' : 'Publish'"
-          :loading="isPublishingProject"
-          :disabled="
-            isPublishingProject || isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms
-          "
-        /> -->
+
       </div>
       <!-- Form error message -->
       <Message
@@ -465,7 +456,7 @@ const isEntireFormInvalid = async (): Promise<boolean> => {
 };
 
 const isSavingProject = ref(false);
-//const isPublishingProject = ref(false);
+
 const difficultyLevels: Ref<ProjectDifficultyLevel[]> = ref([
   ProjectDifficultyLevel.Beginner,
   ProjectDifficultyLevel.Intermediate,
@@ -503,14 +494,7 @@ const saveProjectAsDraft = async () => {
   await submitProject();
 };
 
-//Change the project status to Published if user has clicked the "Publish" button
-// const publishProject = async () => {
-//   isPublishingProject.value = true;
-//   //change the status to Published
-//   project.value.status = ProjectStatus.Published;
-//   //then submit the project
-//   await submitProject();
-// };
+
 
 const submitProject = async () => {
   // Validate the entire form (main fields + paragraph + challenge + achievement + feedback sections)
@@ -525,7 +509,6 @@ const submitProject = async () => {
       .addNewProject(sanitizedProject)
       .then(({ id }) => {
         // Show success toast notification
-
         toast.add({
           severity: "success",
           summary: "Project Saved as Draft",

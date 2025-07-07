@@ -720,7 +720,7 @@ const publishProject = async () => {
           detail: "Your project has been published and is now live in your portfolio.",
           life: 5000,
         });
-        // Silently refetch the updated project immediately after saving to ensure that:
+        // Silently refetch the published project immediately after saving to ensure that:
         // - Newly created background paragraphs, challenges, and achievements have their real database IDs
         // - (instead of temporary string IDs used on the frontend), which is essential for accurate deletion or editing
         // - Data consistency between frontend and backend is maintained
@@ -770,13 +770,8 @@ const submitProject = async () => {
             life: 5000,
           });
         }
-        // Silently refetch the updated project immediately after saving to ensure that:
-        // - Newly created background paragraphs, challenges, and achievements have their real database IDs
-        // - (instead of temporary string IDs used on the frontend), which is essential for accurate deletion or editing
-        // - Data consistency between frontend and backend is maintained
-        // Note: No loading spinner is shown — this is a background fetch invisible to the user
-        displayLoadingSpinner.value = false;
-        getProjectById(project.value.id);
+        //change the status of the current in memory project to "Published"
+        project.value.status = ProjectStatus.Published;
       })
       .catch((message) => {
         // Show error toast if the project update fails
