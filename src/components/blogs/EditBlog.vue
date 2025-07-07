@@ -77,7 +77,8 @@
               isSavingBlog ||
               v$.$errors.length > 0 ||
               hasInvalidSubForms ||
-              isDeletingBlog
+              isDeletingBlog ||
+              hasUnsavedChanges
             "
           />
           <!-- Turn auto save on/off -->
@@ -327,6 +328,11 @@ const displayLoadingSpinner = ref(true);
 const isAutoSaved = ref(true);
 // Controls whether autosave is enabled
 const isAutoSaveEnabled = ref(true);
+// This flag is set to true when the status of the blog
+// is set to 'Published' programmatically after a successful publish.
+// It prevents the watcher from treating the change as user input and triggering save-related behavior.
+// Hence, it ensures the UI doesn’t treat the change as unsaved work.
+const ignorePublishedStatusChange = ref(false);
 // Flag to temporarily suppress auto-saving when background paragraphs are modified.
 // Used to avoid triggering an unnecessary save when changes are already handled elsewhere (e.g., on delete).
 const skipAutoSaveForContentParagraphs = ref(false);
@@ -438,13 +444,8 @@ const publishBlog = async () => {
           detail: "Your blog has been published and is now live in your portfolio.",
           life: 5000,
         });
-        // Silently refetch the published blog immediately after saving to ensure that:
-        // - Newly created background paragraphs, challenges, and achievements have their real database IDs
-        // - (instead of temporary string IDs used on the frontend), which is essential for accurate deletion or editing
-        // - Data consistency between frontend and backend is maintained
-        // Note: No loading spinner is shown — this is a background fetch invisible to the user
-        displayLoadingSpinner.value = false;
-        getBlogById(blog.value.id);
+        //mark the change as one that doesn't require saving / auto saving
+        ignorePublishedStatusChange.value = true;
       })
       .catch((message) => {
         // Show error toast if there was an error while publishing blog
@@ -488,8 +489,13 @@ const submitBlog = async () => {
             life: 5000,
           });
         }
-        //change the status of the current in memory blog to "Published"
-        blog.value.status = BlogStatus.Published;
+        // Silently refetch the updated blog immediately after saving to ensure that:
+        // - Newly created content paragraphs have their real database IDs
+        // - (instead of temporary string IDs used on the frontend), which is essential for accurate deletion or editing
+        // - Data consistency between frontend and backend is maintained
+        // Note: No loading spinner is shown — this is a background fetch invisible to the user
+        displayLoadingSpinner.value = false;
+        getBlogById(blog.value.id);
       })
       .catch((message) => {
         // Show error toast if the blog update fails
@@ -536,6 +542,14 @@ watch(
       isInitialLoad.value = false;
       return;
     }
+    // Ignore this watcher trigger if the blog's status was just set to 'Published'.
+    // The change has already been saved to the backend, so there's no need to trigger autosave or manual save.
+    // This flag is set to true when the "publishBlog" method is invoked
+    if (ignorePublishedStatusChange.value) {
+      ignorePublishedStatusChange.value = false;
+      return;
+    }
+
     //make sure there is no deletion in progress before saving any changes
     if (isDeletingBlog.value) return;
 

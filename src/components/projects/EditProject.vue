@@ -581,9 +581,10 @@ const displayLoadingSpinner = ref(true);
 const isAutoSaved = ref(true);
 // Controls whether autosave is enabled
 const isAutoSaveEnabled = ref(true);
-// This flag is set to true when the 'Published' status is updated programmatically after a successful publish.
+// This flag is set to true when the status of the project
+// is set to 'Published' programmatically after a successful publish.
 // It prevents the watcher from treating the change as user input and triggering save-related behavior.
-//Hence, it ensures the UI doesn’t treat the change as unsaved work.
+// Hence, it ensures the UI doesn’t treat the change as unsaved work.
 const ignorePublishedStatusChange = ref(false);
 // Flag to temporarily suppress auto-saving when background paragraphs are modified.
 // Used to avoid triggering an unnecessary save when changes are already handled elsewhere (e.g., on delete).
@@ -828,7 +829,7 @@ watch(
     }
     // Ignore this watcher trigger if the project's status was just set to 'Published'.
     // The change has already been saved to the backend, so there's no need to trigger autosave or manual save.
-    //This flag is set to true when the "publishProject" method is invoked
+    // This flag is set to true when the "publishProject" method is invoked
     if (ignorePublishedStatusChange.value) {
       ignorePublishedStatusChange.value = false;
       return;
