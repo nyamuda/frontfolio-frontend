@@ -700,18 +700,52 @@ const saveProject = async () => {
 };
 
 //Change the project status to Published if the project hasn't been published yet
-// and user has clicked the "Publish" button
+//and user has clicked the "Publish" button
 const publishProject = async () => {
-  isAutoSaved.value = false;
-  isPublishingProject.value = true;
-  //change the status to Published
-  project.value.status = ProjectStatus.Published;
   //cancel the pending auto-save if there is one in progress
   debouncedSubmitProject.cancel();
-  //then submit the project
-  await submitProject();
+
+  // Validate the entire form (main fields + paragraph + challenge + achievement + feedback sections)
+  const isInvalid = await isEntireFormInvalid();
+
+  //then publish the project
+  if (!isInvalid) {
+    isPublishingProject.value = true;
+    projectStore
+      .publishProject(project.value.id)
+      .then(() => {
+        toast.add({
+          severity: "success",
+          summary: "Project Published",
+          detail: "Your project has been published and is now live in your portfolio.",
+          life: 5000,
+        });
+        // Silently refetch the updated project immediately after saving to ensure that:
+        // - Newly created background paragraphs, challenges, and achievements have their real database IDs
+        // - (instead of temporary string IDs used on the frontend), which is essential for accurate deletion or editing
+        // - Data consistency between frontend and backend is maintained
+        // Note: No loading spinner is shown — this is a background fetch invisible to the user
+        displayLoadingSpinner.value = false;
+        getProjectById(project.value.id);
+      })
+      .catch((message) => {
+        // Show error toast if there was an error while publishing project
+        toast.add({
+          severity: "error",
+          summary: "Error",
+          detail: message,
+          life: 10000,
+        });
+      })
+      .finally(() => {
+        isPublishingProject.value = false;
+        //cancel the pending auto-save if there is one in progress
+        debouncedSubmitProject.cancel();
+      });
+  }
 };
 
+//Submit any changes made to the project
 const submitProject = async () => {
   // Validate the entire form (main fields + paragraph + challenge + achievement + feedback sections)
   const isInvalid = await isEntireFormInvalid();
@@ -729,19 +763,13 @@ const submitProject = async () => {
         //Show toast if the project was not autosaved
         if (!isAutoSaved.value) {
           //show success toast notification after editing a project
-          const toastSummary = isPublishingProject.value ? "Project Published" : "Project Updated";
-
-          const toastDetail = isPublishingProject.value
-            ? "Your project has been published and is now live in your portfolio."
-            : "Your project has been updated.";
           toast.add({
             severity: "success",
-            summary: toastSummary,
-            detail: toastDetail,
+            summary: "Project Updated",
+            detail: "The project has been updated.",
             life: 5000,
           });
         }
-
         // Silently refetch the updated project immediately after saving to ensure that:
         // - Newly created background paragraphs, challenges, and achievements have their real database IDs
         // - (instead of temporary string IDs used on the frontend), which is essential for accurate deletion or editing
@@ -751,20 +779,16 @@ const submitProject = async () => {
         getProjectById(project.value.id);
       })
       .catch((message) => {
-        // Show error toast if the project creation fails
+        // Show error toast if the project update fails
         toast.add({
           severity: "error",
           summary: "Update Failed",
           detail: message,
           life: 10000,
         });
-        //if project was being published, change it back to draft
-        //this will allow the "Publish" button to be displayed again
-        if (isPublishingProject.value) project.value.status = ProjectStatus.Draft;
       })
       .finally(() => {
         isSavingProject.value = false;
-        isPublishingProject.value = false;
         //cancel the pending auto-save if there is one in progress
         debouncedSubmitProject.cancel();
       });
