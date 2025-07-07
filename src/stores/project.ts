@@ -80,6 +80,22 @@ export const useProjectStore = defineStore("project", () => {
         });
     });
   };
+  //publish a portfolio project
+  const publishProject = (id: number) => {
+    return new Promise((resolve, reject) => {
+      const url = `${apiUrl}/projects/${id}/publish`;
+      //add an access token to the request to access the protected route
+      setAuthToken();
+      //make the request
+      axios
+        .patch(url)
+        .then(() => resolve({}))
+        .catch(() => {
+          const message = "An unexpected error occurred while publishing your changes.";
+          reject(message);
+        });
+    });
+  };
 
   //get projects
   const getProjects = (): Promise<PageInfo<Project>> => {
@@ -171,5 +187,6 @@ export const useProjectStore = defineStore("project", () => {
     deleteProject,
     sortBy,
     statusFilter,
+    publishProject,
   };
 });

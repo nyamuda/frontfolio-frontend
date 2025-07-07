@@ -19,11 +19,9 @@
           :label="isSavingProject ? 'Saving...' : 'Save as draft'"
           severity="contrast"
           :loading="isSavingProject"
-          :disabled="
-            isPublishingProject || isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms
-          "
+          :disabled="isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms"
         />
-        <Button
+        <!-- <Button
           size="small"
           v-if="project.status != ProjectStatus.Published"
           @click="publishProject"
@@ -32,7 +30,7 @@
           :disabled="
             isPublishingProject || isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms
           "
-        />
+        /> -->
       </div>
       <!-- Form error message -->
       <Message
@@ -467,7 +465,7 @@ const isEntireFormInvalid = async (): Promise<boolean> => {
 };
 
 const isSavingProject = ref(false);
-const isPublishingProject = ref(false);
+//const isPublishingProject = ref(false);
 const difficultyLevels: Ref<ProjectDifficultyLevel[]> = ref([
   ProjectDifficultyLevel.Beginner,
   ProjectDifficultyLevel.Intermediate,
@@ -506,13 +504,13 @@ const saveProjectAsDraft = async () => {
 };
 
 //Change the project status to Published if user has clicked the "Publish" button
-const publishProject = async () => {
-  isPublishingProject.value = true;
-  //change the status to Published
-  project.value.status = ProjectStatus.Published;
-  //then submit the project
-  await submitProject();
-};
+// const publishProject = async () => {
+//   isPublishingProject.value = true;
+//   //change the status to Published
+//   project.value.status = ProjectStatus.Published;
+//   //then submit the project
+//   await submitProject();
+// };
 
 const submitProject = async () => {
   // Validate the entire form (main fields + paragraph + challenge + achievement + feedback sections)
@@ -527,48 +525,28 @@ const submitProject = async () => {
       .addNewProject(sanitizedProject)
       .then(({ id }) => {
         // Show success toast notification
-        const toastSummary = isPublishingProject.value
-          ? "Project Published"
-          : "Project Saved as Draft";
-        const toastDetail = isPublishingProject.value
-          ? "Your project has been successfully published."
-          : "You can continue editing and publish it when you're ready.";
+
         toast.add({
           severity: "success",
-          summary: toastSummary,
-          detail: toastDetail,
+          summary: "Project Saved as Draft",
+          detail: "You can continue editing and publish it when you're ready.",
           life: 5000,
         });
 
-        // Navigate to the project list page if the project was published
-        if (isPublishingProject.value) router.push("/projects");
-        //if its a draft, navigate to the edit project page
-        else {
-          router.push(`/projects/${id}/edit`);
-        }
+        router.push(`/projects/${id}/edit`);
       })
       .catch(() => {
         // Show error toast notification
-        const toastSummary = isPublishingProject.value
-          ? "Failed to Publish Project"
-          : "Failed to Save Draft";
 
-        const toastDetail = isPublishingProject.value
-          ? "Something went wrong while publishing your project. Please try again."
-          : "We couldn’t save your draft. Make sure you're connected and try again.";
         toast.add({
           severity: "error",
-          summary: toastSummary,
-          detail: toastDetail,
+          summary: "Failed to Save Draft",
+          detail: "We couldn’t save your draft. Make sure you're connected and try again.",
           life: 10000,
         });
-        //if project was being published, change it back to draft
-        //this will allow the "Publish" button to be displayed again
-        if (isPublishingProject.value) project.value.status = ProjectStatus.Draft;
       })
       .finally(() => {
         isSavingProject.value = false;
-        isPublishingProject.value = false;
       });
   }
 };
