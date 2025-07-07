@@ -137,7 +137,7 @@
         <template #header>
           <div class="d-flex justify-content-start align-items-center gap-1 fw-bold text-secondary">
             <i class="pi pi-history mt-1" style="font-size: 1.2rem"></i>
-            <span class="fs-4">Blog Background</span>
+            <span class="fs-4">Blog Content</span>
           </div>
         </template>
         <p class="mb-3">
@@ -155,8 +155,6 @@
         />
       </Panel>
       <!-- Blog content paragraphs end  -->
-
-
     </form>
   </div>
 </template>
