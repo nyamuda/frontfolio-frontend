@@ -57,7 +57,7 @@
         <div class="form-group mb-3">
           <FloatLabel variant="on">
             <InputText fluid id="topic" v-model="v$.topic.$model" :invalid="v$.topic.$error" />
-            <label for="topic">Title</label>
+            <label for="topic">Topic</label>
           </FloatLabel>
           <Message size="small" severity="error" v-if="v$.topic.$error" variant="simple">
             <div v-for="error of v$.topic.$errors" :key="error.$uid">
@@ -67,7 +67,7 @@
         </div>
 
         <!-- Summary input -->
-        <div class="form-group">
+        <div class="form-group mb-3">
           <FloatLabel variant="on">
             <Textarea
               id="summary"
