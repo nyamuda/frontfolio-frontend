@@ -40,7 +40,7 @@ export const useParagraphStore = defineStore("paragraph", () => {
           console.log(error);
           const message =
             error.response?.data?.message ||
-            "An unexpected error occurred while deleting the project background.";
+            "An unexpected error occurred while deleting the project background paragraph.";
           reject(message);
         });
     });
@@ -56,10 +56,9 @@ export const useParagraphStore = defineStore("paragraph", () => {
         .delete(url)
         .then(() => resolve({}))
         .catch((error) => {
-          console.log(error);
           const message =
             error.response?.data?.message ||
-            "An unexpected error occurred while deleting the blog paragraph content.";
+            "An unexpected error occurred while deleting the blog paragraph.";
           reject(message);
         });
     });
