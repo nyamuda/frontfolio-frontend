@@ -6,8 +6,8 @@
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-2 gap-1">
           <h5 class="card-title mb-0 text-secondary">{{ blog.title }}</h5>
           <Tag
-            :severity="blog.isPublished ? 'primary' : 'secondary'"
-            :value="blog.isPublished ? 'Published' : 'Draft'"
+            :severity="blog.status === 'published' ? 'primary' : 'secondary'"
+            :value="blog.status === 'published' ? 'Published' : 'Draft'"
             rounded
           />
         </div>
@@ -18,7 +18,7 @@
           style="font-size: 0.85rem"
         >
           <div class="d-flex align-items-center gap-1 text-capitalize">
-            <i class="pi pi-tag text-primary" /> {{ blog.topic || 'Uncategorized' }}
+            <i class="pi pi-tag text-primary" /> {{ blog.topic || "Uncategorized" }}
           </div>
           <div class="d-flex align-items-center gap-1" v-if="blog.publishedAt">
             <i class="pi pi-calendar text-primary" />
@@ -44,7 +44,7 @@
 
       <!-- Cover Image -->
       <img
-        :src="blog.coverImageUrl || 'https://mdbcdn.b-cdn.net/img/new/slides/042.webp'"
+        :src="blog.imageUrl || 'https://mdbcdn.b-cdn.net/img/new/slides/042.webp'"
         class="card-img-bottom"
         alt="Blog Cover"
       />
@@ -68,6 +68,9 @@ const props = defineProps({
 
 // Limit how many tags are shown before ellipsis
 const maxVisibleTagCount = ref(5);
+// Get the visible portion of the tags
 const visibleTags = props.blog.tags.slice(0, maxVisibleTagCount.value);
+
+// Used to display an ellipsis ("...") if the list is truncated
 const hasHiddenTags = computed(() => props.blog.tags.length > visibleTags.length);
 </script>
