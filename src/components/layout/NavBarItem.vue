@@ -150,10 +150,12 @@ const items = computed(() => {
           {
             label: "Add Blog",
             icon: "pi pi-file-plus",
+            route: "/projects/add",
           },
           {
             label: "View Blogs",
             icon: "pi pi-eye",
+            route: "/blogs",
           },
         ],
       },
