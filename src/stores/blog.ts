@@ -1,78 +1,74 @@
 import { ref, type Ref } from "vue";
 import { defineStore } from "pinia";
-import { Project } from "@/models/project";
+import { Blog } from "@/models/blog";
 import { apiUrl } from "@/helpers/urlHelper";
 import axios from "axios";
 import type { PageInfo } from "@/interfaces/shared/pageInfo";
 import { DateHelper } from "@/helpers/dateHelper";
-import { ProjectSortOption } from "@/enums/projectSortOption";
-import { ProjectStatusFilter } from "@/enums/projectStatusFilter";
+import { BlogSortOption } from "@/enums/blogSortOption";
+import { BlogStatusFilter } from "@/enums/blogStatusFilter";
 
-export const useProjectStore = defineStore("project", () => {
-  const projects: Ref<Project[]> = ref([]);
-  const pageInfo: Ref<PageInfo<Project>> = ref({ page: 1, pageSize: 5, hasMore: false, items: [] });
-  const sortBy: Ref<ProjectSortOption> = ref(ProjectSortOption.SortOrder);
-  //used for filtering the projects
-  const statusFilter: Ref<ProjectStatusFilter> = ref(ProjectStatusFilter.All);
+export const useBlogStore = defineStore("blog", () => {
+  const blogs: Ref<Blog[]> = ref([]);
+  const pageInfo: Ref<PageInfo<Blog>> = ref({ page: 1, pageSize: 5, hasMore: false, items: [] });
+  const sortBy: Ref<BlogSortOption> = ref(BlogSortOption.SortOrder);
+  //used for filtering the blogs
+  const statusFilter: Ref<BlogStatusFilter> = ref(BlogStatusFilter.All);
 
-  //get a project by ID
-  const getProjectById = (id: number): Promise<Project> => {
+  //get a blog by ID
+  const getBlogById = (id: number): Promise<Blog> => {
     return new Promise((resolve, reject) => {
-      const url = `${apiUrl}/projects/${id}`;
+      const url = `${apiUrl}/blogs/${id}`;
       //add an access token to the request to access the protected route
       setAuthToken();
       //make the request
       axios
-        .get<Project>(url)
+        .get<Blog>(url)
         .then((response) => {
           //format any dates from UTC to local time for better readability
-          const project: Project = Object.assign(new Project(), response.data);
-          project.startDate = DateHelper.convertTimeFromUTCToLocal(project.startDate);
-          project.endDate = DateHelper.convertTimeFromUTCToLocal(project.endDate);
-          project.feedback = project.feedback.map((feedback) => {
-            feedback.submittedAt = DateHelper.convertTimeFromUTCToLocal(feedback.submittedAt);
-            return feedback;
-          });
-          resolve(project);
+          const blog: Blog = Object.assign(new Blog(), response.data);
+          blog.createdAt = DateHelper.convertTimeFromUTCToLocal(blog.createdAt);
+          blog.updatedAt = DateHelper.convertTimeFromUTCToLocal(blog.updatedAt);
+          blog.publishedAt = DateHelper.convertTimeFromUTCToLocal(blog.publishedAt);
+          resolve(blog);
         })
         .catch(() => {
-          const message = "We couldn’t load the project details. Please try again shortly.";
+          const message = "We couldn’t fetch the blog details. Please try again shortly.";
           reject(message);
         });
     });
   };
 
-  //submit a new portfolio project
-  const addNewProject = (project: Project): Promise<{ id: number | null }> => {
+  //submit a new portfolio blog
+  const addNewBlog = (blog: Blog): Promise<{ id: number | null }> => {
     return new Promise((resolve, reject) => {
-      const url = `${apiUrl}/projects`;
+      const url = `${apiUrl}/blogs`;
       //add an access token to the request to access the protected route
       setAuthToken();
       //make the request
       axios
-        .post(url, project)
+        .post(url, blog)
         .then((response) => {
-          //return the ID of the newly created project
+          //return the ID of the newly created blog
           resolve({ id: response?.data?.id });
         })
         .catch((error) => {
           const message =
-            error.response?.data?.message ||
-            "An unexpected error occurred while saving your project.";
+            error.response?.data?.message || "An unexpected error occurred while saving your blog.";
           reject(message);
         });
     });
   };
 
-  //edit a portfolio project
-  const editProject = (id: number, updatedProject: Project) => {
+  //edit a portfolio blog
+  const editBlog = (id: number, updatedBlog: Blog) => {
     return new Promise((resolve, reject) => {
-      const url = `${apiUrl}/projects/${id}`;
+      const url = `${apiUrl}/blogs/${id}`;
       //add an access token to the request to access the protected route
       setAuthToken();
       //make the request
       axios
-        .put(url, updatedProject)
+        .put(url, updatedBlog)
         .then(() => resolve({}))
         .catch((ex) => {
           console.log(ex);
@@ -82,15 +78,15 @@ export const useProjectStore = defineStore("project", () => {
     });
   };
 
-  //get projects
-  const getProjects = (): Promise<PageInfo<Project>> => {
+  //get blogs
+  const getBlogs = (): Promise<PageInfo<Blog>> => {
     return new Promise((resolve, reject) => {
-      const url = `${apiUrl}/projects`;
+      const url = `${apiUrl}/blogs`;
       //add an access token to the request to access the protected route
       setAuthToken();
       //make the request
       axios
-        .get<PageInfo<Project>>(url, {
+        .get<PageInfo<Blog>>(url, {
           params: { page: 1, pageSize: 5, status: statusFilter.value, sortBy: sortBy.value },
         })
         .then((response) => {
@@ -99,27 +95,27 @@ export const useProjectStore = defineStore("project", () => {
         })
         .catch((ex) => {
           console.log(ex);
-          const message = "An unexpected error occurred while fetching your projects.";
+          const message = "An unexpected error occurred while fetching your blogs.";
           reject(message);
         });
     });
   };
 
-  //load more projects
-  const loadMoreProjects = (): Promise<PageInfo<Project>> => {
+  //load more blogs
+  const loadMoreBlogs = (): Promise<PageInfo<Blog>> => {
     return new Promise((resolve, reject) => {
-      const url = `${apiUrl}/projects`;
+      const url = `${apiUrl}/blogs`;
       //add an access token to the request to access the protected route
       setAuthToken();
       //query params
       const { page, pageSize } = pageInfo.value;
       //make the request
       axios
-        .get<PageInfo<Project>>(url, {
+        .get<PageInfo<Blog>>(url, {
           params: { page, pageSize, status: statusFilter.value, sortBy: sortBy.value },
         })
         .then((response) => {
-          //add the additional projects the the projects that are already there
+          //add the additional blogs the the blogs that are already there
           pageInfo.value.items = pageInfo.value.items.concat(response.data.items);
           //store the new pagination info
           pageInfo.value.page = response.data.page;
@@ -128,23 +124,22 @@ export const useProjectStore = defineStore("project", () => {
           resolve(response.data);
         })
         .catch(() => {
-          const message = "An error occurred while loading more projects.";
+          const message = "An error occurred while loading more blogs.";
           reject(message);
         });
     });
   };
 
-  const deleteProject = (id: number) => {
+  const deleteBlog = (id: number) => {
     return new Promise((resolve, reject) => {
-      const url = `${apiUrl}/projects/${id}`;
+      const url = `${apiUrl}/blogs/${id}`;
       //add an access token to the request to access the protected route
       setAuthToken();
       axios
         .delete(url)
         .then(() => resolve({}))
         .catch((ex) => {
-          const message =
-            ex.response?.data?.message || "Failed to delete project. Please try again.";
+          const message = ex.response?.data?.message || "Failed to delete blog. Please try again.";
           reject(message);
         });
     });
@@ -162,14 +157,14 @@ export const useProjectStore = defineStore("project", () => {
   };
 
   return {
-    projects,
-    addNewProject,
-    editProject,
-    getProjectById,
-    getProjects,
-    loadMoreProjects,
+    blogs,
+    addNewBlog,
+    editBlog,
+    getBlogById,
+    getBlogs,
+    loadMoreBlogs,
     pageInfo,
-    deleteProject,
+    deleteBlog,
     sortBy,
     statusFilter,
   };

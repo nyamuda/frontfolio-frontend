@@ -36,7 +36,7 @@ export const useProjectStore = defineStore("project", () => {
           resolve(project);
         })
         .catch(() => {
-          const message = "We couldn’t load the project details. Please try again shortly.";
+          const message = "We couldn’t fetch the project details. Please try again shortly.";
           reject(message);
         });
     });
