@@ -77,6 +77,23 @@ export const useBlogStore = defineStore("blog", () => {
     });
   };
 
+  //publish a portfolio blog
+  const publishBlog = (id: number) => {
+    return new Promise((resolve, reject) => {
+      const url = `${apiUrl}/blogs/${id}/publish`;
+      //add an access token to the request to access the protected route
+      setAuthToken();
+      //make the request
+      axios
+        .patch(url)
+        .then(() => resolve({}))
+        .catch(() => {
+          const message = "An unexpected error occurred while publishing the blog.";
+          reject(message);
+        });
+    });
+  };
+
   //get blogs
   const getBlogs = (): Promise<PageInfo<Blog>> => {
     return new Promise((resolve, reject) => {
@@ -166,5 +183,6 @@ export const useBlogStore = defineStore("blog", () => {
     deleteBlog,
     sortBy,
     statusFilter,
+    publishBlog,
   };
 });

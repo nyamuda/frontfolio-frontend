@@ -91,7 +91,7 @@ export const useProjectStore = defineStore("project", () => {
         .patch(url)
         .then(() => resolve({}))
         .catch(() => {
-          const message = "An unexpected error occurred while publishing your changes.";
+          const message = "An unexpected error occurred while publishing the project.";
           reject(message);
         });
     });
