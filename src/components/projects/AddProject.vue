@@ -409,6 +409,7 @@ import { ProjectDifficultyLevel } from "@/enums/projectDifficultyLevel";
 import { ParagraphType } from "@/enums/paragraphType";
 import { CrudContext } from "@/enums/crudContext";
 import { ProjectHelper } from "@/helpers/projectHelper";
+import { watch } from "vue";
 
 // Access the store
 const projectStore = useProjectStore();
@@ -417,10 +418,17 @@ const router = useRouter();
 
 onMounted(() => {
   v$.value.$touch();
+
+  // Load the saved project draft from localStorage (if it exists),
+  // or start with a new project instance
+  const savedProject = localStorage.getItem(localStorageKey);
+  project.value = savedProject ? (JSON.parse(savedProject) as Project) : new Project();
 });
 
 // The new project being created
 const project: Ref<Project> = ref(new Project());
+// Key used to store and retrieve the in-progress project draft from localStorage
+const localStorageKey = "newProject";
 const invalidFormMessage = ref(
   "Some fields are missing or invalid. Please fix them to save or publish your project.",
 );
@@ -530,6 +538,21 @@ const submitProject = async () => {
       });
   }
 };
+
+/**
+ * Watches the project object and saves it to localStorage whenever it changes.
+ *
+ * This helps prevent accidental data loss if the user navigates away or reloads the page
+ * before submitting the project.
+ */
+watch(
+  project,
+  (updatedProject) => {
+    const serialized = JSON.stringify(updatedProject);
+    localStorage.setItem(localStorageKey, serialized);
+  },
+  { deep: true },
+);
 </script>
 
 <style scoped lang="scss">

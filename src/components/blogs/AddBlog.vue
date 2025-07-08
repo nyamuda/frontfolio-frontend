@@ -261,6 +261,7 @@ const submitBlog = async () => {
         });
 
         //remove the saved blog draft from localStorage (if it exists)
+        //since the user has successfully submitted the blog
         localStorage.removeItem(localStorageKey);
 
         router.push(`/blogs/${id}/edit`);
