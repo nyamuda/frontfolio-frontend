@@ -520,6 +520,9 @@ const submitProject = async () => {
           detail: "You can continue editing and publish it when you're ready.",
           life: 5000,
         });
+        //remove the saved project draft from localStorage (if it exists)
+        //since the user has successfully submitted the project
+        localStorage.removeItem(localStorageKey);
 
         router.push(`/projects/${id}/edit`);
       })
