@@ -1,5 +1,5 @@
 export enum BlogStatusFilter {
-  Published,
-  Draft,
-  All,
+  Published = "Published",
+  Draft = "Draft",
+  All = "All",
 }

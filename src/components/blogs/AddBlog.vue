@@ -130,7 +130,7 @@
       </Panel>
       <!-- Blog main details end -->
       <!-- Blog content paragraphs start  -->
-      <Panel id="add-blog-paragraphs" class="mb-3" toggleable :collapsed="true">
+      <Panel id="add-blog-paragraphs" class="mb-3" toggleable :collapsed="false">
         <template #header>
           <div class="d-flex justify-content-start align-items-center gap-1 fw-bold text-secondary">
             <i class="pi pi-file-edit mt-1" style="font-size: 1.2rem"></i>
@@ -156,7 +156,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, type Ref } from "vue";
+import { computed, onMounted, ref, watch, type Ref } from "vue";
 import { useBlogStore } from "@/stores/blog";
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers, url } from "@vuelidate/validators";
@@ -186,10 +186,15 @@ const router = useRouter();
 
 onMounted(() => {
   v$.value.$touch();
+  const savedBlog = localStorage.getItem("newBlog");
+  blog.value = savedBlog ? (JSON.parse(savedBlog) as Blog) : new Blog();
 });
 
 // The new blog being created
 const blog: Ref<Blog> = ref(new Blog());
+// Key used to store and retrieve the in-progress blog draft from localStorage
+const localStorageKey = "newBlog";
+
 const invalidFormMessage = ref(
   "Some fields are missing or invalid. Please fix them to save or publish your blog.",
 );
@@ -269,6 +274,21 @@ const submitBlog = async () => {
       });
   }
 };
+
+/**
+ * Watches the blog object and saves it to localStorage whenever it changes.
+ *
+ * This helps prevent accidental data loss if the user navigates away or reloads the page
+ * before submitting the blog.
+ */
+watch(
+  blog,
+  (updatedBlog) => {
+    const serialized = JSON.stringify(updatedBlog);
+    localStorage.setItem(localStorageKey, serialized);
+  },
+  { deep: true },
+);
 </script>
 
 <style scoped lang="scss">

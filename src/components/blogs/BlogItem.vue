@@ -22,7 +22,7 @@
           </div>
           <div class="d-flex align-items-center gap-1" v-if="blog.publishedAt">
             <i class="pi pi-calendar text-primary" />
-            {{ DateHelper.formatDateToMonthYear(blog.publishedAt) }}
+            {{ DateHelper.formatDateToDayMonthYear(blog.publishedAt) }}
           </div>
         </div>
 

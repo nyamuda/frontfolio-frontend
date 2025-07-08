@@ -16,12 +16,11 @@
         <Button
           size="small"
           @click="saveProjectAsDraft"
-          :label="isSavingProject ? 'Saving...' : 'Save as draft'"
+          :label="isSavingProject ? 'Saving...' : 'Save draft'"
           severity="contrast"
           :loading="isSavingProject"
           :disabled="isSavingProject || v$.$errors.length > 0 || hasInvalidSubForms"
         />
-
       </div>
       <!-- Form error message -->
       <Message
@@ -281,7 +280,7 @@
       </Panel>
       <!-- Project main details end -->
       <!-- Project background paragraphs start  -->
-      <Panel id="add-project-paragraphs" class="mb-3" toggleable :collapsed="true">
+      <Panel id="add-project-paragraphs" class="mb-3" toggleable :collapsed="false">
         <template #header>
           <div class="d-flex justify-content-start align-items-center gap-1 fw-bold text-secondary">
             <i class="pi pi-history mt-1" style="font-size: 1.2rem"></i>
@@ -305,7 +304,7 @@
       <!-- Project background paragraphs end  -->
 
       <!-- Project challenges start  -->
-      <Panel id="add-project-challenges" class="mb-3" toggleable :collapsed="true">
+      <Panel id="add-project-challenges" class="mb-3" toggleable :collapsed="false">
         <template #header>
           <div class="d-flex justify-content-start align-items-center gap-1 fw-bold text-secondary">
             <i class="pi pi-exclamation-triangle mt-1" style="font-size: 1.2rem"></i>
@@ -329,7 +328,7 @@
       <!-- Project challenges end  -->
 
       <!-- Project achievements start  -->
-      <Panel id="add-project-achievements" class="mb-3" toggleable :collapsed="true">
+      <Panel id="add-project-achievements" class="mb-3" toggleable :collapsed="false">
         <template #header>
           <div class="d-flex justify-content-start align-items-center gap-1 fw-bold text-secondary">
             <i class="pi pi-flag mt-1" style="font-size: 1.2rem"></i>
@@ -353,7 +352,7 @@
       <!-- Project achievements end  -->
 
       <!-- Project feedback start  -->
-      <Panel id="add-project-feedback" class="mb-3" toggleable :collapsed="true">
+      <Panel id="add-project-feedback" class="mb-3" toggleable :collapsed="false">
         <template #header>
           <div class="d-flex justify-content-start align-items-center gap-1 fw-bold text-secondary">
             <i class="pi pi-comment mt-1" style="font-size: 1.2rem"></i>
@@ -493,8 +492,6 @@ const saveProjectAsDraft = async () => {
   //then submit the project
   await submitProject();
 };
-
-
 
 const submitProject = async () => {
   // Validate the entire form (main fields + paragraph + challenge + achievement + feedback sections)
