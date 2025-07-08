@@ -19,7 +19,7 @@
     </div>
     <!-- Buttons start-->
     <div v-else>
-      <div v-if="!isPlaceholderBlog" class="d-flex flex-column align-items-end mb-5 gap-4">
+      <div v-if="!isPlaceholderBlog" class="d-flex flex-column align-items-end mb-5 gap-3">
         <div class="d-flex justify-content-end gap-3 align-items-center flex-wrap">
           <!-- Form error message -->
           <Message
@@ -113,7 +113,8 @@
           />
           <!-- Delete blog button -->
           <ConfirmDeleteButton
-            title="Delete blog"
+            title="Delete Blog"
+            buttonLabel="Delete blog"
             message="Are you sure you want to delete this blog?"
             :delete-callback="deleteBlog"
             button-accept-label="Yes, delete it"

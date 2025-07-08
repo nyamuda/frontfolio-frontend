@@ -66,6 +66,22 @@
             "
             :variant="!hasUnsavedChanges && !isInitialLoad ? 'text' : ''"
           />
+
+          <!-- Turn auto save on/off -->
+          <div
+            class="d-flex align-items-center gap-1 text-secondary"
+            style="font-size: 0.9rem; margin-top: 0.2rem"
+          >
+            AutoSave
+            <ToggleSwitch
+              @value-change="onChangeAutoSave"
+              :modelValue="isAutoSaveEnabled"
+              :disabled="isPublishingProject || isSavingProject || isDeletingProject"
+            >
+            </ToggleSwitch>
+          </div>
+        </div>
+        <div class="d-flex gap-3">
           <!-- Publish project button -->
           <Button
             v-if="project.status != ProjectStatus.Published"
@@ -81,29 +97,16 @@
               hasUnsavedChanges
             "
           />
-          <!-- Turn auto save on/off -->
-          <div
-            class="d-flex align-items-center gap-1 text-secondary"
-            style="font-size: 0.9rem; margin-top: 0.2rem"
-          >
-            AutoSave
-            <ToggleSwitch
-              @value-change="onChangeAutoSave"
-              :modelValue="isAutoSaveEnabled"
-              :disabled="isPublishingProject || isSavingProject || isDeletingProject"
-            >
-            </ToggleSwitch>
-          </div>
+          <!-- Delete project button -->
+          <ConfirmDeleteButton
+            title="Delete project"
+            message="Are you sure you want to delete this project?"
+            :delete-callback="deleteProject"
+            button-accept-label="Yes, delete it"
+            :is-deleting="isDeletingProject"
+            :isDisabled="isPublishingProject || isSavingProject"
+          />
         </div>
-        <!-- Delete project button -->
-        <ConfirmDeleteButton
-          title="Delete Project"
-          message="Are you sure you want to delete this project?"
-          :delete-callback="deleteProject"
-          button-accept-label="Yes, delete it"
-          :is-deleting="isDeletingProject"
-          :isDisabled="isPublishingProject || isSavingProject"
-        />
       </div>
     </div>
     <!--Buttons end-->

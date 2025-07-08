@@ -2,7 +2,7 @@
   <Button
     @click="confirmDelete"
     severity="danger"
-    :label="isDeleting ? 'Deleting...' : title"
+    :label="isDeleting ? 'Deleting...' : buttonLabel"
     size="small"
     icon="pi pi-trash"
     :loading="isDeleting"
@@ -27,6 +27,12 @@ const props = defineProps({
     type: String,
     default: "Do you want to delete this item?",
   },
+  //label of the delete button
+  buttonLabel: {
+    type: String,
+    default: "Delete",
+  },
+  //label of the confirm delete button in the confirmation modal
   buttonAcceptLabel: {
     type: String,
     default: "Delete",
