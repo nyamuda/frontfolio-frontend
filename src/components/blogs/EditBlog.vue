@@ -112,8 +112,8 @@
       <Panel class="mb-3" toggleable>
         <template #header>
           <div class="d-flex justify-content-start align-items-center gap-1 fw-bold text-secondary">
-            <i class="pi pi-info-circle mt-1" style="font-size: 1.2rem"></i>
-            <span class="fs-4">Main Details</span>
+            <i class="pi pi-tags mt-1" style="font-size: 1.2rem"></i>
+            <span class="fs-4">Main Info</span>
           </div>
         </template>
         <!-- Title input -->
@@ -142,7 +142,7 @@
         </div>
 
         <!-- Summary input -->
-        <div class="form-group">
+        <div class="form-group mb-3">
           <FloatLabel variant="on">
             <Textarea
               id="summary"
@@ -162,28 +162,27 @@
         </div>
 
         <!-- Image URL-->
-        <div class="row mb-3">
-          <!-- Image URL -->
-          <div class="form-group col-md-12">
-            <FloatLabel variant="on">
-              <IconField>
-                <InputIcon class="pi pi-image" />
-                <InputText
-                  fluid
-                  id="imageUrl"
-                  v-model="v$.imageUrl.$model"
-                  :invalid="v$.imageUrl.$error"
-                  type="url"
-                />
-              </IconField>
-              <label for="imageUrl">Image URL</label>
-            </FloatLabel>
-            <Message size="small" severity="error" v-if="v$.imageUrl.$error" variant="simple">
-              <div v-for="error of v$.imageUrl.$errors" :key="error.$uid">
-                <div>{{ error.$message }}</div>
-              </div>
-            </Message>
-          </div>
+
+        <!-- Image URL -->
+        <div class="form-group mb-3">
+          <FloatLabel variant="on">
+            <IconField>
+              <InputIcon class="pi pi-image" />
+              <InputText
+                fluid
+                id="imageUrl"
+                v-model="v$.imageUrl.$model"
+                :invalid="v$.imageUrl.$error"
+                type="url"
+              />
+            </IconField>
+            <label for="imageUrl">Image URL</label>
+          </FloatLabel>
+          <Message size="small" severity="error" v-if="v$.imageUrl.$error" variant="simple">
+            <div v-for="error of v$.imageUrl.$errors" :key="error.$uid">
+              <div>{{ error.$message }}</div>
+            </div>
+          </Message>
         </div>
 
         <!-- Tags input -->
@@ -211,14 +210,13 @@
       <Panel id="edit-blog-paragraphs" class="mb-3" toggleable :collapsed="true">
         <template #header>
           <div class="d-flex justify-content-start align-items-center gap-1 fw-bold text-secondary">
-            <i class="pi pi-history mt-1" style="font-size: 1.2rem"></i>
-            <span class="fs-4">Blog Background</span>
+            <i class="pi pi-file-edit mt-1" style="font-size: 1.2rem"></i>
+            <span class="fs-4">Content</span>
           </div>
         </template>
         <p class="mb-3">
-          Use this section to add in-depth details about your blog. Share your goals, why you built
-          it, how you approached the process, and the key features. It's optional, but a wonderful
-          way to show your thinking and help others understand your work and vision.
+          Write the detailed content of your blog here. Use multiple paragraphs to explain concepts,
+          tell your story, and provide meaningful value to your readers.
         </p>
 
         <ParagraphListEditor
