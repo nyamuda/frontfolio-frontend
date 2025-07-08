@@ -2,7 +2,7 @@
   <Button
     @click="confirmDelete"
     severity="danger"
-    :label="isDeleting ? 'Deleting...' : 'Delete project'"
+    :label="isDeleting ? 'Deleting...' : title"
     size="small"
     icon="pi pi-trash"
     :loading="isDeleting"
@@ -21,7 +21,7 @@ const confirm = useConfirm();
 const props = defineProps({
   title: {
     type: String,
-    default: "Delete Item",
+    default: "Delete",
   },
   message: {
     type: String,

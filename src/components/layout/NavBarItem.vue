@@ -150,7 +150,7 @@ const items = computed(() => {
           {
             label: "Add Blog",
             icon: "pi pi-file-plus",
-            route: "/projects/add",
+            route: "/blogs/add",
           },
           {
             label: "View Blogs",

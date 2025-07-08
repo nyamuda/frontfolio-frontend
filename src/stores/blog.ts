@@ -25,6 +25,7 @@ export const useBlogStore = defineStore("blog", () => {
       axios
         .get<Blog>(url)
         .then((response) => {
+          console.log(response);
           //format any dates from UTC to local time for better readability
           const blog: Blog = Object.assign(new Blog(), response.data);
           blog.createdAt = DateHelper.convertTimeFromUTCToLocal(blog.createdAt);

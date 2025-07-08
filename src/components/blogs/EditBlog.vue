@@ -67,7 +67,7 @@
             :variant="!hasUnsavedChanges && !isInitialLoad ? 'text' : ''"
           />
           <!-- Publish blog button -->
-          <Button
+          <!-- <Button
             v-if="blog.status != BlogStatus.Published"
             @click="publishBlog"
             label="Publish blog"
@@ -80,7 +80,7 @@
               isDeletingBlog ||
               hasUnsavedChanges
             "
-          />
+          /> -->
           <!-- Turn auto save on/off -->
           <div
             class="d-flex align-items-center gap-1 text-secondary"
@@ -95,15 +95,32 @@
             </ToggleSwitch>
           </div>
         </div>
-        <!-- Delete blog button -->
-        <ConfirmDeleteButton
-          title="Delete Blog"
-          message="Are you sure you want to delete this blog?"
-          :delete-callback="deleteBlog"
-          button-accept-label="Yes, delete it"
-          :is-deleting="isDeletingBlog"
-          :isDisabled="isPublishingBlog || isSavingBlog"
-        />
+        <div class="d-flex gap-3">
+          <!-- Publish blog button -->
+          <Button
+            v-if="blog.status != BlogStatus.Published"
+            @click="publishBlog"
+            label="Publish blog"
+            size="small"
+            :disabled="
+              isPublishingBlog ||
+              isSavingBlog ||
+              v$.$errors.length > 0 ||
+              hasInvalidSubForms ||
+              isDeletingBlog ||
+              hasUnsavedChanges
+            "
+          />
+          <!-- Delete blog button -->
+          <ConfirmDeleteButton
+            title="Delete blog"
+            message="Are you sure you want to delete this blog?"
+            :delete-callback="deleteBlog"
+            button-accept-label="Yes, delete it"
+            :is-deleting="isDeletingBlog"
+            :isDisabled="isPublishingBlog || isSavingBlog"
+          />
+        </div>
       </div>
     </div>
     <!--Buttons end-->
@@ -161,8 +178,6 @@
           </Message>
         </div>
 
-        <!-- Image URL-->
-
         <!-- Image URL -->
         <div class="form-group mb-3">
           <FloatLabel variant="on">
@@ -215,8 +230,9 @@
           </div>
         </template>
         <p class="mb-3">
-          Write the detailed content of your blog here. Use multiple paragraphs to explain concepts,
-          tell your story, and provide meaningful value to your readers.
+          Add the main body of your blog post here. Break your content into clear, focused
+          paragraphs that guide the reader through your story or perspective. Each section helps
+          shape a stronger, more engaging narrative.
         </p>
 
         <ParagraphListEditor

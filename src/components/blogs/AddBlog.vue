@@ -15,7 +15,7 @@
         <Button
           size="small"
           @click="saveBlogAsDraft"
-          :label="isSavingBlog ? 'Saving...' : 'Save as draft'"
+          :label="isSavingBlog ? 'Saving...' : 'Save draft'"
           severity="contrast"
           :loading="isSavingBlog"
           :disabled="isSavingBlog || v$.$errors.length > 0 || hasInvalidSubForms"
@@ -37,8 +37,8 @@
       <Panel class="mb-3" toggleable>
         <template #header>
           <div class="d-flex justify-content-start align-items-center gap-1 fw-bold text-secondary">
-            <i class="pi pi-info-circle mt-1" style="font-size: 1.2rem"></i>
-            <span class="fs-4">Main Details</span>
+            <i class="pi pi-tags mt-1" style="font-size: 1.2rem"></i>
+            <span class="fs-4">About This Post</span>
           </div>
         </template>
         <!-- Title input -->
@@ -86,29 +86,26 @@
           </Message>
         </div>
 
-        <!-- Image URL-->
-        <div class="row mb-3">
-          <!-- Image URL -->
-          <div class="form-group col-md-12">
-            <FloatLabel variant="on">
-              <IconField>
-                <InputIcon class="pi pi-image" />
-                <InputText
-                  fluid
-                  id="imageUrl"
-                  v-model="v$.imageUrl.$model"
-                  :invalid="v$.imageUrl.$error"
-                  type="url"
-                />
-              </IconField>
-              <label for="imageUrl">Image URL</label>
-            </FloatLabel>
-            <Message size="small" severity="error" v-if="v$.imageUrl.$error" variant="simple">
-              <div v-for="error of v$.imageUrl.$errors" :key="error.$uid">
-                <div>{{ error.$message }}</div>
-              </div>
-            </Message>
-          </div>
+        <!-- Image URL -->
+        <div class="form-group mb-3">
+          <FloatLabel variant="on">
+            <IconField>
+              <InputIcon class="pi pi-image" />
+              <InputText
+                fluid
+                id="imageUrl"
+                v-model="v$.imageUrl.$model"
+                :invalid="v$.imageUrl.$error"
+                type="url"
+              />
+            </IconField>
+            <label for="imageUrl">Image URL</label>
+          </FloatLabel>
+          <Message size="small" severity="error" v-if="v$.imageUrl.$error" variant="simple">
+            <div v-for="error of v$.imageUrl.$errors" :key="error.$uid">
+              <div>{{ error.$message }}</div>
+            </div>
+          </Message>
         </div>
 
         <!-- Tags input -->
@@ -136,14 +133,13 @@
       <Panel id="add-blog-paragraphs" class="mb-3" toggleable :collapsed="true">
         <template #header>
           <div class="d-flex justify-content-start align-items-center gap-1 fw-bold text-secondary">
-            <i class="pi pi-history mt-1" style="font-size: 1.2rem"></i>
+            <i class="pi pi-file-edit mt-1" style="font-size: 1.2rem"></i>
             <span class="fs-4">Blog Content</span>
           </div>
         </template>
         <p class="mb-3">
-          Use this section to add in-depth details about your blog. Share your goals, why you built
-          it, how you approached the process, and the key features. It's optional, but a wonderful
-          way to show your thinking and help others understand your work and vision.
+          Write the detailed content of your blog here. Use multiple paragraphs to explain concepts,
+          tell your story, and provide meaningful value to your readers.
         </p>
 
         <ParagraphList
@@ -253,7 +249,7 @@ const submitBlog = async () => {
           severity: "success",
           summary: "Blog Saved as Draft",
           detail: "You can continue editing and publish it when you're ready.",
-          life: 5000,
+          life: 1000,
         });
 
         router.push(`/blogs/${id}/edit`);
