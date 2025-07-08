@@ -186,7 +186,10 @@ const router = useRouter();
 
 onMounted(() => {
   v$.value.$touch();
-  const savedBlog = localStorage.getItem("newBlog");
+
+  // Load the saved blog draft from localStorage (if it exists),
+  // or start with a new blog instance
+  const savedBlog = localStorage.getItem(localStorageKey);
   blog.value = savedBlog ? (JSON.parse(savedBlog) as Blog) : new Blog();
 });
 
@@ -256,6 +259,9 @@ const submitBlog = async () => {
           detail: "You can continue editing and publish it when you're ready.",
           life: 1000,
         });
+
+        //remove the saved blog draft from localStorage (if it exists)
+        localStorage.removeItem(localStorageKey);
 
         router.push(`/blogs/${id}/edit`);
       })
