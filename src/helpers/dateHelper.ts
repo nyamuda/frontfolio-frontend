@@ -24,4 +24,16 @@ export class DateHelper {
   public static formatDateToMonthYear(time: Date): string {
     return dayjs.utc(time).local().format("MMMM, YYYY");
   }
+
+  /**
+   * Converts a UTC Date to the local timezone and formats it as "Day, Mon YYYY".
+   *
+   * Example output: "11, Jun 2025"
+   *
+   * @param time - A JavaScript Date object in UTC.
+   * @returns A string formatted as "DD, MMM YYYY" in the user's local time zone.
+   */
+  public static formatDateToDayMonthYear(time: Date): string {
+    return dayjs.utc(time).local().format("DD, MMM YYYY");
+  }
 }

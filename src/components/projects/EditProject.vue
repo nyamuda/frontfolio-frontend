@@ -19,7 +19,7 @@
     </div>
     <!-- Buttons start-->
     <div v-else>
-      <div v-if="!isPlaceholderProject" class="d-flex flex-column align-items-end mb-5 gap-4">
+      <div v-if="!isPlaceholderProject" class="d-flex flex-column align-items-end mb-5 gap-3">
         <div class="d-flex justify-content-end gap-3 align-items-center flex-wrap">
           <!-- Form error message -->
           <Message
@@ -99,7 +99,8 @@
           />
           <!-- Delete project button -->
           <ConfirmDeleteButton
-            title="Delete project"
+            title="Delete Portfolio Project"
+            button-label="Delete project"
             message="Are you sure you want to delete this project?"
             :delete-callback="deleteProject"
             button-accept-label="Yes, delete it"
