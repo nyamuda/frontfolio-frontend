@@ -316,21 +316,6 @@ const deleteParagraph = async () => {
       //delete the paragraph
       if (paragraphId && projectId) {
         await store.deleteProjectBackgroundParagraph(paragraphId, projectId);
-        // Emit a signal to skip auto-saving since this paragraph has already been deleted individually.
-        // This prevents the parent components from unnecessarily triggering a full parent component save.
-        emit("skipAutoSave", true);
-        //remove paragraph form from UI
-        emit("delete");
-        //scroll to the previous or next paragraph after the delete
-        scrollAfterParagraphDelete();
-        //show toast
-        toast.add({
-          severity: "success",
-          summary: "Paragraph Deleted",
-          detail: "Selected paragraph was deleted.",
-          life: 5000,
-        });
-        return;
       }
     }
     //if deleting blog content paragraph
@@ -339,23 +324,22 @@ const deleteParagraph = async () => {
       //delete the paragraph
       if (paragraphId && blogId) {
         await store.deleteBlogContentParagraph(paragraphId, blogId);
-        // Emit a signal to skip auto-saving since this paragraph has already been deleted individually.
-        // This prevents the parent components from unnecessarily triggering a full parent component save.
-        emit("skipAutoSave", true);
-        //remove paragraph form from UI
-        emit("delete");
-        //scroll to the previous or next paragraph after the delete
-        scrollAfterParagraphDelete();
-        //show toast
-        toast.add({
-          severity: "success",
-          summary: "Paragraph Deleted",
-          detail: "Selected paragraph was deleted.",
-          life: 5000,
-        });
-        return;
       }
     }
+    // Emit a signal to skip auto-saving since this paragraph has already been deleted individually.
+    // This prevents the parent components from unnecessarily triggering a full parent component save.
+    emit("skipAutoSave", true);
+    //remove paragraph form from UI
+    emit("delete");
+    //scroll to the previous or next paragraph after the delete
+    scrollAfterParagraphDelete();
+    //show toast
+    toast.add({
+      severity: "success",
+      summary: "Paragraph Deleted",
+      detail: "Selected paragraph was deleted.",
+      life: 5000,
+    });
   } catch (error) {
     toast.add({
       severity: "error",

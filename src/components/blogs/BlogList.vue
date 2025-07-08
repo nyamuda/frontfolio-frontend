@@ -1,11 +1,11 @@
 <template>
   <div>
-    <TitleSection title="Work in Progress" subtitle="Portfolio Blogs" />
+    <TitleSection title="Manage Blog Posts" subtitle="Continue Writing" />
 
     <div class="row">
       <p class="col-md-6">
-        Here’s everything you’ve added so far. You can continue refining your drafts, publish new
-        ones, or revisit existing blogs to keep your portfolio fresh and up to date
+        These are the blog posts you've created so far. Feel free to continue editing drafts,
+        publish when ready, or make updates to existing content.
       </p>
     </div>
     <div class="d-flex justify-content-end gap-3 mb-3">
@@ -59,9 +59,7 @@
             :end-label="endOfListMessage"
             :is-loading="isLoadingMoreBlogs"
             :has-more="blogStore.pageInfo.hasMore"
-            :is-disabled="
-              isGettingBlogs || isLoadingMoreBlogs || !blogStore.pageInfo.hasMore
-            "
+            :is-disabled="isGettingBlogs || isLoadingMoreBlogs || !blogStore.pageInfo.hasMore"
             :onClick="loadMoreBlogs"
             end-variant="text"
             variant="outlined"

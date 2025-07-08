@@ -1,13 +1,13 @@
 <template>
   <div>
     <!-- Title and description start -->
-    <TitleSection title="Edit your blog details" subtitle="Edit Blog" />
+    <TitleSection title="Update your blog content" subtitle="Blog Editor" />
     <div class="row mb-2">
       <div class="col-md-6">
         <p>
-          You can continue editing your blog. Your changes are saved automatically. If your blog is
-          published, updates will be reflected immediately in your public portfolio. You can also
-          manually save your changes whenever you'd like.
+          Feel free to continue working on your blog post. Changes will be saved automatically as
+          you go. If the post is already published, any updates you make will be visible on your
+          public blog right away. You can also choose to save manually whenever needed.
         </p>
       </div>
     </div>
@@ -441,7 +441,7 @@ const publishBlog = async () => {
         toast.add({
           severity: "success",
           summary: "Blog Published",
-          detail: "Your blog has been published and is now live in your portfolio.",
+          detail: "The blog post has been published successfully.",
           life: 5000,
         });
         //change the status of the displayed blog to "Published"
@@ -487,7 +487,7 @@ const submitBlog = async () => {
           toast.add({
             severity: "success",
             summary: "Blog Updated",
-            detail: "The blog has been updated.",
+            detail: "Changes saved. Your blog post is now up to date.",
             life: 5000,
           });
         }
@@ -578,7 +578,7 @@ const deleteBlog = () => {
       toast.add({
         severity: "success",
         summary: "Blog Deleted",
-        detail: "The blog has been deleted. You won’t see it in your portfolio anymore.",
+        detail: "The blog post has been successfully deleted.",
         life: 10000,
       });
       router.push("/blogs");
