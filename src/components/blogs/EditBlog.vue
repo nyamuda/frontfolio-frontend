@@ -113,7 +113,7 @@
         <template #header>
           <div class="d-flex justify-content-start align-items-center gap-1 fw-bold text-secondary">
             <i class="pi pi-tags mt-1" style="font-size: 1.2rem"></i>
-            <span class="fs-4">Main Info</span>
+            <span class="fs-4">About This Post</span>
           </div>
         </template>
         <!-- Title input -->
@@ -132,7 +132,7 @@
         <div class="form-group mb-3">
           <FloatLabel variant="on">
             <InputText fluid id="topic" v-model="v$.topic.$model" :invalid="v$.topic.$error" />
-            <label for="topic">Title</label>
+            <label for="topic">Topic</label>
           </FloatLabel>
           <Message size="small" severity="error" v-if="v$.topic.$error" variant="simple">
             <div v-for="error of v$.topic.$errors" :key="error.$uid">
